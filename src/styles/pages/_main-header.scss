@@ -1,0 +1,17 @@
+.main-header-container {
+    height: 40vh;
+
+    .header {
+        position: absolute;
+        z-index: 1;
+        left: 10vw;
+        color: white;
+    }
+
+    img {
+        position: relative;
+        left: 0;
+        height: 100%;
+        object-fit: cover;
+    }
+}

@@ -1,0 +1,28 @@
+.event-item {
+    font-size: 15px;
+    border: 1px solid rgb(231, 231, 231);
+    min-width: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+
+    .text-container {
+        padding: 10px;
+        padding-top: 0;
+    }
+
+    .user-price {
+        margin-bottom: 20px;
+    }
+    .user-price > * {
+        width: 50%;
+    }
+    
+    .description {
+        min-height: 30px;
+        font-size: 13px;
+    }
+    .event-item-footer > * {
+        width: 50%;
+
+    }
+}

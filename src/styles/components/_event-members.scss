@@ -1,0 +1,31 @@
+.event-members-container {
+  position: fixed;
+  right: 20px;
+  border: 1px solid lighten(black, 80);
+  border-width: thin;
+  height: 300px;
+  width: 400px;
+  overflow: scroll;
+  overflow-x: hidden;
+  .event-members {
+    .event-member {
+      margin: 10px;
+    }
+  }
+  .MuiButton-containedPrimary {
+    margin-bottom: 8px;
+  }
+
+  .social-share {
+    position: absolute;
+    bottom: 0;
+    margin-left: 110px;
+    .share-icon {
+      margin: 5px;
+      cursor: pointer;
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+  }
+}

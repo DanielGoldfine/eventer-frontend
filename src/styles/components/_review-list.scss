@@ -1,0 +1,28 @@
+.review-list-container {
+    text-align: left;
+    > * {
+        width: 100%;
+    }
+    width: 250px;
+    height: 600px;
+    border: 1px solid $clrborder;
+    padding: 3px 10px;
+.date{
+    color: $textMuteClr;
+    font-size: rem(10px);
+}
+.avatar {
+    width: 25px;
+    height: 25px;
+}
+    .review-item {
+        min-height: 130px;
+        border-bottom: 1px solid $clrborderBottom;
+        > * {
+            margin-bottom: 5px;
+        }
+        .review-star {
+            width: 20px;
+        }
+    }
+}

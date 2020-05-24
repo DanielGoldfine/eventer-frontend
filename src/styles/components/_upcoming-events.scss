@@ -1,0 +1,11 @@
+.upcoming-title-wrapper {
+    max-width: 1000px;
+    margin-bottom: 10px;
+}
+
+.upcoming-events-container {
+    .alice-carousel__next-btn, .alice-carousel__prev-btn {
+        display: none;
+    }
+    max-width: 1000px;
+}

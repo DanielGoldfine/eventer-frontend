@@ -1,0 +1,39 @@
+.user-details-container {
+    .user-desc {
+        margin-bottom: 15px;
+    }
+    .follow-btn {
+        margin-bottom: 15px;
+    }
+    .review-form {
+        > * {
+            width: 100%;
+        }
+        width: 250px;
+        border: 1px solid $clrborder;
+        padding: 3px 10px;
+        margin-bottom: 10px;
+        .user-preview-container {
+            padding-inline-start: 5%;
+            height: 50px;
+            border-bottom: 1px solid $clrborderBottom;
+            margin-bottom: 5px;
+        }
+        textarea {
+            width: 95%;
+            height: 80px;
+            border: none;
+        }
+        .star-btn {
+            width: 20px;
+            path {
+                cursor: pointer;
+            }
+        }
+    }
+}
+.rate-icns {
+    > * {
+        margin-inline-end: 3px;
+    }
+}
