@@ -23,27 +23,27 @@ class EventIndex extends Component {
     componentDidMount() {
         // this.loadGlobalFilter();
         // this.props.setFilter(this.state.filterBy)
-        
+
         // this.props.loadEvents(filterBy)
         this.props.loadEvents(this.props.filterBy)
-        .then(events => {
-            console.log(events)
-        })
+            .then(events => {
+                console.log(events)
+            })
     }
 
     componentDidUpdate(prevProps) { // To apply changing the filter
         // if (!this.props.loggedInUser) return this.props.history.push('/login')
         // if (this.props.filter !== prevProps.filter)
         //     this.props.loadEvents(this.props.filter)        //this.props.loadEvents(this.props.filter, true)
-                // .then(() => { this.props.toggleLoad(false) })
+        // .then(() => { this.props.toggleLoad(false) })
     }
 
     // loadGlobalFilter = () => {
     //     const gFilter = this.props.filterBy
-        // console.log('gFilter', gFilter);
-        // this.props.loadEvents(gFilter)
-        // this.setState.filterBy = gFilter
-        // this.setState({ filterBy: gFilter })
+    // console.log('gFilter', gFilter);
+    // this.props.loadEvents(gFilter)
+    // this.setState.filterBy = gFilter
+    // this.setState({ filterBy: gFilter })
     // }
 
     onSubscribe = (userId, eventId) => {
@@ -67,23 +67,15 @@ class EventIndex extends Component {
 
     changeFilter = (filterBy) => {
         this.props.setFilter(filterBy)
-        .then(res => this.props.loadEvents(filterBy))
+            .then(res => this.props.loadEvents(filterBy))
     }
 
 
     render() {
-        // console.log('events', this.props.events)
         return (
-            <div className="main container flex column align-center justify-center">
-
-                <FilterBar changeFilter={this.changeFilter} gFilter={this.props.filterBy}  handleChange={this.handleChange} />
-
-                
-                
-                <section className="event-list-cmp">
+            <div className="event-index main-container">
+                <FilterBar changeFilter={this.changeFilter} gFilter={this.props.filterBy} handleChange={this.handleChange} />
                     {this.props.events && <EventList onDelete={this.onDelete} events={this.props.events} onSubscribe={this.onSubscribe} />}
-                </section>
-
             </div>
         )
     }

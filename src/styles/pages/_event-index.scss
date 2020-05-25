@@ -1,7 +1,24 @@
-.event-list-cmp {
-    width: 80%;
+.event-list {
+    margin-top: 20vh;
 }
 
 .event-list-filter {
-    margin-top: 30px;
+    margin-bottom: 3vh;
+    background-color: white;
+    box-shadow: 0 1px 3px #0000007d;
+    width: 100vw;
+    height: 10vh;
+    position: fixed;
+    top: 5vh;
+    z-index: 1;
+}
+
+.filters-set {
+    width: 45vw;
+    margin-bottom: 10px;
+    .MuiAutocomplete-inputRoot {
+        border-bottom: 1px solid black;
+        height: 40px;
+        width: 300px;
+    }
 }

@@ -7,7 +7,7 @@ export default function UserPreview(props) {
     const {minimalUser} = props;
     
     const inactiveClr = '#d3d3d3';
-    const activeClr = '#e6a80e';
+    const activeClr = '#ffbf00';
     return (
         <section className="user-preview-min flex align-items-center">
             <Link to={`/user/${minimalUser._id}`}>

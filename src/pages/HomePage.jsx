@@ -8,6 +8,9 @@ import SearchBar from '../cmps/SearchBar'
 import { CategoryLinks } from '../cmps/CategoryLinks'
 import UpcomingEvents from '../cmps/UpcomingEvents'
 
+import eventerIcn from '../assets/design/eventer-logo-grey.png'
+
+
 class HomePage extends Component {
 
     state = {
@@ -41,7 +44,7 @@ class HomePage extends Component {
         return (
             <div>
                 <header className="main-header-container flex justify-center align-items-center">
-                    <div className="header flex column align-items-end">
+                    <div className="header flex column align-center">
                         <h1>Enter a World of Events</h1>
                         <SearchBar isHomePage={true} setTxtFilter={this.setTxtFilter} />
                     </div>
