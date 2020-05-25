@@ -80,7 +80,7 @@ class NavBar extends Component {
         if (page === 'user') route = `/user/${this.props.loggedInUser._id}`;
         // if (page === 'login') route = '/login/'
         if (page === 'login') {
-            this.props.login();
+            route = `/login`;
             this.forceCloseModals();
         };
         history.push(route);
@@ -192,7 +192,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-    login,
+
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
