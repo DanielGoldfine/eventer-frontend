@@ -29,7 +29,7 @@
       }
     }
     
-    p {
+    p,pre {
       text-align: left;
     }
     .event-time-place {
@@ -44,6 +44,11 @@
     }
     span.event-day {
       color: red;
+    }
+
+    .icon-edit {
+      width: 30px;
+        cursor: pointer;
     }
 
     .event-tags {
@@ -64,10 +69,6 @@
   }
 }
 
-// .map-container {
-//   // background-color: burlywood;
-//     background-color: cadetblue;
-//     position: fixed;
-//     // top:400px;
-//     margin-left:175px
-// }
+.ReactGridGallery_tile-viewport img {
+  cursor: inherit !important;
+}

@@ -15,15 +15,15 @@
     }
     @include for-normal-layout  {
         grid-template-columns:
-            minmax(20px, 1fr)
+            minmax(40px, 1fr)
             minmax(auto, $narrow-breakpoint)
-            minmax(20px, 1fr);
+            minmax(40px, 1fr);
     }
     @include for-wide-layout  {
         grid-template-columns:
-            minmax(20px, 1fr)
+            minmax(40px, 1fr)
             minmax(auto, 1200px)
-            minmax(20px, 1fr);
+            minmax(40px, 1fr);
     }
 
     > * {
@@ -36,7 +36,7 @@
 
 .preview-grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 16px;
     margin-bottom: 25px;
 }

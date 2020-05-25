@@ -1,28 +1,61 @@
-.event-item {
-    font-size: 15px;
-    border: 1px solid rgb(231, 231, 231);
-    min-width: 200px;
-    border-radius: 8px;
-    overflow: hidden;
+.event-preview {
+    width: 250px;
+    height: 400px;
+    border-radius: 7px;
+    text-align: left;
+    box-shadow: 0 1px 3px #00000038;
+    transition: 0.3s;
 
-    .text-container {
-        padding: 10px;
-        padding-top: 0;
+    .event-img-container {
+        height: 140px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        @include aspect-ratio(1,1)
     }
 
-    .user-price {
-        margin-bottom: 20px;
+    .user-preview-min {
+        margin: 0 15px;
+        margin-bottom: 10px;
+        padding-bottom: 4px;
+        border-bottom: 1px solid $clrborderlight;
     }
-    .user-price > * {
-        width: 50%;
-    }
-    
-    .description {
-        min-height: 30px;
-        font-size: 13px;
-    }
-    .event-item-footer > * {
-        width: 50%;
 
+    .event-title {
+        font-family: decondfontregular;
+        font-size: rem(20px);
+        margin-top: 10px;
+        cursor: pointer;
+        margin-inline-start: 15px;
     }
+    .event-time {
+        font-family: decondfontlight;
+        font-size: rem(14px);
+        color: $brandingGrey;
+        margin-bottom: 10px;
+        margin-inline-start: 15px;
+    }
+    .event-desc {
+        color: rgb(139, 139, 139);
+        font-size: rem(14px);
+        line-height: 16px;
+        width: 90%;
+        margin-bottom: 10px;
+        margin-inline-start: 15px;
+    }
+    .event-preview-bottom {
+        margin: 0 15px;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+    .price {
+        font-size: rem(25px);
+        font-family: decondfontlight;
+    }
+    .participants {
+        width: 100px;
+    }
+}
+
+.event-preview:hover {
+    box-shadow: 0 2px 9px #00000080;
 }

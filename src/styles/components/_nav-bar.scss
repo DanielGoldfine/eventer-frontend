@@ -1,13 +1,106 @@
 .nav-bar-container {
-    height: 5vh;
+    height: 50px;
+    // background: linear-gradient(120deg, rgba(46, 46, 46, 1) 0%, rgba(5, 17, 25, 1) 100%);
+    // background: white;
+    position: fixed;
+    z-index: 3;
+    width: 100vw;
+    top: 0;
+    left: 0;
 
-    .logo {
-        margin: 0 20px;
-    }
-    .nav-bar-btns {
+    .main-logo {
+        // margin: 0 20px;
+        width: 120px;
+        cursor: pointer;
         margin-inline-end: 20px;
+    }
+
+    .seach-bar-container {
+        height: 35px;
+        margin-top: 7px;
+    }
+
+    .nav-bar-btns {
+        position: relative;
+        // margin-inline-end: 30px;
         > * {
-            margin-inline-start: 10px;
+            fill: $brandingGrey;
+            margin-inline-start: 15px;
+            transition: .2s;
+            cursor: pointer;
+            :hover {
+                fill: $brandingBlue;
+            }
         }
     }
+
+    .user-preview-min {
+        .avatar {
+            width: 30px;
+            height: 30px;
+        }
+        .user-preview-name-link {
+            color: $brandingGrey;
+        }
+        .user-preview-name-link:hover {
+    color: $brandingBlue;
+        }
+        padding-inline-end: 30px;
+        margin-inline-end: 15px;
+        border-right: 1px solid $brandingGrey;
+    }
+}
+
+.user-menu-modal {
+    z-index: 3;
+    background-color: white;
+    width: 110px;
+    position: absolute;
+    right: -20px;
+    top: 40px;
+    border-radius: 3px;
+    box-shadow: 1px 1px 6px #000000b5;
+
+    .connector {
+        position: absolute;
+        width: 20px;
+        top: -10px;
+        right: 22px;
+    }
+
+    button {
+        z-index: 3;
+        background-color: rgba(255, 255, 255, 0);
+        border: none;
+        font-size: rem(18px);
+        text-align: left;
+        border-radius: 3px;
+        // transition: 0.2s;
+        cursor: pointer;
+        height: 30px;
+        outline: none;
+    }
+    button:hover {
+        // background-color: $whiteHoverClr;
+        color: white;
+        background: $brandingBlue;
+    }
+    :not(:last-child) {
+        border-bottom: 0.5px solid $clrborderBottom;
+    }
+}
+
+.nav-bg {
+    width: 100vw;
+    height: 50px;
+    background: linear-gradient(120deg, rgba(46, 46, 46, 1) 0%, rgba(5, 17, 25, 1) 100%);
+    z-index: 2;
+    position: fixed;
+    top: -50px;
+    transition: top 0.4s;
+}
+
+.active {
+    top: 0;
+    transition: .3;
 }

@@ -54,6 +54,19 @@ export function removeEvent(eventId) {
     }
 }
 
+export function updateEvent(event,value,field) {
+    return async dispatch => {
+        try {
+            const updatedEvent = await eventService.update(event,value,field)
+            dispatch(_saveEvent('UPDATE_EVENT', updatedEvent));
+        }
+        catch (err) {
+            console.log('eventService: err in updateEvent action', err);
+        }
+    }
+}
+
+
 
 export function addPost(event, minimalUser,text) {
     return async dispatch => {
@@ -141,6 +154,7 @@ function _removeEvent(eventId) {
         eventId
     };
 }
+
 
 
 

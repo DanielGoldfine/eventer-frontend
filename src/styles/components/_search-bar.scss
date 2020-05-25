@@ -1,10 +1,25 @@
 .seach-bar-container {
-    .txt {
-        width: 300px;
-        height: 35px;
+    background-color: white;
+    border-radius: 999px;
+    width: 380px;
+    height: 40px;
+    border: 1px solid $clrborderlight;
+    padding-inline-start: 15px;
+    .search-input {
+        outline: none;
+        background-color: none;
+        border: none;
+        width: 90%px;
+        height: 80%px;
     }
-    .submit {
-        height: 35px;
-        width: 75px;
+    .search-icn {
+        fill: black;
+        border-left: 1px solid $clrborderlight;
+        fill: $clrborder;
+        padding-inline-start: 10px;
+        margin-inline-end: 15px;
+        width: 30px;
+        height: 100%;
+        cursor: pointer;
     }
 }

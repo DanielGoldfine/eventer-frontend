@@ -4,6 +4,8 @@ import history from '../history.js'
 import { connect } from 'react-redux'
 import { setFilter, loadEvents } from '../store/actions/eventActions'
 
+import SearchIcon from '@material-ui/icons/Search';
+
 class SearchBar extends Component {
 
     state = {
@@ -26,16 +28,14 @@ class SearchBar extends Component {
         if (this.props.isHomePage) {
             gFilter.sortDate = false;
             gFilter.limit = null;
-        }
+        };
 
         this.props.setFilter(gFilter)
             .then(res => {
-                    this.props.loadEvents(gFilter)
-                    history.push('/event')
-            })
-
-        // this.setState({ searchTxt: '' })
-    }
+                this.props.loadEvents(gFilter)
+                history.push('/event')
+            });
+    };
 
 
 
@@ -44,11 +44,9 @@ class SearchBar extends Component {
         const { searchTxt } = this.state;
 
         return (
-            <section className="seach-bar-container">
-                <form onSubmit={this.submitSearch}>
-                    <input className="txt" onChange={this.handleChange} type="text" name="txt" placeholder="What is on your mind?" value={searchTxt} />
-                    <input className="submit" type="submit" value="Search" />
-                </form>
+            <section className="seach-bar-container flex align-items-center space-between">
+                <input className="search-input" onChange={this.handleChange} type="text" name="txt" placeholder="What is on your mind?" value={searchTxt} />
+                <SearchIcon onClick={this.submitSearch} className="search-icn" />
             </section>
         )
     }
@@ -57,7 +55,7 @@ class SearchBar extends Component {
 const mapStateToProps = (state) => {
     return {
         filterBy: state.eventsStore.filterBy,
-
+        isHomePage: state.appStore.isHomePage
     };
 };
 

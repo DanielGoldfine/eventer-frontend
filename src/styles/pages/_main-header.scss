@@ -4,10 +4,13 @@
     .header {
         position: absolute;
         z-index: 1;
-        left: 10vw;
         color: white;
+        h1 {
+            margin-bottom: 20px;
+            font-family: mainfont;
+            font-size: rem(40px);
+        }
     }
-
     img {
         position: relative;
         left: 0;

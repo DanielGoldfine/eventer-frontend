@@ -7,7 +7,7 @@ export class ReviewForm extends Component {
         txt: '',
         rating: 0,
         inactiveClr: '#d3d3d3',
-        activeClr: '#e6a80e'
+        activeClr: '#ffbf00'
     }
 
     rate = (value) => {
