@@ -160,7 +160,6 @@ class NavBar extends Component {
                 <nav className="nav-bar-container main-container flex space-between align-items-center">
                     <div className="flex space-between align-items-center">
                         <div className="flex align-items-center">
-                            {/* <button onClick={() => { this.goToPage('back') }}>&#x3c;</button> */}
                             <img onClick={() => { this.goToPage('home') }} className="main-logo" src={eventerGrey} alt="" />
                             {!this.props.isHomePage && <SearchBar setTxtFilter={this.setTxtFilter} />}
                         </div>
