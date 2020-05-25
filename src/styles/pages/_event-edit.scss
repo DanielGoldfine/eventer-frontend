@@ -30,7 +30,7 @@
     .MuiFormGroup-root {
       display: flex;
       flex-direction: row;
-      width: 350px;
+      width: 550px;
       height: 50px;
       padding-left:75px;
       .MuiInputBase-input {
@@ -41,6 +41,18 @@
       }
       
     }
+    .MuiButton-containedPrimary {
+      margin:10px
+    }
+
+    .img-upload-container {
+
+      .img-preview {
+        margin: 10px;
+        width: 200px;
+      }
+    }
+    
   }
   [type="file"] {
     margin-top: 10px;

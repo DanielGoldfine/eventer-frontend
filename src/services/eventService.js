@@ -6,6 +6,7 @@ const baseUrl = '/event'
 export default {
     query,
     save,
+    update,
     remove,
     get,
     addUserToEvent,
@@ -56,7 +57,7 @@ function addUserToEvent(event, user) {
 function removeUserFromEvent(event, userId) {
     const memeberIdxToRemove = event.members.findIndex(member => member._id === userId)
     event.members.splice(memeberIdxToRemove, 1)
-    return HttpService.put(`/${event._id}`, event)
+    return HttpService.put(`${baseUrl}/${event._id}`, event)
         .then(savedEvent => { return savedEvent })
 
 }
@@ -84,6 +85,14 @@ function removePost(event, postId) {
         }
         )
 }
+
+function update(event, value, field) {
+    event[field] = value
+    return HttpService.put(`${baseUrl}/${event._id}`, event)
+        .then(saveEvent => { return saveEvent })
+
+}
+
 
 
 
