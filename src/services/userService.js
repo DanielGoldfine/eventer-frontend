@@ -5,14 +5,16 @@ const baseUrl = '/user'
 
 export default {
     login,
+    logout,
     get,
     addReview,
-    save
+    save,
+    signup
 }
 
-function login(credentials) {
+async function login(credentials) {
         // console.log('login in frontend')
-        const user =  HttpService.post('/auth/login')
+        const user = await HttpService.post('/auth/login', credentials)
         return _handleLogin(user)
         //For json-server
         // return HttpService.get(`${baseUrl}`)
@@ -20,6 +22,21 @@ function login(credentials) {
         //     return users[1]
         // });
 };
+
+async function logout() {
+        // console.log('logout in frontend')
+        const user = await HttpService.post('/auth/logout')
+        return _handleLogout(user)
+};
+
+async function signup(userCred) { 
+    // console.log('signup in frontend', userCred)
+
+    // console.log('userCred', userCred);
+    
+    const user = await HttpService.post('/auth/signup', userCred)
+    return _handleLogin(user)
+}
 
 function get(id) {
     return HttpService.get(`${baseUrl}/${id}`)
@@ -56,4 +73,10 @@ function addReview(review, user) {
 function _handleLogin(user) {
     sessionStorage.setItem('user', JSON.stringify(user))
     return user;
+}
+
+function _handleLogout(user) {
+    sessionStorage.clear()
+    // return user;
+    return;
 }

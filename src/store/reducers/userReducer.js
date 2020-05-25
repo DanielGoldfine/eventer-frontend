@@ -1,6 +1,18 @@
+let localLoggedinUser = null;
+let localMinimalLoggedInUser = null;
+if (sessionStorage.user) {
+    localLoggedinUser = JSON.parse(sessionStorage.user);
+    localMinimalLoggedInUser = {
+        _id: localLoggedinUser._id,
+        fullName: localLoggedinUser.fullName,
+        imgUrl: localLoggedinUser.imgUrl,
+        rank: localLoggedinUser.rank
+    }
+}
+
 const initialState = {
-    loggedInUser: null,
-    minimalLoggedInUser: null,
+    loggedInUser: localLoggedinUser,
+    minimalLoggedInUser: localMinimalLoggedInUser,
     isNotificationsOpen: false
 }
 
@@ -18,11 +30,11 @@ export default function UserReducer(state = initialState, action) {
                 loggedInUser: {...action.user},
                 minimalLoggedInUser
             };
-        // case 'SET_USER':
-        //     return {
-        //         ...state,
-        //         currUser: { ...action.user }
-        //     };
+        case 'SET_USER':
+            return {
+                ...state,
+                currUser: { ...action.user }
+            };
         case 'REMOVE_USER':
             return {
                 ...state,
