@@ -10,7 +10,7 @@
         font-weight: bolder;
         font-size: rem(20px);
         cursor: pointer;
-        
+        transition: .2s;
     }
     button:hover { 
         color: $brandingBlue;

@@ -22,29 +22,51 @@ class NavBar extends Component {
     state = {
         isNotificationsOpen: false,
         isUserMenuOpen: false,
-        navBgClass: 'inactive'
+        navBgClass: 'inactive',
+        isHomePage: false
     }
 
 
-    componentDidMount() {
-        window.addEventListener('scroll', this.listenToScroll)
+    componentWillMount() {
+        if (this.props.isHomePage) {
+            this.setState({ navBgClass: 'inactive' })
+            this.setState({ isHomePage: this.props.isHomePage })
+        } else {
+            this.setState({ navBgClass: 'active' })
+            this.setState({ isHomePage: this.props.isHomePage })
+        };
     }
+
+    componentDidUpdate = (prevProps, prevState) => {
+        if (prevState.isHomePage !== prevProps.isHomePage) {
+            if (this.props.isHomePage) {
+                window.addEventListener('scroll', this.listenToScrollNav)
+                this.setState({ navBgClass: 'inactive' })
+                this.setState({ isHomePage: this.props.isHomePage })
+            } else {
+                window.removeEventListener('scroll', this.listenToScrollNav)
+                this.setState({ navBgClass: 'active' })
+                this.setState({ isHomePage: this.props.isHomePage })
+            };
+        };
+    };
 
     componentWillUnmount() {
-        window.removeEventListener('scroll', this.listenToScroll)
+        window.removeEventListener('scroll', this.listenToScrollNav)
     }
 
-    listenToScroll = () => {
+    listenToScrollNav = () => {
+        if (!this.props.isHomePage) return;
         const winScroll =
             document.body.scrollTop || document.documentElement.scrollTop
 
         if (winScroll > 0) {
-            this.setState({ navBgClass: 'active' })
+            this.setState({ navBgClass: 'active' });
         } else {
-            this.setState({ navBgClass: 'inactive' })
+            this.setState({ navBgClass: 'inactive' });
 
-        }
-    }
+        };
+    };
 
 
     goToPage = (page) => {
@@ -60,10 +82,10 @@ class NavBar extends Component {
         if (page === 'login') {
             this.props.login();
             this.forceCloseModals();
-        }
+        };
         history.push(route);
         this.forceCloseModals();
-    }
+    };
 
     forceCloseModals = () => {
         document.removeEventListener('mousedown', this.closeUserMenu)
@@ -132,31 +154,31 @@ class NavBar extends Component {
 
         return (
             <React.Fragment>
-                    {isNotificationsOpen && <div ref={notifications => this.notifications = notifications}>
-                        < Notifications />
-                    </div>}
-                    {isUserMenuOpen && <div ref={userMenu => this.userMenu = userMenu} className="user-menu-modal flex column">
-                        <button onClick={() => { this.goToPage('user') }}>My Profile</button>
-                        <button onClick={() => { this.goToPage('login') }}>Login</button>
-                        <button>Logout</button>
-                        <img className="connector" src={modalConnector} alt="" />
-                    </div>}
-                    <nav className="nav-bar-container main-container flex space-between align-items-center">
-                        <div className="flex space-between align-items-center">
+                {isNotificationsOpen && <div ref={notifications => this.notifications = notifications}>
+                    < Notifications />
+                </div>}
+                <nav className="nav-bar-container main-container flex space-between align-items-center">
+                    <div className="flex space-between align-items-center">
                         <div className="flex align-items-center">
                             {/* <button onClick={() => { this.goToPage('back') }}>&#x3c;</button> */}
                             <img onClick={() => { this.goToPage('home') }} className="main-logo" src={eventerGrey} alt="" />
-                            {/* <SearchBar setTxtFilter={this.setTxtFilter} /> */}
+                            {!this.props.isHomePage && <SearchBar setTxtFilter={this.setTxtFilter} />}
                         </div>
                         <section className="nav-bar-btns flex align-center">
                             {loggedInUser && <UserPreview className minimalUser={loggedInUser} />}
                             <AddCircleIcon onClick={() => { this.goToPage('edit') }} />
                             {loggedInUser && <NotificationsIcon ref={notificationsOpen => this.notificationsOpen = notificationsOpen} onClick={this.toggleNotifications} />}
                             <AccountCircleIcon ref={userMenuOpen => this.userMenuOpen = userMenuOpen} onClick={this.toggleUserMenu} />
+                            {isUserMenuOpen && <div ref={userMenu => this.userMenu = userMenu} className="user-menu-modal flex column">
+                                <button onClick={() => { this.goToPage('user') }}>My Profile</button>
+                                <button onClick={() => { this.goToPage('login') }}>Login</button>
+                                <button>Logout</button>
+                                <img className="connector" src={modalConnector} alt="" />
+                            </div>}
                         </section>
-                        </div>
-                    </nav >
-                    <div className={`nav-bg ${navBgClass}`}></div>
+                    </div>
+                </nav >
+                <div className={`nav-bg ${navBgClass}`}></div>
             </React.Fragment>
         )
     }
@@ -165,7 +187,8 @@ class NavBar extends Component {
 const mapStateToProps = (state) => {
     return {
         events: state.eventsStore.events,
-        loggedInUser: state.userStore.loggedInUser
+        loggedInUser: state.userStore.loggedInUser,
+        isHomePage: state.appStore.isHomePage
     };
 };
 

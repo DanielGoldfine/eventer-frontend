@@ -1,24 +1,32 @@
-.event-list {
-    margin-top: 20vh;
-}
+.event-index {
+    .event-list {
+        margin-top: 180px;
+    }
 
-.event-list-filter {
-    margin-bottom: 3vh;
-    background-color: white;
-    box-shadow: 0 1px 3px #0000007d;
-    width: 100vw;
-    height: 10vh;
-    position: fixed;
-    top: 5vh;
-    z-index: 1;
-}
+    .event-list-filter {
+        margin-bottom: 3vh;
+        background-color: white;
+        box-shadow: 0 1px 3px #0000007d;
+        width: 100vw;
+        height: 100px;
+        position: fixed;
+        z-index: 1;
+        transition: .7s;
 
-.filters-set {
-    width: 45vw;
-    margin-bottom: 10px;
-    .MuiAutocomplete-inputRoot {
-        border-bottom: 1px solid black;
-        height: 40px;
-        width: 300px;
+        .filters-set {
+            width: 45vw;
+            margin-bottom: 10px;
+            .MuiAutocomplete-inputRoot {
+                border-bottom: 1px solid black;
+                height: 40px;
+                width: 300px;
+            }
+        }
+    }
+    .active {
+        top: 50px;
+    }
+    .inactive {
+        top: -50px;
     }
 }

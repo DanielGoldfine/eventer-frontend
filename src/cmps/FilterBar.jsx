@@ -16,6 +16,7 @@ import FilterBarGoogleMaps from './FilterBarGoogleMaps';
 
 
 export default class FilterBar extends Component {
+
     state = {
         filterBy: this.props.gFilter
     }
@@ -39,7 +40,7 @@ export default class FilterBar extends Component {
 
     render() {
         return (
-            <div className="event-list-filter full flex column justify-flex-end align-center">
+            <div className={`${this.props.filterBarClass} event-list-filter full flex column justify-flex-end align-center`}>
                 {this.state.filterBy && <section className="filters-set flex justify-center align-center space-between">
                     <div>
                         <FormControl>
