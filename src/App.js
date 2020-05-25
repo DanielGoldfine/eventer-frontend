@@ -8,12 +8,22 @@ import EventIndex from './pages/EventIndex'
 import EventEdit from './pages/EventEdit'
 import UserDetails from './pages/UserDetails'
 import EventDetails from './pages/EventDetails'
+import Login from './pages/Login'
 
 import './styles/global.scss';
 import { Switch, Route } from "react-router-dom";
 import { connect } from "react-redux";
 
+import { login } from './store/actions/userActions.js'
+
 class App extends React.Component {
+
+    componentDidMount() {
+        if (!this.props.loggedInUser) {
+            // console.log(this.props.loggedInUser);
+            this.props.login({ userName: "Guest", password: "1" })
+        }
+    }
     render() {
         return (
             <section className="events-app">
@@ -24,6 +34,7 @@ class App extends React.Component {
                     <Route component={EventIndex} exact path="/event" />
                     <Route component={UserDetails} exact path="/user/:id" />
                     <Route component={EventDetails} exact path="/event/:id?" />
+                    <Route component={Login} exact path="/login" />
                 </Switch>
             </section>
         )
@@ -33,10 +44,12 @@ class App extends React.Component {
 
 const mapStateToProps = state => {
     return {
+        loggedInUser: state.userStore.loggedInUser,
         events: state.eventsStore.events
     };
 };
 const mapDispatchToProps = {
+    login
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

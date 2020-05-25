@@ -26,9 +26,9 @@ class EventIndex extends Component {
         
         // this.props.loadEvents(filterBy)
         this.props.loadEvents(this.props.filterBy)
-        .then(events => {
-            console.log(events)
-        })
+        // .then(events => {
+        //     console.log(events)
+        // })
     }
 
     componentDidUpdate(prevProps) { // To apply changing the filter

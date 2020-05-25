@@ -10,6 +10,10 @@ import { connect } from 'react-redux'
 
 class NavBar extends Component {
 
+    componentDidMount() {
+        
+    }
+
     state = {
         isNotificationsOpen: false
     }

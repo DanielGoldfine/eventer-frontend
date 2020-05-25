@@ -1,6 +1,6 @@
 import React from 'react';
 import { loadEvent, subscribeEvent, unsubscribeEvent, setFilter} from '../store/actions/eventActions.js'
-import {login} from '../store/actions/userActions.js'
+// import {login} from '../store/actions/userActions.js'
 import { connect } from "react-redux";
 import Moment from 'moment';
 import EventTags from '../cmps/EventTags'
@@ -20,7 +20,7 @@ class EventDetails extends React.Component {
 
 
   componentDidMount() {
-    this.props.login()
+    // this.props.login()
     if (this.props.match) {  // "preview" mode doesn't use URL and params...
       const { id } = this.props.match.params;
       this.props.loadEvent(id);
@@ -129,7 +129,8 @@ const mapStateToProps = (state) => {
 
 
 const mapDispatchToProps = {
-  loadEvent, unsubscribeEvent, subscribeEvent, setFilter,login
+  // login,
+  loadEvent, unsubscribeEvent, subscribeEvent, setFilter
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventDetails);

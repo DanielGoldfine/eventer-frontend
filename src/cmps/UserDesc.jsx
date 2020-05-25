@@ -4,7 +4,7 @@ import React from 'react'
 export function UserDesc(props) {
     
     const { user } = props;
-    console.log('user desc', user)
+    // console.log('user desc', user)
 
     return (
         <main className="user-desc flex column justify-center align-items-center">

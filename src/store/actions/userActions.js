@@ -1,17 +1,41 @@
 import userService from '../../services/userService.js';
 
-export function login(credentials, loadingStatus) {
+export function signup(credentials,  loadingStatus) {
     return async dispatch => {
         try {
             toggleLoad(credentials, loadingStatus)
-            const user = await userService.login(credentials)
-            dispatch(setLoggedInUser(user), ()=>{toggleLoad(loadingStatus)});
+            const user = await userService.signup(credentials)
+            dispatch(setUser(user), ()=>{toggleLoad(loadingStatus)});
         }
         catch (err) {
-            console.log('userService: err in loagin', err);
+            console.log('userService: err in signup', err);
         }
     }
 }
+
+
+export function login(credentials, loadingStatus) {
+    // if (credentials !== { userName: "Guest", password: "1" }) {
+        return async dispatch => {
+            try {
+                toggleLoad(credentials, loadingStatus)
+                const user = await userService.login(credentials)
+                dispatch(setLoggedInUser(user), () => { toggleLoad(loadingStatus) });
+            }
+            catch (err) {
+                console.log('userService: err in login', err);
+            }
+        }
+    // }
+}
+
+export function logout() { 
+    return async dispatch => {
+      await userService.logout();
+      dispatch(setUser(null));
+    };
+  }
+  
 
 
 export function loadUser(id) {
@@ -89,12 +113,12 @@ function setLoggedInUser(user) {
     };
 }
 
-// function setUser(user) {
-//     return {
-//         type: 'SET_USER',
-//         user
-//     };
-// }
+function setUser(user) {
+    return {
+        type: 'SET_USER',
+        user
+    };
+}
 
 function _removeUser(userId) {
     return {
