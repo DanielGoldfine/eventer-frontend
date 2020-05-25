@@ -15,7 +15,7 @@ class UpcomingEvents extends React.Component {
         responsive: {
             0: { items: 1 },
             640: { items: 3 },
-            1100: { items: 5 }
+            1100: { items: 4 }
         },
         galleryItems: this.galleryItems()
     }

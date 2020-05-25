@@ -37,6 +37,9 @@
   &.justify-end {
     justify-content: end;
   }
+  &.justify-flex-end {
+    justify-content: flex-end;
+  }
   &.align-center {
     align-items: center;
   }
@@ -49,6 +52,10 @@
 }
 
 //Alignments
+
+.justify-items-center {
+  justify-items: center;
+}
 
 .margin0auto {
   margin: 0 auto;
@@ -68,6 +75,10 @@
 
 .align-items-end {
   align-items: end;
+}
+
+.align-flex-end {
+  align-items: flex-end;
 }
 
 // Spread helpers

@@ -6,7 +6,7 @@ export function ReviewPreview(props) {
 
     const { review } = props;
     const inactiveClr = '#d3d3d3';
-    const activeClr = '#e6a80e';
+    const activeClr = '#ffbf00';
     const createdAtDisplay = new Date(review.createdAt).toString().split(' ').slice(1, 5).join(' ');
 
     return (
