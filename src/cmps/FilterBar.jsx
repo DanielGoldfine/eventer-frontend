@@ -79,7 +79,7 @@ export default class FilterBar extends Component {
                             </Select>
                         </FormControl>
                     </div>
-                    <div>
+                    {/* <div>
                         <FormControl>
                             <InputLabel shrink id="category-select-label">Category</InputLabel>
                             <Select
@@ -99,7 +99,7 @@ export default class FilterBar extends Component {
                                 <MenuItem value={'Workshops'}>Workshops</MenuItem>
                             </Select>
                         </FormControl>
-                    </div>
+                    </div> */}
                     <div>
                         <FormControl>
                             <InputLabel shrink id="radius-select-label">Distance</InputLabel>

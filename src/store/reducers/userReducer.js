@@ -19,6 +19,8 @@ const initialState = {
 export default function UserReducer(state = initialState, action) {
     switch (action.type) {
         case 'SET_LOGGED_IN_USER':
+            console.log('reducer', action);
+            
             const minimalLoggedInUser = {
                 _id: action.user._id,
                 fullName: action.user.fullName,
