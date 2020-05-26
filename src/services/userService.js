@@ -13,7 +13,7 @@ export default {
 }
 
 async function login(credentials) {
-        // console.log('login in frontend')
+        console.log('login in frontend',credentials)
         const user = await HttpService.post('/auth/login', credentials)
         return _handleLogin(user)
         //For json-server

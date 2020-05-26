@@ -13,7 +13,7 @@ class MapContainer extends Component {
         position: 'fixed',
         width:'400px',
         height: '35%',
-        top:'400px',
+        top:'450px',
         right:'20px',
         border:'1px solid lightgrey'
     }

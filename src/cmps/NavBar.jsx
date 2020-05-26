@@ -20,7 +20,7 @@ import { connect } from 'react-redux'
 class NavBar extends Component {
 
     componentDidMount() {
-        
+
     }
 
     state = {
@@ -84,7 +84,7 @@ class NavBar extends Component {
         if (page === 'user') route = `/user/${this.props.loggedInUser._id}`;
         // if (page === 'login') route = '/login/'
         if (page === 'login') {
-            this.props.login();
+            route = '/login'
             this.forceCloseModals();
         };
         history.push(route);

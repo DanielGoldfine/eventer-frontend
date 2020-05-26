@@ -19,8 +19,7 @@ import { login } from './store/actions/userActions.js'
 class App extends React.Component {
 
     componentDidMount() {
-        if (!this.props.loggedInUser) {
-            // console.log(this.props.loggedInUser);
+        if (this.props.loggedInUser === {} || !this.props.loggedInUser) {
             this.props.login({ userName: "Guest", password: "1" })
         }
     }

@@ -15,7 +15,7 @@ export function signup(credentials,  loadingStatus) {
 
 
 export function login(credentials, loadingStatus) {
-    // if (credentials !== { userName: "Guest", password: "1" }) {
+    console.log('login action,',credentials)
         return async dispatch => {
             try {
                 toggleLoad(credentials, loadingStatus)
