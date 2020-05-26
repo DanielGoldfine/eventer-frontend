@@ -22,7 +22,7 @@
     @include for-wide-layout  {
         grid-template-columns:
             minmax(40px, 1fr)
-            minmax(auto, 1200px)
+            minmax(auto, 1500px)
             minmax(40px, 1fr);
     }
 
@@ -36,7 +36,7 @@
 
 .preview-grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 16px;
     margin-bottom: 25px;
 }

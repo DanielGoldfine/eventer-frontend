@@ -2,12 +2,11 @@ import React from 'react';
 import { Link } from "react-router-dom";
 
 export default function UserPreview(props) {
-    // console.log('user preview props', props)
 
     const {minimalUser} = props;
-    
     const inactiveClr = '#d3d3d3';
     const activeClr = '#ffbf00';
+
     return (
         <section className="user-preview-min flex align-items-center">
             <Link to={`/user/${minimalUser._id}`}>
@@ -34,7 +33,6 @@ export default function UserPreview(props) {
                     <h6>({minimalUser.rank.count})</h6>
                 </div>}
             </div>
-
         </section>
     )
 }

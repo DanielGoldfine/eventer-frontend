@@ -2,41 +2,34 @@ import React, { Component } from 'react'
 import SearchBar from './SearchBar'
 import UserPreview from './UserPreview'
 import { Notifications } from './Notifications'
-import { login } from '../store/actions/userActions'
 import history from '../history.js'
-import eventerWhite from '../assets/design/eventer-logo-white.png'
-import eventerGrey from '../assets/design/eventer-logo-grey.png'
-import eventerIcn from '../assets/design/eventer-logo-grey.png'
+import eventerLogo from '../assets/design/eventer-logo-new.png'
 import modalConnector from '../assets/helpers/modal-connector.png'
 
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+// import AddCircleIcon from '@material-ui/icons/AddCircle';
+import PersonIcon from '@material-ui/icons/Person';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import ViewListIcon from '@material-ui/icons/ViewList';
+// import ViewListIcon from '@material-ui/icons/ViewList';
 
 
 import { connect } from 'react-redux'
 
 class NavBar extends Component {
 
-    componentDidMount() {
-        
-    }
-
     state = {
         isNotificationsOpen: false,
         isUserMenuOpen: false,
-        navBgClass: 'inactive',
+        navState: 'bright',
         isHomePage: false
     }
 
 
     componentWillMount() {
         if (this.props.isHomePage) {
-            this.setState({ navBgClass: 'inactive' })
+            this.setState({ navState: 'bright' })
             this.setState({ isHomePage: this.props.isHomePage })
         } else {
-            this.setState({ navBgClass: 'active' })
+            this.setState({ navState: 'dark' })
             this.setState({ isHomePage: this.props.isHomePage })
         };
     }
@@ -45,11 +38,11 @@ class NavBar extends Component {
         if (prevState.isHomePage !== prevProps.isHomePage) {
             if (this.props.isHomePage) {
                 window.addEventListener('scroll', this.listenToScrollNav)
-                this.setState({ navBgClass: 'inactive' })
+                this.setState({ navState: 'bright' })
                 this.setState({ isHomePage: this.props.isHomePage })
             } else {
                 window.removeEventListener('scroll', this.listenToScrollNav)
-                this.setState({ navBgClass: 'active' })
+                this.setState({ navState: 'dark' })
                 this.setState({ isHomePage: this.props.isHomePage })
             };
         };
@@ -62,14 +55,18 @@ class NavBar extends Component {
     listenToScrollNav = () => {
         if (!this.props.isHomePage) return;
         const winScroll =
-            document.body.scrollTop || document.documentElement.scrollTop
-
+            document.body.scrollTop || document.documentElement.scrollTop;
         if (winScroll > 0) {
-            this.setState({ navBgClass: 'active' });
+            this.setState({ navState: 'dark' });
         } else {
-            this.setState({ navBgClass: 'inactive' });
+            this.setState({ navState: 'bright' });
 
         };
+        // if (wonScroll > 240) {
+
+        // } else {
+
+        // }
     };
 
 
@@ -153,25 +150,26 @@ class NavBar extends Component {
 
     render() {
 
-        const { isNotificationsOpen, isUserMenuOpen, navBgClass } = this.state;
+        const { isNotificationsOpen, isUserMenuOpen, navState } = this.state;
         const { loggedInUser } = this.props;
 
         return (
-            <React.Fragment>
+            <main className={navState}>
                 {isNotificationsOpen && <div ref={notifications => this.notifications = notifications}>
                     < Notifications />
                 </div>}
                 <nav className="nav-bar-container main-container flex space-between align-items-center">
                     <div className="flex space-between align-items-center">
                         <div className="flex align-items-center">
-                            <img onClick={() => { this.goToPage('home') }} className="main-logo" src={eventerGrey} alt="" />
+                            <img onClick={() => { this.goToPage('home') }} className="main-logo" src={eventerLogo} alt="" />
                             {!this.props.isHomePage && <SearchBar setTxtFilter={this.setTxtFilter} />}
                         </div>
                         <section className="nav-bar-btns flex align-center">
                             {loggedInUser && <UserPreview className minimalUser={loggedInUser} />}
-                            <AddCircleIcon onClick={() => { this.goToPage('edit') }} />
+                            {/* <AddCircleIcon onClick={() => { this.goToPage('edit') }} /> */}
+                            <button className="create-event  " onClick={() => { this.goToPage('edit') }}>Create Event</button>
                             {loggedInUser && <NotificationsIcon ref={notificationsOpen => this.notificationsOpen = notificationsOpen} onClick={this.toggleNotifications} />}
-                            <AccountCircleIcon ref={userMenuOpen => this.userMenuOpen = userMenuOpen} onClick={this.toggleUserMenu} />
+                            <PersonIcon className={isUserMenuOpen} ref={userMenuOpen => this.userMenuOpen = userMenuOpen} onClick={this.toggleUserMenu} />
                             {isUserMenuOpen && <div ref={userMenu => this.userMenu = userMenu} className="user-menu-modal flex column">
                                 <button onClick={() => { this.goToPage('user') }}>My Profile</button>
                                 <button onClick={() => { this.goToPage('login') }}>Login</button>
@@ -181,8 +179,8 @@ class NavBar extends Component {
                         </section>
                     </div>
                 </nav >
-                <div className={`nav-bg ${navBgClass}`}></div>
-            </React.Fragment>
+                <div className="nav-bg"></div>
+            </main>
         )
     }
 }
