@@ -1,38 +1,79 @@
 .event-preview {
-    width: 250px;
-    height: 400px;
-    border-radius: 7px;
+    position: relative;
+    width: 340px;
+    height: 450px;
+    border-radius: 10px;
+    border: 3px solid #e9e9e9;
     text-align: left;
     box-shadow: 0 1px 3px #00000038;
+    background-color: white;
     transition: 0.3s;
 
-    .event-img-container {
-        height: 140px;
-        margin-bottom: 10px;
-        cursor: pointer;
-        @include aspect-ratio(1,1)
+    p {
+        margin-inline-start: 20px;
+        padding-inline-end: 10px;
+        font-family: secondfontregular;
     }
 
-    .user-preview-min {
-        margin: 0 15px;
-        margin-bottom: 10px;
-        padding-bottom: 4px;
-        border-bottom: 1px solid $clrborderlight;
+    .event-img-container {
+        height: 200px;
+        margin-bottom: 20px;
+        cursor: pointer;
+        border-radius: 10px 10px 0px 0px;
+        @include aspect-ratio(1, 1);
+    }
+
+    .label {
+        cursor: pointer;
+        width: 151px;
+        height: 40px;
+        border-radius: 20px;
+        border: 2px solid $brandingBlue;
+        color: $brandingBlue;
+        font-family: secondfontbold;
+        font-size: rem(20px);
+        background-color: #ffffff;
+        position: absolute;
+        right: 19px;
+        top: 179px;
+        font-weight: bolder;
+        p {
+            margin: 0;
+        }
+    }
+
+    .capacity {
+        border: 2px solid $brandingPurple;
+        color: $brandingPurple;
+    }
+
+    .muted {
+        border: 2px solid $clrborderlight;
+        color: $clrborderlight;
     }
 
     .event-title {
-        font-family: decondfontregular;
-        font-size: rem(20px);
-        margin-top: 10px;
+        font-family: secondfontbold;
+        font-size: rem(25px);
         cursor: pointer;
-        margin-inline-start: 15px;
+        margin-bottom: 10px;
+    }
+    .address {
+        font-size: rem(20px);
+        letter-spacing: 0.2px;
     }
     .event-time {
-        font-family: decondfontlight;
-        font-size: rem(14px);
-        color: $brandingGrey;
-        margin-bottom: 10px;
-        margin-inline-start: 15px;
+        font-size: rem(25px);
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: -1px;
+        span {
+            font-size: rem(15px);
+            vertical-align: text-top;
+            text-transform: lowercase;
+            letter-spacing: 0px;
+            margin-inline-start: 2px;
+        }
     }
     .event-desc {
         color: rgb(139, 139, 139);
@@ -40,22 +81,23 @@
         line-height: 16px;
         width: 90%;
         margin-bottom: 10px;
-        margin-inline-start: 15px;
     }
+
+    .bottom-container {
+        border-top: 3px solid $clrborderlight;
+        padding-top: 20px;
+    }
+
     .event-preview-bottom {
-        margin: 0 15px;
+        margin: 0 10px 0 20px;
         margin-bottom: 10px;
         cursor: pointer;
     }
     .price {
+        font-family: secondfontbold;
         font-size: rem(25px);
-        font-family: decondfontlight;
-    }
-    .participants {
-        width: 100px;
     }
 }
-
 .event-preview:hover {
-    box-shadow: 0 2px 9px #00000080;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.568);
 }

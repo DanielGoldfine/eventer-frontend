@@ -6,31 +6,56 @@ import history from '../history.js'
 
 export default function EventPreview(props) {
 
-    const eventDesc = (props.event.description.length >= 100) ? props.event.description.slice(0, 100) + '...' : props.event.description
+    // const eventDesc = (props.event.description.length >= 100) ? props.event.description.slice(0, 100) + '...' : props.event.description
     const imgUrl = ((props.event.imgUrl.includes('http') ? props.event.imgUrl : require(`../assets/imgs/${props.event.category.replace(/\s+/g, '')}.jpg`)))
+    const timeArr = Moment(props.event.startAt * 1000).toString().split(' ')
+    let nth = 'th'
+    let labelClass = ''
+    let labelTxt = (props.event.capacity) ?
+        `GOING: ${props.event.members.length}/${props.event.capacity}` : `GOING: ${props.event.members.length}`
+
+    if (props.event.capacity) labelClass = 'capacity'
+    if (props.event.capacity === props.event.members.length) labelClass = 'muted'
+
+    switch (timeArr[2].split('')[timeArr[2].split('').length - 1]) {
+            case '1':
+                nth = 'st'
+                break;
+            case '2':
+                nth = 'nd'
+                break;
+            case '3':
+                nth = 'rd'
+                break;
+            default:
+                break;
+        }
+
+    if (timeArr[2] === '11' || timeArr[2] === '12' || timeArr[2] === '13') nth = 'th'
+
+    const dateDisp = `${timeArr[1]} ${timeArr[2]}`
+    const timeDisp = timeArr[4].slice(0, 5)
 
     return (
 
 
-        <section className="event-preview flex column space-between ">
+        <section className="event-preview flex column space-between">
             <div>
-                <p className="event-title" onClick={() => { history.push(`event/${props.event._id}`) }}>{props.event.title}</p>
-                <p className="event-time">{Moment(props.event.startAt * 1000).toString().split(' ').slice(0, 3).join(' ')}</p>
                 <div onClick={() => { history.push(`event/${props.event._id}`) }} className="event-img-container">
                     <img className="event-img" src={imgUrl} alt="" />
                 </div>
+                <div className={`label ${labelClass} flex align-center justify-center`}>
+                    <p>{labelTxt}</p>
+                </div>
+                <p className="event-time">{dateDisp}<span>{nth}</span> - {timeDisp}</p>
+                <p className="event-title" onClick={() => { history.push(`event/${props.event._id}`) }}>{props.event.title}</p>
 
-                <p className="event-desc">{eventDesc}</p>
+                {/* <p className="event-desc">{eventDesc}</p> */}
+                <p className="address">{props.event.location.address}</p>
             </div>
-            <div className="flex column">
-                <UserPreview ranking minimalUser={props.event.createdBy} />
-                <div onClick={() => { history.push(`event/${props.event._id}`) }} className="event-preview-bottom flex space-between">
-                    <div className="participants"> {((props.event.members.length !== 0) && (!props.event.capacity)) &&
-                        <p>{props.event.members.length} People are already in</p>}
-                        {((props.event.members.length !== 0) && (props.event.capacity)) &&
-                            <p>{props.event.members.length}/{props.event.capacity} People are already in</p>}
-                        {(props.event.members.length === 0) && <p>Be the first to subscribe</p>}
-                    </div>
+            <div className="flex column bottom-container">
+                <div onClick={() => { history.push(`event/${props.event._id}`) }} className="event-preview-bottom flex space-between align-center">
+                    <UserPreview ranking minimalUser={props.event.createdBy} />
                     <p className="price">{(props.event.price) ? `$${props.event.price}` : 'Free'}</p>
                 </div>
             </div>

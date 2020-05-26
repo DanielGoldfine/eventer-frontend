@@ -4,13 +4,11 @@ import { connect } from 'react-redux'
 import { loadEvents, setFilter } from '../store/actions/eventActions'
 import { setHomePage } from '../store/actions/appActions'
 
-import heroImg from '../assets/imgs/mainhero.jpg'
+import heroOverlay from '../assets/design/hero-overlay.png'
 import SearchBar from '../cmps/SearchBar'
 import { CategoryLinks } from '../cmps/CategoryLinks'
 import UpcomingEvents from '../cmps/UpcomingEvents'
-
-import eventerIcn from '../assets/design/eventer-logo-grey.png'
-
+import RotatingHero from '../cmps/RotatingHero'
 
 class HomePage extends Component {
 
@@ -54,10 +52,12 @@ class HomePage extends Component {
                         <h1>Enter a World of Events</h1>
                         <SearchBar />
                     </div>
-                    <img src={heroImg} alt="" />
+                    <img className="hero-overlay" src={heroOverlay} alt=""/>
+                    <RotatingHero />
                 </header>
                 <CategoryLinks chooseCategory={this.chooseCategory} />
                 {this.props.events && <UpcomingEvents events={this.props.events} />}
+                
             </div>
         )
     }

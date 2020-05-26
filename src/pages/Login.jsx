@@ -51,11 +51,13 @@ class Login extends Component {
       .then(res => {
         const { loggedInUser } = this.props;
         // console.log('loggedInUser', loggedInUser);
-        if (loggedInUser._id !== "5ecaec6c25278e479037e6cd") {
+        if (loggedInUser.userName !== 'Guest') {
           this.props.history.push(`/`)
         }
         else this.setState({ msg: 'User-Name / Password is incorrect' })
       })
+
+     // 5ecaec6c25278e479037e6cd
     // this.setState({ loginCred: { userName: '', password: '' } }, () => {
     // const { loggedInUser } = this.props;
     // console.log('loggedInUser', loggedInUser);
@@ -105,6 +107,7 @@ class Login extends Component {
   }
 
   render() {
+    console.log('hello')
     let signupSection = (
       <form onSubmit={this.doSignup}>
         <input
@@ -184,23 +187,23 @@ class Login extends Component {
           Log-in
         </h1>
         <h2>{this.state.msg}</h2>
-        {(loggedInUser && loggedInUser._id === "5ecaec6c25278e479037e6cd") && (
+        {(loggedInUser && loggedInUser.userName === "Guest") && (
           <div>
             <h2>Welcome: {loggedInUser.fullName} </h2>
           </div>
         )}
 
-        {(loggedInUser && loggedInUser._id !== "5ecaec6c25278e479037e6cd") &&
+        {(loggedInUser && loggedInUser.userName !== "Guest") &&
           <button onClick={() => { this.props.login({ userName: "Guest", password: "1" }) }}>Log-Out</button>}
 
-        {(loggedInUser && loggedInUser._id === "5ecaec6c25278e479037e6cd") && loginSection}
+        {(loggedInUser && loggedInUser.userName === "Guest") && loginSection}
 
-        {(loggedInUser && loggedInUser._id === "5ecaec6c25278e479037e6cd") &&
+        {(loggedInUser && loggedInUser.userName === "Guest") &&
           <button onClick={() => { this.props.login({ userName: "Guest", password: "1" }); this.props.history.push(`/`) }}>Continue as Guest</button>}
 
         {!this.state.showSignupSection &&
           (loggedInUser &&
-            loggedInUser._id === "5ecaec6c25278e479037e6cd") &&
+            loggedInUser.userName === "Guest") &&
           <button onClick={() => { this.setState({ showSignupSection: true }); }}>Signup</button>}
 
 
