@@ -6,6 +6,7 @@ import UserPreview from './UserPreview'
 
 
 export default function EventMembers(props) {
+   
     const { members, capacity, createdBy, price, _id, title } = props.event
     const eventFull = (members.length === capacity) ? true : false
     const userInEvent = members.findIndex(member => member._id === props.loggedInUserId)
@@ -16,6 +17,7 @@ export default function EventMembers(props) {
             {/* Adding a lot of users with the below button */}
             {/* <Button variant="contained" color="primary" onClick={() => props.onSubscribeEvent()}>{eventCostStr}</Button> */}
             {!eventFull && (userInEvent === -1) && props.loggedInUserId !== createdBy._id && <Button variant="contained" color="primary" onClick={() => props.onSubscribeEvent(props.loggedInUserId)}>{eventCostStr}</Button>}
+            {props.previewMode && <Button variant="contained" color="primary">{eventCostStr}</Button>}
             {userInEvent >= 0 && <Button variant="contained" color="primary" onClick={() => props.onUnsubscribeEvent(props.loggedInUserId)}>Leave event</Button>}
             {props.loggedInUserId === createdBy._id && <p>You can't join your own event!</p>}
             <section className="" >

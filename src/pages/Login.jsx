@@ -50,11 +50,17 @@ class Login extends Component {
       .then(res => {
         const { loggedInUser } = this.props;
         // console.log('loggedInUser', loggedInUser);
+<<<<<<< HEAD
         if (loggedInUser.userName !== "Guest") {
+=======
+        if (loggedInUser.userName !== 'Guest') {
+>>>>>>> or
           this.props.history.push(`/`)
         }
         else this.setState({ msg: 'User-Name / Password is incorrect' })
       })
+
+     // 5ecaec6c25278e479037e6cd
     // this.setState({ loginCred: { userName: '', password: '' } }, () => {
     // const { loggedInUser } = this.props;
     // console.log('loggedInUser', loggedInUser);
@@ -104,6 +110,7 @@ class Login extends Component {
   }
 
   render() {
+    console.log('hello')
     let signupSection = (
       <form onSubmit={this.doSignup}>
         <input

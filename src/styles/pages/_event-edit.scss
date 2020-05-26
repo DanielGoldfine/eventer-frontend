@@ -1,22 +1,72 @@
 .form-container {
-  .preview-switch {
-    display: inline;
+  margin-top: 65px;
+  .react-tabs__tab-list {
+    border-bottom: 1px solid $clrborderlight;
+    margin-bottom: 20px;
+  }
+  .react-tabs__tab--selected {
+    border-color: $clrborderlight;
+    color: $clr2 !important;
+  }
+
+  .react-tabs__tab {
+    color: $clrborderlight;
+  }
+  .event-details {
+    margin-top: 0;
   }
   .event-edit {
+    margin-top: 10px;
+    border: 1px solid #c2c2c2;
+    border-radius: 15px;
+    padding-bottom: 20px;
+    width: 700px;
+    padding-top: 20px;
+    margin: auto;
     label {
       font-size: 1rem;
     }
+    .event-desc {
+      margin-right: 100px;
+    }
 
+    .MuiFormControl-root {
+      width: 200px;
+      &.address {
+        width: 280px;
+      }
+      &.text-switch {
+        width: 110px;
+      }
+      &.text-switch-capacity {
+        width: 120px;
+      }
+    }
+    .MuiSelect-select.MuiSelect-select {
+      text-align: left;
+    }
     .textarea-input {
       margin-top: 15px;
     }
-    .price-input {
-      display: inline;
+
+    .MuiFormControlLabel-root.switch {
+      margin-top: 12px;
+    }
+
+    .upload-button {
+      margin-top: 30px;
+      padding-right: 10px;
     }
     .time-label {
+      margin-top: 20px;
+      margin-bottom: 15px;
+      text-align: left;
       color: #747474;
       .date-input {
-        margin-left: 10px;
+        font-size: 1rem;
+      }
+      .time-input {
+        font-size: 1rem;
       }
     }
     .img-container {
@@ -27,82 +77,63 @@
         border-radius: 15px;
       }
     }
+    .MuiSwitch-colorPrimary.Mui-checked {
+      color: $brandingPurple;
+    }
     .MuiFormGroup-root {
-      display: flex;
-      flex-direction: row;
-      width: 550px;
       height: 50px;
-      padding-left:75px;
       .MuiInputBase-input {
-        width: 100px;
+        width: 80px;
       }
       label + .MuiInput-formControl {
         margin-right: 10px;
       }
-      
     }
     .MuiButton-containedPrimary {
-      margin:10px
-    }
-
-    .img-upload-container {
-
-      .img-preview {
-        margin: 10px;
-        width: 200px;
-      }
-    }
-    
-  }
-  [type="file"] {
-    margin-top: 10px;
-    height: 0;
-    overflow: hidden;
-    width: 0;
-  }
-
-  [type="file"] + label {
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    cursor: pointer;
-    display: inline-block;
-    font-family: "Poppins", sans-serif;
-    font-size: inherit;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    outline: none;
-    padding: 0.5rem 40px;
-    position: relative;
-    transition: all 0.3s;
-    vertical-align: middle;
-
-    &.upload-btn {
-      background-color: #3f51b5;
-      border-radius: 50px;
-      overflow: hidden;
-
-      &::before {
-        color: #fff;
-        margin-right: 10px;
-        // content: "\f382";
-        content: "\2B06";
-        // font-family: "Font Awesome 5 Pro";
-        font-size: 100%;
-        height: 100%;
-        right: 130%;
-        line-height: 2.6;
-        position: absolute;
-        top: 0px;
-        transition: all 0.3s;
-      }
-
+      background-color: $brandingBlue;
+      margin: 6px 6px 6px 0;
       &:hover {
-        background-color: darken(#3f51b5, 10%);
+        opacity: 0.7;
+      }
+    }
+  }
+  .images-container {
+    width: 700px;
+    margin: auto;
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    .img-preview {
+      width: 158px;
+      margin-bottom: 5px;
+      border-radius: 15px;
+    }
+  }
+}
 
-        &::before {
-          right: 75%;
+@media (max-width: 760px) {
+  .form-container {
+    .event-edit {
+      flex-direction: column;
+      width: 320px;
+      padding: 20px;
+      .MuiFormControl-root {
+        width: 250px !important;
+        &.text-switch {
+          width: 90px !important;
         }
+        &.text-switch-capacity {
+          width: 90px !important;
+        }
+      }
+    }
+    .images-container {
+      width: 320px;
+      margin: auto;
+      margin-top: 10px;
+      .img-preview {
+        width: 300px;
+        margin-bottom: 5px;
       }
     }
   }

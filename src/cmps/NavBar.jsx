@@ -16,6 +16,13 @@ import { connect } from 'react-redux'
 
 class NavBar extends Component {
 
+<<<<<<< HEAD
+=======
+    componentDidMount() {
+
+    }
+
+>>>>>>> or
     state = {
         isNotificationsOpen: false,
         isUserMenuOpen: false,
@@ -81,7 +88,11 @@ class NavBar extends Component {
         if (page === 'user') route = `/user/${this.props.loggedInUser._id}`;
         // if (page === 'login') route = '/login/'
         if (page === 'login') {
+<<<<<<< HEAD
             route = `/login`;
+=======
+            route = '/login'
+>>>>>>> or
             this.forceCloseModals();
         };
         history.push(route);

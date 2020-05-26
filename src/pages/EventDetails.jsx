@@ -1,6 +1,6 @@
 import React from 'react';
-import { loadEvent, subscribeEvent, unsubscribeEvent, setFilter,updateEvent} from '../store/actions/eventActions.js'
-import {login} from '../store/actions/userActions.js'
+import { loadEvent, subscribeEvent, unsubscribeEvent, setFilter, updateEvent } from '../store/actions/eventActions.js'
+import { login } from '../store/actions/userActions.js'
 import { connect } from "react-redux";
 import Moment from 'moment';
 import EventTags from '../cmps/EventTags'
@@ -10,6 +10,9 @@ import MapContainer from '../cmps/MapContainer';
 import UserPreview from '../cmps/UserPreview'
 import EventPosts from '../cmps/EventPosts'
 import EventImagesGallery from '../cmps/EventImagesGallery'
+import Button from '@material-ui/core/Button';
+import { compose } from 'redux';
+
 
 
 class EventDetails extends React.Component {
@@ -24,15 +27,17 @@ class EventDetails extends React.Component {
     loggedUser: '',
     title: '',
     description: '',
+    isActive: true,
     images: []
   }
 
 
   componentDidMount() {
-    // this.props.login()
     if (this.props.match) {  // "preview" mode doesn't use URL and params...
       const { id } = this.props.match.params;
-      this.props.loadEvent(id);
+      this.props.loadEvent(id)
+        .then(event => { console.log(event)})
+     
     }
   }
 
@@ -68,12 +73,18 @@ class EventDetails extends React.Component {
     refInput.current.contentEditable = false
   }
 
+  onPublishEvent = () => {
+    this.props.updateEvent(this.props.event, true, 'isActive')
+  }
+
   toggleEdit = (refInput) => {
     refInput.current.contentEditable = true
     refInput.current.focus()
   }
 
+
   render() {
+
 
     if (this.props.previewEvent) { // handle timestamp for preview mode
       const startAtString = `${this.props.previewEvent.startDate} ${this.props.previewEvent.startTime}`
@@ -85,12 +96,11 @@ class EventDetails extends React.Component {
     if (!event && !this.props.previewEvent) return 'Loading...';
 
     const activeProps = this.props.previewEvent ? this.props.previewEvent : event
-    const { _id, createdAt, updatedAt, title, category, imgUrl, description, startAt, location, tags, images } = activeProps
+    const { _id, isActive, createdAt, updatedAt, title, category, imgUrl, description, startAt, location, tags, images } = activeProps
 
     const dateStr = Moment(startAt * 1000).toString()
     const createdDateStr = createdAt ? Moment(createdAt * 1000).toString() : Moment(undefined).toString()
     const updatedAtStr = updatedAt ? Moment(updatedAt * 1000).toString() : Moment(undefined).toString()
-
     return <div className="event-details flex">
 
       <section className="event-info flex column">
@@ -100,6 +110,12 @@ class EventDetails extends React.Component {
           <span> > </span>
           <button className="btn-link" onClick={() => { this.onSetCategory(category) }}>{category}</button>
         </div>
+        {event && !isActive && <div className="flex align-center justify-center">
+          <img className="icon-inactive" src={require('../assets/imgs/exclamation-mark.png')} title="Click to edit event title" alt=""></img>
+          <h3 className="inactive-notification">Event isn't published yet</h3>
+          <Button  variant="contained" color="primary" onClick={() => this.onPublishEvent()}>Publish</Button>
+        </div>
+        }
         <div className="flex justify-center align-center">
           <h2 contentEditable={false}
             suppressContentEditableWarning
@@ -109,7 +125,7 @@ class EventDetails extends React.Component {
             onBlur={() => this.onUpdateContent('title', this.titleInput)}
           >{title}
           </h2>
-          {!this.props.previewEvent && <img onClick={() => this.toggleEdit(this.titleInput)} className="icon-edit" src={require('../assets/imgs/pencil.png')} title="Click to edit event title" alt=""></img>}
+          {!this.props.previewEvent && this.props.minimalLoggedInUser._id === event.createdBy._id && <img onClick={() => this.toggleEdit(this.titleInput)} className="icon-edit" src={require('../assets/imgs/pencil.png')} title="Click to edit event title" alt=""></img>}
         </div>
         <UserPreview ranking={true} minimalUser={activeProps.createdBy} />
         <div className="flex column align-start">
@@ -143,13 +159,14 @@ class EventDetails extends React.Component {
             onBlur={() => this.onUpdateContent('description', this.descriptionInput)}
           >{description}
           </p>
-          {!this.props.previewEvent && <img onClick={() => this.toggleEdit(this.descriptionInput)} className="icon-edit" src={require('../assets/imgs/pencil.png')} title="Click to edit event description" alt=""></img>}
+          {!this.props.previewEvent && this.props.minimalLoggedInUser._id === event.createdBy._id && <img onClick={() => this.toggleEdit(this.descriptionInput)} className="icon-edit" src={require('../assets/imgs/pencil.png')} title="Click to edit event description" alt=""></img>}
         </div>
         {tags && <EventTags tags={tags} />}
-        {event && !this.props.previewEvent && <NavLink exact to={`/event/edit/${_id}`}>Advanced Edit </NavLink>}
+        {event && !this.props.previewEvent && this.props.minimalLoggedInUser._id === event.createdBy._id && <NavLink className="user-preview-name-link" exact to={`/event/edit/${_id}`}>Advanced Edit </NavLink>}
       </section>
       <section>
-        {event && !this.props.previewEvent && <EventMembers event={event} onSubscribeEvent={this.onSubscribeEvent} onUnsubscribeEvent={this.onUnsubscribeEvent} loggedInUserId={this.props.minimalLoggedInUser._id} />}
+        {event && <EventMembers event={event} onSubscribeEvent={this.onSubscribeEvent} onUnsubscribeEvent={this.onUnsubscribeEvent} loggedInUserId={this.props.minimalLoggedInUser._id} />}
+        {this.props.previewEvent && <EventMembers previewMode={true} event={this.props.previewEvent} loggedInUserId={this.props.minimalLoggedInUser._id} />}
       </section>
       {event && !this.props.previewEvent && <EventPosts posts={this.props.event.posts} />}
       <MapContainer loc={location} name={location.address} />
