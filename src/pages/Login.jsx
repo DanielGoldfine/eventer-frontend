@@ -50,11 +50,7 @@ class Login extends Component {
       .then(res => {
         const { loggedInUser } = this.props;
         // console.log('loggedInUser', loggedInUser);
-<<<<<<< HEAD
-        if (loggedInUser.userName !== "Guest") {
-=======
         if (loggedInUser.userName !== 'Guest') {
->>>>>>> or
           this.props.history.push(`/`)
         }
         else this.setState({ msg: 'User-Name / Password is incorrect' })
