@@ -5,6 +5,7 @@ import { removeEvent, loadEvents, setFilter } from '../store/actions/eventAction
 
 import EventList from '../cmps/EventList'
 import FilterBar from '../cmps/FilterBar'
+import { CategoryLinks } from '../cmps/CategoryLinks';
 
 
 class EventIndex extends Component {
@@ -45,6 +46,20 @@ class EventIndex extends Component {
         this.props.setFilter(filterBy)
             .then(res => this.props.loadEvents(filterBy))
     }
+    
+    chooseCategory = (chosenCategory) => {
+        let gFilter = this.props.filterBy;
+
+        // console.log(this.props.filterBy);
+        
+        gFilter.sortDate = false;
+        gFilter.limit = null;
+        gFilter.category = chosenCategory;
+
+        this.changeFilter(gFilter)
+        // this.props.setFilter(gFilter)
+            // .then(res => this.props.history.push(`/event/`));
+    };
 
 
     render() {
@@ -53,6 +68,7 @@ class EventIndex extends Component {
 
         return (
             <div className="event-index main-container">
+                <CategoryLinks chooseCategory={this.chooseCategory} currCtg={this.props.filterBy.category} />
                 <FilterBar filterBarClass={filterBarClass} changeFilter={this.changeFilter} gFilter={this.props.filterBy} handleChange={this.handleChange} />
                 {this.props.events && <EventList onDelete={this.onDelete} events={this.props.events} onSubscribe={this.onSubscribe} />}
             </div>

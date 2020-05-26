@@ -37,6 +37,9 @@ class HomePage extends Component {
 
     chooseCategory = (chosenCategory) => {
         let gFilter = this.props.filterBy;
+
+        // console.log(this.props.filterBy);
+        
         gFilter.sortDate = false;
         gFilter.limit = null;
         gFilter.category = chosenCategory;
@@ -56,7 +59,7 @@ class HomePage extends Component {
                     </div>
                     <img src={heroImg} alt="" />
                 </header>
-                <CategoryLinks chooseCategory={this.chooseCategory} />
+                <CategoryLinks homePage chooseCategory={this.chooseCategory} />
                 {this.props.events && <UpcomingEvents events={this.props.events} />}
             </div>
         )

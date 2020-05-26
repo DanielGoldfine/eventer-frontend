@@ -121,7 +121,6 @@ export function unsubscribeEvent(event, userId) {
 
 
 export function setFilter(filter) {
-    
     return (dispatch) => {
         dispatch({ type: 'SET_FILTER', filter });
         return Promise.resolve();
