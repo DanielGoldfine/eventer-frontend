@@ -280,7 +280,7 @@ class EventEdit extends React.Component {
                     <Tabs>
                         <TabList>
                             <Tab onClick={() => this.onTabSelect('form')}> Setup your event</Tab>
-                            <Tab onClick={() => this.onTabSelect('preview')}>Check it out</Tab>
+                            <Tab onClick={() => this.onTabSelect('preview')}>See event's draft</Tab>
                         </TabList>
                         <TabPanel />
                         <TabPanel />

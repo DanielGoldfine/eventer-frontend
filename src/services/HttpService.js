@@ -10,7 +10,7 @@ import Axios from 'axios';
 
 //For mongoDB
 const BASE_URL = process.env.NODE_ENV === 'production'
-    ? '/api'
+    ? '/api/'
     : '//localhost:3030/api'
 
 
