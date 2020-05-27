@@ -1,23 +1,15 @@
-import React from 'react'
-import AliceCarousel from 'react-alice-carousel'
-import 'react-alice-carousel/lib/alice-carousel.css'
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom';
 
 import eventService from '../services/eventService'
 import EventPreview from "./EventPreview";
 
-import { connect } from 'react-redux'
-import { loadEvents, setFilter } from '../store/actions/eventActions'
+import InfiniteCarousel from 'react-leaf-carousel';
 
-class UpcomingEvents extends React.Component {
+export default class UpcomingEvents extends Component {
+
     state = {
-        currentIndex: 0,
-        itemsInSlide: 1,
-        responsive: {
-            0: { items: 1 },
-            640: { items: 3 },
-            1100: { items: 4 }
-        },
-        galleryItems: this.galleryItems()
+        galleryItems: []
     }
 
     componentDidMount() {
@@ -25,78 +17,65 @@ class UpcomingEvents extends React.Component {
     }
 
     setGallery = () => {
-
+        let galleryItems = [];
         eventService.query()
             .then(events => {
-                const galleryItems = events.map(event => <EventPreview key={event._id} event={event} />)
-                this.setState({ galleryItems })
+                events.forEach(event => galleryItems.push(event))
+                this.setState({ galleryItems }, () => {
+                })
             })
     }
 
-    galleryItems() {
-        return Array(15)
-            .fill()
-            .map((item, i) => <h2 className="item">{i + 1}</h2>)
-    }
-
-    slidePrevPage = () => {
-        const currentIndex = this.state.currentIndex - this.state.itemsInSlide
-        this.setState({ currentIndex })
-    }
-
-    slideNextPage = () => {
-        const {
-            itemsInSlide,
-            galleryItems: { length },
-        } = this.state
-        let currentIndex = this.state.currentIndex + itemsInSlide
-        if (currentIndex > length) currentIndex = length
-
-        this.setState({ currentIndex })
-    }
-
-    handleOnSlideChange = (event) => {
-        const { itemsInSlide, item } = event
-        this.setState({ itemsInSlide, currentIndex: item })
-    }
-
     render() {
-        const { currentIndex, galleryItems, responsive } = this.state
-
         return (
-            <React.Fragment>
-                <div className="upcoming-title-wrapper flex align-items-center margin0auto">
-                    <h2>Upcoming Events</h2>
-                </div>
-                <div className="upcoming-events-container flex justify-center align-items-center margin0auto">
-                    <button className="upcoming-scroll-btn prev" onClick={this.slidePrevPage}>&#xab;</button>
-                    <AliceCarousel
-                        items={galleryItems}
-                        slideToIndex={currentIndex}
-                        responsive={responsive}
-                        onInitialized={this.handleOnSlideChange}
-                        onSlideChanged={this.handleOnSlideChange}
-                        onResized={this.handleOnSlideChange}
-                    />
-                    <button className="upcoming-scroll-btn next" onClick={this.slideNextPage}>&#xbb;</button>
-                </div>
-            </React.Fragment>
+            <main className="upcoming-container">
+                {this.state.galleryItems.length > 0 && <InfiniteCarousel
+                    breakpoints={[
+                        {
+                            breakpoint: 800,
+                            settings: {
+                                slidesToShow: 1,
+                                slidesToScroll: 1,
+                            },
+                        },
+                        {
+                            breakpoint: 1600,
+                            settings: {
+                                slidesToShow: 3,
+                                slidesToScroll: 3,
+                            },
+                        },
+                    ]}
+                    swipe={true}
+                    dots={true}
+                    showSides={false}
+                    // sidesOpacity={1}
+                    sideSize={.1}
+                    slidesToScroll={4}
+                    slidesToShow={4}
+                    scrollOnDevice={true}
+                    responsive={true}
+                    slidesSpacing={10}
+                >
+        
+                        <EventPreview event={this.state.galleryItems[0]} />
+                        <EventPreview event={this.state.galleryItems[1]} />
+                        {/* <EventPreview event={this.state.galleryItems[2]} />
+                        <EventPreview event={this.state.galleryItems[3]} />
+                        <EventPreview event={this.state.galleryItems[4]} />
+                        <EventPreview event={this.state.galleryItems[5]} />
+                        <EventPreview event={this.state.galleryItems[6]} />
+                        <EventPreview event={this.state.galleryItems[7]} />
+                        <EventPreview event={this.state.galleryItems[8]} />
+                        <EventPreview event={this.state.galleryItems[9]} />
+                        <EventPreview event={this.state.galleryItems[10]} />
+                        <EventPreview event={this.state.galleryItems[11]} />
+                        <EventPreview event={this.state.galleryItems[12]} />
+                        <EventPreview event={this.state.galleryItems[13]} />
+                        <EventPreview event={this.state.galleryItems[14]} /> */}
+
+                </InfiniteCarousel>}
+            </main>
         )
     }
 }
-
-
-const mapStateToProps = (state) => {
-    return {
-        events: state.eventsStore.events,
-        filterBy: state.eventsStore.filterBy
-    };
-};
-
-const mapDispatchToProps = {
-    loadEvents,
-    setFilter
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(UpcomingEvents);
-

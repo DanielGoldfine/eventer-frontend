@@ -45,7 +45,7 @@ export class ReviewForm extends Component {
                 <div className="user-preview-container">
                     <UserPreview ranking={true} minimalUser={this.props.minimalUser} />
                 </div>
-                <textarea style={{ resize: "none" }} placeholder="Don't be shai" onChange={this.handleChange} value={this.state.txt}></textarea>
+                <textarea style={{ resize: "none" }} placeholder="Say something..." onChange={this.handleChange} value={this.state.txt}></textarea>
                 <section className="rate-post flex space-between align-items-center">
                     <div className="rate-icns flex justify-center align-items-center">
                         <svg className="star-btn" viewBox="0 0 576 512">

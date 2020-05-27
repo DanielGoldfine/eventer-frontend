@@ -25,7 +25,20 @@ class Login extends Component {
   };
 
   componentDidMount() {
-    this.setState({ msg: `Hello, welcome ${this.props.loggedInUser.fullName}` })
+    if (window.cloudinary) {
+
+      let widget = window.cloudinary.createUploadWidget({
+        cloudName: 'dsqh7qhpg',
+        uploadPreset: 'lh8fyiqe',
+        // cropping: true,
+        // croppingCoordinatesMode: 'custom',
+        // gravity: 'custom',
+        croppingAspectRatio: 1,
+        maxFiles: 1
+      }, (error, result) => { this.checkUploadResult(result) })
+      
+      this.setState({ msg: `Hello, welcome ${this.props.loggedInUser.fullName  }` , widget })
+    }
   }
 
   myRef = null;
@@ -67,7 +80,7 @@ class Login extends Component {
         else this.setState({ msg: 'Incorrect User-Name / Password' })
       })
 
-     // 5ecaec6c25278e479037e6cd
+    // 5ecaec6c25278e479037e6cd
     // this.setState({ loginCred: { userName: '', password: '' } }, () => {
     // const { loggedInUser } = this.props;
     // console.log('loggedInUser', loggedInUser);
@@ -89,7 +102,7 @@ class Login extends Component {
     const userCreds = { userName, password };
     this.props.signup(signupCreds);
     console.log('Signup befor login', userCreds);
-    
+
     this.props.login(userCreds);
     this.setState({ signupCred: { userName: '', password: '', fullName: '' } }, () => {
       this.props.history.push(`/`);
@@ -143,7 +156,7 @@ class Login extends Component {
 
           <TextField
             id="userNameSignup"
-            label="User Name or Email"
+            label="Email"
             defaultValue="Default Value"
             helperText="*Required"
             variant="outlined"
@@ -202,8 +215,7 @@ class Login extends Component {
             For better experience, you can now add a photo from any device for your profile
             </p>
 
-          {/* <Button variant="contained" color="primary" onClick={(ev) => { this.showWidget(ev, widget); }}>Upload Profile image</Button> */}
-          <Button onClick={(ev) => { this.showWidget(ev, widget); }}
+          <Button onClick={(ev) => { this.showWidget(ev, this.state.widget); }}
             variant="contained"
             color="default"
             className={classes.button}
@@ -211,9 +223,9 @@ class Login extends Component {
           >Upload Profile image
           </Button>
 
-          {this.state.imgUrl && <img className="profile-img square-ratio" alt="" src={this.state.imgUrl} />}
+          {this.state.imgUrl && (<div><img className="profile-img square-ratio" alt="" src={this.state.imgUrl} /> <h1>{this.state.signupCred.fullName}</h1></div>)}
 
-          <Button variant="contained" color="primary" onClick={this.doSignup}>Signup</Button>
+          <Button variant="contained" color="primary" onClick={this.doSignup}>Sign-up</Button>
 
           <button hidden>Signup</button>
 
@@ -223,7 +235,7 @@ class Login extends Component {
           color="default"
           onClick={() => { this.props.login({ userName: "Guest", password: "1" }); this.props.history.push(`/`) }}>
           Continue as Guest</Button>
-        
+
 
         <Button variant="contained"
           color="primary"
@@ -242,7 +254,7 @@ class Login extends Component {
 
           <TextField
             id="userName"
-            label="User Name or Email"
+            label="Email"
             defaultValue="Default Value"
             helperText="*Required"
             variant="outlined"
@@ -306,27 +318,24 @@ class Login extends Component {
 
     const { loggedInUser } = this.props;
 
-    let widget = window.cloudinary.createUploadWidget({
-      cloudName: 'dsqh7qhpg',
-      uploadPreset: 'lh8fyiqe',
-      // cropping: true,
-      // croppingCoordinatesMode: 'custom',
-      // gravity: 'custom',
-      croppingAspectRatio: 1,
-      maxFiles: 1
-    }, (error, result) => { this.checkUploadResult(result) })
-
 
     return (
-      <div>
+      <div className="login-container">
         <h2>{this.state.msg}</h2>
         <div className="loginBox flex column">
 
           {(loggedInUser && loggedInUser.userName !== "Guest") &&
-            <Button variant="contained"
-              color="primary"
-              onClick={() => { this.props.login({ userName: "Guest", password: "1" }) }}>
-              Log-Out</Button>}
+            <div>
+              
+            {this.props.loggedInUser.imgUrl && (<div><img className="profile-img square-ratio" alt="" src={this.props.loggedInUser.imgUrl} />
+              <h1>{this.props.loggedInUser.fullName}</h1></div>)}
+
+              <Button variant="contained"
+                color="primary"
+                onClick={() => { this.props.login({ userName: "Guest", password: "1" }) }}>
+                Log-Out</Button>
+
+            </div>}
 
           {(loggedInUser && loggedInUser.userName === "Guest") && !this.state.showSignupSection && loginSection}
 

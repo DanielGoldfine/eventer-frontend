@@ -1,13 +1,54 @@
-.upcoming-title-wrapper {
-    max-width: 1000px;
-    margin-bottom: 10px;
-    
-}
-
-.upcoming-events-container {
-    
-    .alice-carousel__next-btn, .alice-carousel__prev-btn {
-        display: none;
+.upcoming-container {
+    .InfiniteCarousel {
+        width: 1500px !important;
+        margin: 0 auto !important;
     }
-    max-width: 1195px;
+    .InfiniteCarouselFrame {
+        width: 100%;
+        margin: 0 auto;
+        margin-top: -30px;
+    }
+    .InfiniteCarouselSlide {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .InfiniteCarouselArrowNext {
+        right: -25px;
+    }
+
+    .InfiniteCarouselArrowPrev {
+        left: -25px;
+    }
+
+    .InfiniteCarouselArrowIcon {
+        border: solid $brandingBlue !important;
+        border-width: 0 5px 5px 0 !important;
+    }
+
+    .InfiniteCarouselDots {
+        margin-top: 40px;
+        position: relative;
+        > * {
+            outline: none;
+        }
+        .InfiniteCarouselDotActiveIcon {
+            background-color: $brandingBlue;
+        }
+    }
+    @media screen and (max-width: 1600px) {
+        .InfiniteCarousel {
+            width: 78% !important;
+        }
+
+    }
+    @media screen and (max-width: 800px) {
+        .InfiniteCarousel {
+            width: 78% !important;
+        }
+        .InfiniteCarouselDot {
+            margin: 0 0 !important;
+        }
+    }
 }

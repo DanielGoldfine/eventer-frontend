@@ -1,18 +1,46 @@
 .category-links {
-    box-shadow: 0 1px 3px #0000007d;
-    height: 45px;
+    background-color: white;
+    z-index: 3;
+    height: 60px;
+    width: 100%;
     margin-bottom: 30px;
-    > * {
-        background-color: rgba(255, 255, 255, 0);
-        border: none;
-        margin: 0 10px;
-        color: $brandingGrey;
-        font-weight: bolder;
-        font-size: rem(20px);
-        cursor: pointer;
-        transition: .2s;
+    .categories {
+        width: 65%;
+        height: 100%;
+        > * {
+            background-color: rgba(255, 255, 255, 0);
+            border: none;
+            color: $brandingGrey;
+            font-weight: bolder;
+            font-size: rem(20px);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            color: $brandingBlue;
+        }
+        button:focus {
+            outline: none !important ;
+            color: $brandingBlue;
+        }
+        & > .active {
+            box-shadow: inset 0 -5px $brandingBlue;
+        }
     }
-    button:hover { 
-        color: $brandingBlue;
+    @media screen and (max-width: 1065px) {
+        .categories {
+            width: 80%;
+            >*{
+                font-size: 2vw;
+            }
+        }
+    }
+    @media screen and (max-width: 750px) {
+        .categories {
+            width: 98%;
+            >*{
+                font-size: 3vw;
+            }
+        }
     }
 }

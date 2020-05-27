@@ -1,22 +1,43 @@
+
+
+
 .user-details-container {
+
+    margin-top: 120px;
+    // margin-left: 50px;
+    // margin-right: 50px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 40px;
+    // grid-gap: 50px;
+
+    // width: 400px;
+
+
     .user-desc {
-        margin-bottom: 15px;
+        width: 100%;
+        height: 606px;
+        
+
+        // margin-bottom: 15px;
     }
-    .follow-btn {
-        margin-bottom: 15px;
-    }
+    // .follow-btn {
+    //     margin-bottom: 15px;
+    // }
     .review-form {
         > * {
             width: 100%;
         }
-        width: 250px;
-        border: 1px solid $clrborder;
+        width: 100%;
+        // border: 1px solid $clrborder;
         padding: 3px 10px;
         margin-bottom: 10px;
+
         .user-preview-container {
             padding-inline-start: 5%;
             height: 50px;
-            border-bottom: 1px solid $clrborderBottom;
+            border-bottom: 1px solid  #e7e7e7;
             margin-bottom: 5px;
         }
         textarea {
@@ -31,7 +52,70 @@
             }
         }
     }
+
+    .right-side {
+        align-self: start;
+        // position: fixed;
+        // top:200px;
+        // right:100px;
+
+        width: 520px;
+
+        .title {
+            border-bottom: 1px solid  #e7e7e7;
+            padding-bottom: 10px;
+        }
+
+        &>* {
+            margin-bottom: 20px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.35);
+            border-radius: 10px;
+            padding: 20px;
+            background-color: white;
+            z-index: 9;
+            // border:5px solid red;
+        }
+    }
+    
+    .left-side {
+        grid-area: 1 ;
+        justify-self: end;
+        
+        width: 400px;
+        
+        &>* {
+            margin-bottom: 20px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.35);
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #fff;
+            z-index: 9;
+
+            // border:5px solid red;
+            
+        }
+    }
+    .follow-btn {
+            width: 241px;
+            height: 55px;
+            border-radius: 28px;
+            background-color: #16d877;
+
+            display: block !important;
+    }
+}    
+img.bg-img {
+    position: absolute ;
+    top:0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0.9;
+    z-index: -1;
 }
+    
+
+
 .rate-icns {
     > * {
         margin-inline-end: 3px;
