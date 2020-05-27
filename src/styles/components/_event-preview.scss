@@ -1,4 +1,9 @@
 .event-preview {
+
+    .event-link {
+        cursor: pointer;
+    }
+    
     position: relative;
     width: 340px;
     height: 450px;
@@ -8,6 +13,7 @@
     box-shadow: 0 1px 3px #00000038;
     background-color: white;
     transition: 0.3s;
+    margin-top: 70px;
 
     p {
         margin-inline-start: 20px;
@@ -18,20 +24,21 @@
     .event-img-container {
         height: 200px;
         margin-bottom: 20px;
-        cursor: pointer;
         border-radius: 10px 10px 0px 0px;
+        img {
+            position: absolute;
+        }
         @include aspect-ratio(1, 1);
     }
 
     .label {
-        cursor: pointer;
-        width: 151px;
+        width: 155px;
         height: 40px;
         border-radius: 20px;
         border: 2px solid $brandingBlue;
         color: $brandingBlue;
         font-family: secondfontbold;
-        font-size: rem(20px);
+        font-size: rem(18px);
         background-color: #ffffff;
         position: absolute;
         right: 19px;
@@ -55,7 +62,6 @@
     .event-title {
         font-family: secondfontbold;
         font-size: rem(25px);
-        cursor: pointer;
         margin-bottom: 10px;
     }
     .address {
@@ -91,11 +97,11 @@
     .event-preview-bottom {
         margin: 0 10px 0 20px;
         margin-bottom: 10px;
-        cursor: pointer;
     }
     .price {
         font-family: secondfontbold;
         font-size: rem(25px);
+        cursor: pointer;
     }
 }
 .event-preview:hover {

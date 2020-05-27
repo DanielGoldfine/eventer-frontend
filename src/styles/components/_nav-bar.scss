@@ -6,11 +6,18 @@
     top: 0;
     left: 0;
 
-    .main-logo {
+    .main-logo,
+    .main-icn {
         width: 165px;
         cursor: pointer;
         margin-inline-end: 40px;
-        transition: .3s;
+        transition: 0.3s;
+    }
+
+    .main-icn {
+        display: none;
+        height: 40px;
+        width: auto;
     }
 
     .seach-bar-container {
@@ -21,6 +28,7 @@
         .search-input {
             background-color: $brandingdarkgrey;
             color: white;
+            font-size: rem(14px);
         }
         .search-icn {
             border-left: 1px solid rgb(17, 17, 17);
@@ -33,6 +41,9 @@
 
     .nav-bar-btns {
         position: relative;
+        .list-icn {
+            display: none;
+        }
         svg {
             font-size: 28px;
         }
@@ -58,6 +69,7 @@
             font-family: secondfontbold;
             font-size: rem(20px);
             transition: 0.2s;
+            outline: none;
         }
         .create-event:hover {
             background-color: $brandingPurple;
@@ -78,6 +90,64 @@
         }
         padding-inline-end: 20px;
         border-right: 1px solid $brandingGrey;
+    }
+
+    @media screen and (max-width: 1200px) {
+        .user-preview-min {
+            .user-preview-name-link {
+                display: none;
+            }
+        }
+    }
+    @media screen and (max-width: 1070px) {
+        .main-logo {
+            display: none;
+        }
+        .main-icn {
+            display: block;
+        }
+        .nav-bar-btns {
+            .list-icn {
+                display: block;
+            }
+            svg {
+                font-size: 40px;
+            }
+            .create-event,
+            .notifications-icn,
+            .user-icn {
+                display: none;
+            }
+        }
+        .seach-bar-container {
+            width: 40vw;
+        }
+    }
+    @media screen and (max-width: 550px) {
+        .search-logo {
+            .seach-bar-container {
+                width: 90%;
+                .search-input {
+                    background-color: $brandingdarkgrey;
+                    color: white;
+                    font-size: rem(14px);
+                }
+                .search-icn {
+                    border-left: 1px solid rgb(17, 17, 17);
+                }
+            }
+        }
+        .main-icn {
+            margin-inline-end: 10px;
+        }
+        .user-preview-min {
+            padding-inline-end: 10px;
+        }
+        .nav-bar-btns {
+            >* {
+                margin-inline-start: 10px;
+            }
+        }
     }
 }
 
@@ -128,17 +198,20 @@
     position: fixed;
     top: -60px;
     transition: top 0.4s;
+    @media screen and (max-width: 550px) {
+        top: 0px;
+    }
 }
 
 .dark {
     .nav-bg {
-        top: 0;
-        transition: 0.3s;  
+        top: 0px;
+        transition: 0.3s;
     }
 }
 
 .bright {
-    .main-logo {
+    .main-logo, .main-icn {
         filter: brightness(0) invert(1);
     }
     .nav-bar-btns {
