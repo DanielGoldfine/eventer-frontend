@@ -45,7 +45,7 @@ class SearchBar extends Component {
 
         return (
             <section className="seach-bar-container flex align-items-center space-between">
-                <input className="search-input" onChange={this.handleChange} type="text" name="txt" placeholder="What is on your mind?" value={searchTxt} />
+                <input className="search-input" onChange={this.handleChange} type="text" name="txt" placeholder="What are you up to?" value={searchTxt} />
                 <SearchIcon onClick={this.submitSearch} className="search-icn" />
             </section>
         )

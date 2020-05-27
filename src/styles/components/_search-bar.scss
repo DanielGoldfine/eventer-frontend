@@ -4,8 +4,9 @@
     width: 450px;
     height: 50px;
     border: 2px solid $clrborderlight;
-    padding-inline-start: 15px;
+    padding-inline-start: 20px;
     .search-input {
+        font-size: rem(16px);
         outline: none;
         background-color: none;
         border: none;

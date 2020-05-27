@@ -4,15 +4,16 @@ import UserPreview from './UserPreview'
 import { Notifications } from './Notifications'
 import history from '../history.js'
 import eventerLogo from '../assets/design/eventer-logo-new.png'
+import eventerIcn from '../assets/design/eventer.icn.png'
 import modalConnector from '../assets/helpers/modal-connector.png'
+import { connect } from 'react-redux'
+import { login } from '../store/actions/userActions'
 
-// import AddCircleIcon from '@material-ui/icons/AddCircle';
 import PersonIcon from '@material-ui/icons/Person';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-// import ViewListIcon from '@material-ui/icons/ViewList';
+import ViewListIcon from '@material-ui/icons/ViewList';
 
 
-import { connect } from 'react-redux'
 
 class NavBar extends Component {
 
@@ -20,11 +21,12 @@ class NavBar extends Component {
         isNotificationsOpen: false,
         isUserMenuOpen: false,
         navState: 'bright',
-        isHomePage: false
+        isHomePage: true,
+        isSearchBar: false
     }
 
 
-    componentWillMount() {
+    componentDidMount() {
         if (this.props.isHomePage) {
             this.setState({ navState: 'bright' })
             this.setState({ isHomePage: this.props.isHomePage })
@@ -34,8 +36,8 @@ class NavBar extends Component {
         };
     }
 
-    componentDidUpdate = (prevProps, prevState) => {
-        if (prevState.isHomePage !== prevProps.isHomePage) {
+    componentWillUpdate = (nextProps, nextState) => {
+        if (nextState.isHomePage !== nextProps.isHomePage) {
             if (this.props.isHomePage) {
                 window.addEventListener('scroll', this.listenToScrollNav)
                 this.setState({ navState: 'bright' })
@@ -53,6 +55,7 @@ class NavBar extends Component {
     }
 
     listenToScrollNav = () => {
+        console.log('scroll')
         if (!this.props.isHomePage) return;
         const winScroll =
             document.body.scrollTop || document.documentElement.scrollTop;
@@ -62,11 +65,11 @@ class NavBar extends Component {
             this.setState({ navState: 'bright' });
 
         };
-        // if (wonScroll > 240) {
-
-        // } else {
-
-        // }
+        if (winScroll > 240) {
+            this.setState({ isSearchBar: true })
+        } else {
+            this.setState({ isSearchBar: false })
+        }
     };
 
 
@@ -79,11 +82,15 @@ class NavBar extends Component {
         if (page === 'home') route = `/`;
         if (page === 'edit') route = `/event/edit/`;
         if (page === 'user') route = `/user/${this.props.loggedInUser._id}`;
-        // if (page === 'login') route = '/login/'
         if (page === 'login') {
             route = `/login`;
             this.forceCloseModals();
         };
+        if (page === 'logout') {
+            this.props.login({ userName: 'Guest', password: 1 })
+            route = `/login`;
+            this.forceCloseModals();
+        }
         history.push(route);
         this.forceCloseModals();
     };
@@ -147,10 +154,9 @@ class NavBar extends Component {
         this.setState({ isNotificationsOpen: false });
     }
 
-
     render() {
 
-        const { isNotificationsOpen, isUserMenuOpen, navState } = this.state;
+        const { isNotificationsOpen, isUserMenuOpen, navState, isSearchBar } = this.state;
         const { loggedInUser } = this.props;
 
         return (
@@ -160,20 +166,21 @@ class NavBar extends Component {
                 </div>}
                 <nav className="nav-bar-container main-container flex space-between align-items-center">
                     <div className="flex space-between align-items-center">
-                        <div className="flex align-items-center">
+                        <div className="search-logo flex align-items-center">
                             <img onClick={() => { this.goToPage('home') }} className="main-logo" src={eventerLogo} alt="" />
-                            {!this.props.isHomePage && <SearchBar setTxtFilter={this.setTxtFilter} />}
+                            <img onClick={() => { this.goToPage('home') }} className="main-icn" src={eventerIcn} alt="" />
+                            {(!this.props.isHomePage || isSearchBar) && <SearchBar className="search-for-wide" setTxtFilter={this.setTxtFilter} />}
                         </div>
                         <section className="nav-bar-btns flex align-center">
                             {loggedInUser && <UserPreview className minimalUser={loggedInUser} />}
-                            {/* <AddCircleIcon onClick={() => { this.goToPage('edit') }} /> */}
                             <button className="create-event  " onClick={() => { this.goToPage('edit') }}>Create Event</button>
-                            {loggedInUser && <NotificationsIcon ref={notificationsOpen => this.notificationsOpen = notificationsOpen} onClick={this.toggleNotifications} />}
-                            <PersonIcon className={isUserMenuOpen} ref={userMenuOpen => this.userMenuOpen = userMenuOpen} onClick={this.toggleUserMenu} />
+                            {loggedInUser && <NotificationsIcon className="notifications-icn" ref={notificationsOpen => this.notificationsOpen = notificationsOpen} onClick={this.toggleNotifications} />}
+                            <PersonIcon className="user-icn" ref={userMenuOpen => this.userMenuOpen = userMenuOpen} onClick={this.toggleUserMenu} />
+                            <ViewListIcon className='list-icn' />
                             {isUserMenuOpen && <div ref={userMenu => this.userMenu = userMenu} className="user-menu-modal flex column">
                                 <button onClick={() => { this.goToPage('user') }}>My Profile</button>
-                                <button onClick={() => { this.goToPage('login') }}>Login</button>
-                                <button>Logout</button>
+                                {loggedInUser.userName === 'Guest' && <button onClick={() => { this.goToPage('login') }}>Login</button>}
+                                {loggedInUser.userName !== 'Guest' && <button onClick={() => { this.goToPage('logout') }}>Logout</button>}
                                 <img className="connector" src={modalConnector} alt="" />
                             </div>}
                         </section>
@@ -194,7 +201,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-
+    login
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

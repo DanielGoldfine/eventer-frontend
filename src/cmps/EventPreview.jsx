@@ -12,7 +12,7 @@ export default function EventPreview(props) {
     let nth = 'th'
     let labelClass = ''
     let labelTxt = (props.event.capacity) ?
-        `GOING: ${props.event.members.length}/${props.event.capacity}` : `GOING: ${props.event.members.length}`
+        `${props.event.members.length}/${props.event.capacity} ARE IN` : `${props.event.members.length} ARE IN`
 
     if (props.event.capacity) labelClass = 'capacity'
     if (props.event.capacity === props.event.members.length) labelClass = 'muted'
@@ -40,23 +40,23 @@ export default function EventPreview(props) {
 
 
         <section className="event-preview flex column space-between">
-            <div>
-                <div onClick={() => { history.push(`event/${props.event._id}`) }} className="event-img-container">
+            <div className="event-link" onClick={() => { history.push(`event/${props.event._id}`) }}>
+                <div className="event-img-container">
                     <img className="event-img" src={imgUrl} alt="" />
                 </div>
                 <div className={`label ${labelClass} flex align-center justify-center`}>
                     <p>{labelTxt}</p>
                 </div>
                 <p className="event-time">{dateDisp}<span>{nth}</span> - {timeDisp}</p>
-                <p className="event-title" onClick={() => { history.push(`event/${props.event._id}`) }}>{props.event.title}</p>
+                <p className="event-title" >{props.event.title}</p>
 
                 {/* <p className="event-desc">{eventDesc}</p> */}
                 <p className="address">{props.event.location.address}</p>
             </div>
             <div className="flex column bottom-container">
-                <div onClick={() => { history.push(`event/${props.event._id}`) }} className="event-preview-bottom flex space-between align-center">
+                <div className="event-preview-bottom flex space-between align-center">
                     <UserPreview ranking minimalUser={props.event.createdBy} />
-                    <p className="price">{(props.event.price) ? `$${props.event.price}` : 'Free'}</p>
+                    <p className="price" onClick={() => { history.push(`event/${props.event._id}`) }}>{(props.event.price) ? `$${props.event.price}` : 'Free'}</p>
                 </div>
             </div>
 

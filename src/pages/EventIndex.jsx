@@ -27,11 +27,11 @@ class EventIndex extends Component {
     listenToScrollFilter = () => {
         const currScrollPos = document.body.scrollTop || document.documentElement.scrollTop
         if (currScrollPos > this.state.prevScrollpos) {
-            this.setState({filterBarClass : 'inactive'})
+            this.setState({ filterBarClass: 'inactive' })
         } else {
-            this.setState({filterBarClass : 'active'})
+            this.setState({ filterBarClass: 'active' })
         }
-        this.setState({prevScrollpos : currScrollPos})
+        this.setState({ prevScrollpos: currScrollPos })
     }
 
     setScrollPos = (currentScrollPos) => {
@@ -46,31 +46,32 @@ class EventIndex extends Component {
         this.props.setFilter(filterBy)
             .then(res => this.props.loadEvents(filterBy))
     }
-    
+
     chooseCategory = (chosenCategory) => {
         let gFilter = this.props.filterBy;
 
         // console.log(this.props.filterBy);
-        
+
         gFilter.sortDate = false;
         gFilter.limit = null;
         gFilter.category = chosenCategory;
 
         this.changeFilter(gFilter)
         // this.props.setFilter(gFilter)
-            // .then(res => this.props.history.push(`/event/`));
+        // .then(res => this.props.history.push(`/event/`));
     };
 
 
     render() {
 
-        const {filterBarClass} = this.state;
+        const { filterBarClass } = this.state;
 
         return (
+
             <div className="event-index main-container">
                 <CategoryLinks chooseCategory={this.chooseCategory} currCtg={this.props.filterBy.category} />
                 <FilterBar filterBarClass={filterBarClass} changeFilter={this.changeFilter} gFilter={this.props.filterBy} handleChange={this.handleChange} />
-                {this.props.events && <EventList onDelete={this.onDelete} events={this.props.events} onSubscribe={this.onSubscribe} />}
+                    {this.props.events && <EventList onDelete={this.onDelete} events={this.props.events} onSubscribe={this.onSubscribe} />}
             </div>
         )
     }

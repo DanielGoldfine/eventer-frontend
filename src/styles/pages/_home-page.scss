@@ -1,0 +1,66 @@
+.home-page-container {
+    .main-header-container {
+        overflow: hidden;
+        height: 576px;
+        .header {
+            position: absolute;
+            z-index: 2;
+            color: white;
+            h1 {
+                width: 792px;
+                height: 66px;
+                color: #ffffff;
+                font-family: secondfontbold;
+                font-size: 60px;
+                font-weight: 700;
+                line-height: 27.79px;
+                letter-spacing: 0.85px;
+            }
+        }
+        img {
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 1920px;
+            object-fit: cover;
+        }
+        .hero-overlay {
+            top: -2px;
+            position: absolute;
+            z-index: 1;
+            left: auto;
+            right: auto;
+        }
+    }
+    .category-links {
+        box-shadow: 0 1px 3px #00000057;
+        margin-bottom: 40px;
+    }
+    h2 {
+        color: $brandingGrey;
+        font-size: rem(45px);
+        width: 1465px;
+        margin: 0 auto;
+        text-align: left;
+        @media screen and (max-width: 1600px) {
+            text-align: left;
+            width: 76%;
+        }
+        @media screen and (max-width: 800px) {
+            text-align: center;
+            width: 100%;
+        }
+    }
+    @media screen and (max-width: 720px) {
+        .main-header-container {
+            .header {
+                h1 {
+                    font-size: 8.6vw;
+                }
+            }
+            .seach-bar-container {
+                width: 75vw;
+            }
+        }
+    }
+}
