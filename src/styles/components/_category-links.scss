@@ -1,10 +1,6 @@
 .category-links {
-    background-color: white;
-    // box-shadow: 0 2px 3px #0000007d;
-    z-index: 999;
-    // border-bottom: 1px solid lightgrey;
-    height: 60px;
-    width: 100%;
+    box-shadow: 0 1px 3px #0000007d;
+    height: 45px;
     margin-bottom: 30px;
     > * {
         background-color: rgba(255, 255, 255, 0);
@@ -14,16 +10,9 @@
         font-weight: bolder;
         font-size: rem(20px);
         cursor: pointer;
-        transition: .15s;
+        transition: .2s;
     }
     button:hover { 
         color: $brandingBlue;
-    }
-    button:focus {
-        outline: none !important ;
-        color: $brandingBlue;
-    }
-    & > .active {
-        border-bottom: 6px solid $brandingBlue;
     }
 }
