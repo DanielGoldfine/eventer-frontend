@@ -8,32 +8,26 @@ export function CategoryLinks(props) {
         <section className="category-links flex justify-center align-center margin0auto">
             <div className="categories flex justify-center space-between">
                 <button onClick={() => { chooseCategory('Sports') }}
-                    className="btn-category"
                     className={currCtg === 'Sports' ? 'active' : ''}
                 >Sports</button>
                 <button
                     onClick={() => { chooseCategory('Live Music') }}
-                    className="btn-category"
                     className={currCtg === 'Live Music' ? 'active' : ''}
                 >Live Music</button>
                 <button
                     onClick={() => { chooseCategory('Parties') }}
-                    className="btn-category"
                     className={currCtg === 'Parties' ? 'active' : ''}
                 >Parties</button>
                 <button
                     onClick={() => { chooseCategory('Lectures') }}
-                    className="btn-category"
                     className={currCtg === 'Lectures' ? 'active' : ''}
                 >Lectures</button>
                 <button
                     onClick={() => { chooseCategory('Stand-up Comedy') }}
-                    className="btn-category"
                     className={currCtg === 'Stand-up Comedy' ? 'active' : ''}
                 >Stand-up Comedy</button>
                 <button
                     onClick={() => { chooseCategory('Workshops') }}
-                    className="btn-category"
                     className={currCtg === 'Workshops' ? 'active' : ''}
                 >Workshops</button>
             </div>
