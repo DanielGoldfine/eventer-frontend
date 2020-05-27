@@ -1,22 +1,24 @@
 import React, { Component } from 'react'
-import { 
-    WhatsappShareButton, 
-    WhatsappIcon, 
-    TwitterIcon, 
-    TwitterShareButton, 
-    FacebookIcon, 
-    FacebookShareButton, 
-    TelegramIcon, 
-    TelegramShareButton } from "react-share"
+import {
+  WhatsappShareButton,
+  WhatsappIcon,
+  TwitterIcon,
+  TwitterShareButton,
+  FacebookIcon,
+  FacebookShareButton,
+  TelegramIcon,
+  TelegramShareButton
+} from "react-share"
 
 
 export class SocialShare extends Component {
 
-    render() {
-        const shareUrl = 'http://localhost:3000/event/'+this.props.eventId
-        const title ='Check this amazing event ' + this.props.eventTitle
-        return (
-            <div className="social-share flex justify-center">
+  render() {
+    const shareUrl = 'http://localhost:3000/event/' + this.props.eventId
+    const title = 'Check this amazing event ' + this.props.eventTitle
+    return (
+      <div className="social-share flex space-around align-items justify-center">
+        <h3 className="align-self-center">Invite your friends</h3>
         <div className="share-icon">
           <TwitterShareButton
             url={shareUrl}
@@ -50,6 +52,6 @@ export class SocialShare extends Component {
           </FacebookShareButton>
         </div>
       </div>
-        )
-    }
+    )
+  }
 }

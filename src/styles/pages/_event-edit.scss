@@ -1,21 +1,42 @@
+.bg-img-container {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  .bg-img {
+    opacity: 0.4;
+    z-index: 1;
+    height: 100%;
+  }
+}
 .form-container {
+  z-index: 2;
   margin-top: 65px;
   .react-tabs__tab-list {
-    border-bottom: 1px solid $clrborderlight;
-    margin-bottom: 20px;
-  }
-  .react-tabs__tab--selected {
-    border-color: $clrborderlight;
-    color: $clr2 !important;
+    border-bottom:0px;
+    padding-top: 20px;
+    margin:0;
+    .react-tabs__tab {
+      color:#8080808c;
+      font-size: 1.2rem !important;
+    }
+    .react-tabs__tab--selected {
+      color: $clr2 !important;
+    }
   }
 
-  .react-tabs__tab {
-    color: $clrborderlight;
-  }
   .event-details {
+    // To fix the "page-within-a-page" margin issue
     margin-top: 0;
+    .event-members-container {
+      margin-top: 0;
+    }
+    .social-share {
+      margin-top: 10px;
+    }
   }
+
   .event-edit {
+    background-color: white;
     margin-top: 10px;
     border: 1px solid #c2c2c2;
     border-radius: 15px;
@@ -90,10 +111,13 @@
       }
     }
     .MuiButton-containedPrimary {
-      background-color: $brandingBlue;
+      background-color: darken($brandingBlue,20);
       margin: 6px 6px 6px 0;
       &:hover {
         opacity: 0.7;
+      }
+      &.upload-button {
+        background-color: lighten($brandingBlue,20)
       }
     }
   }
@@ -105,14 +129,21 @@
     flex-wrap: wrap;
     .img-preview {
       width: 158px;
-      margin-bottom: 5px;
+      // margin-bottom: 5px;
       border-radius: 15px;
+      margin: 5px;
     }
   }
 }
 
 @media (max-width: 760px) {
   .form-container {
+    .event-details {
+      .google-map {
+        top: 195px !important;
+        height: 130px !important;
+      }
+    }
     .event-edit {
       flex-direction: column;
       width: 320px;
@@ -133,7 +164,7 @@
       margin-top: 10px;
       .img-preview {
         width: 300px;
-        margin-bottom: 5px;
+        margin: 5px;
       }
     }
   }

@@ -29,13 +29,13 @@ export default class EventImagesGallery extends React.Component {
 
 EventImagesGallery.defaultProps = {
     images: [
-        {
-            src: "https://c2.staticflickr.com/9/8817/28973449265_07e3aa5d2e_b.jpg",
-            thumbnail: "https://c2.staticflickr.com/9/8817/28973449265_07e3aa5d2e_n.jpg",
-            thumbnailWidth: 320,
-            thumbnailHeight: 174,
-            // caption: "After Rain (Jeshu John - designerspics.com)"
-        },
+        // {
+        //     src: "https://c2.staticflickr.com/9/8817/28973449265_07e3aa5d2e_b.jpg",
+        //     thumbnail: "https://c2.staticflickr.com/9/8817/28973449265_07e3aa5d2e_n.jpg",
+        //     thumbnailWidth: 320,
+        //     thumbnailHeight: 174,
+        //     caption: "After Rain (Jeshu John - designerspics.com)"
+        // },
         // {
         //     src: "https://c6.staticflickr.com/9/8890/28897154101_a8f55be225_b.jpg",
         //     thumbnail: "https://c6.staticflickr.com/9/8890/28897154101_a8f55be225_n.jpg",

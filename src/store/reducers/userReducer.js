@@ -6,7 +6,8 @@ if (sessionStorage.user) {
         _id: localLoggedinUser._id,
         fullName: localLoggedinUser.fullName,
         imgUrl: localLoggedinUser.imgUrl,
-        rank: localLoggedinUser.rank
+        rank: localLoggedinUser.rank,
+        isAdmin : localLoggedinUser.isAdmin
     }
 }
 
@@ -25,7 +26,8 @@ export default function UserReducer(state = initialState, action) {
                 _id: action.user._id,
                 fullName: action.user.fullName,
                 imgUrl: action.user.imgUrl,
-                rank: action.user.rank
+                rank: action.user.rank,
+                isAdmin: action.user.isAdmin
             }
             return {
                 ...state,

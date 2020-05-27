@@ -6,21 +6,25 @@ class MapContainer extends Component {
     state = {
         showingInfoWindow: false,
         activeMarker: {},
-        selectedPlace: {}
+        selectedPlace: {},
     };
 
     containerStyle = {
         position: 'fixed',
-        width:'400px',
-        height: '35%',
-        top:'450px',
-        right:'20px',
-        border:'1px solid lightgrey'
+        width:'447px',
+        height: '250px',
+        top:'510px',
+        right:'80px',
+        border:'1px solid lightgrey',
+        borderRadius:'15px',
+        boxShadow: "0 1px 3px #00000038"
+
     }
       
     style = {
-        width: '100%',
-        height: '100%',
+        // width: '100%',
+        // height: '100%',
+        borderRadius:'15px'
     }
 
     mapControlProps = {
@@ -57,7 +61,7 @@ class MapContainer extends Component {
 
     render() {
         return (
-            <Map
+            <Map className="google-map"
                 style={this.style}
                 containerStyle={this.containerStyle}
                 initialCenter={this.props.loc}

@@ -3,10 +3,9 @@ import { connect } from "react-redux";
 import { addPost, removePost } from '../store/actions/eventActions.js'
 import UserPreview from './UserPreview'
 import Moment from 'moment';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-
-
+import SendIcon from '@material-ui/icons/Send';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 class EventPosts extends Component {
     state = {
@@ -38,22 +37,22 @@ class EventPosts extends Component {
     render() {
         return <section className="event-posts">
             <form onSubmit={this.handleSubmit}>
-                <div className="flex justify-center align-center">
-                    {/* <input autoComplete="off" placeholder="Got anything to say?" name="post" value={this.state.post} onChange={this.handleInput} /> */}
-                    <TextField label="Post Text" type="text"  placeholder="Got anything to say?" name="post" value={this.state.post} onChange={this.handleInput} />
-
-                    <Button onClick={this.handleSubmit} variant="contained" color="primary">Send</Button>
+                <div className="post-input flex justify-center align-center">
+                    <TextField variant="outlined" label="What's on your mind?" type="text" placeholder="Your line goes here" name="post" value={this.state.post} onChange={this.handleInput} />
+                    <SendIcon className="send-post-icon" style={{ fontSize: 35 }} onClick={this.handleSubmit} color="primary" />
                 </div>
             </form>
             <div className="posts-container">
                 <ul className="posts">
                     {this.props.event.posts.map((post, idx) => (
-                        <div className="post flex space-between align-center" key={idx}>
+                        <div className="post flex space-between align-center relative" key={idx}>
                             <div>
                                 {post.author && <UserPreview key={idx} minimalUser={post.author} starred={false} />}
-                                <p className="post-time">{Moment.unix(post.createdAt / 1000).format("DD/MM,HH:mm")} {post.text}</p>
+                                <p className="post-text">{post.text}</p>
+                                {/* <p className="post-time">{Moment.unix(post.createdAt / 1000).format("DD/MM,HH:mm")} </p>   */}
+                                <p className="post-time">{Moment(post.createdAt).fromNow()} </p> 
                             </div>
-                            <button onClick={() => this.onRemovePost(post._id)}>X</button>
+                            {(this.props.isLoggedUserAdmin || this.props.eventCreatorId === post.author._id)  && <DeleteIcon style={{ fontSize: 25 }} color="action" className="delete-post-icon" onClick={() => this.onRemovePost(post._id)} />}
                         </div>
                     ))}
                 </ul>

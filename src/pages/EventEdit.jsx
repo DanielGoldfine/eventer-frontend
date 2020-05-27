@@ -45,7 +45,7 @@ class EventEdit extends React.Component {
         enableMaxCapacity: false,
         selectedTab: 'form',
         images: [],
-        widget:''
+        widget: ''
 
     }
 
@@ -54,7 +54,7 @@ class EventEdit extends React.Component {
             cloudName: 'dsqh7qhpg',
             uploadPreset: 'lh8fyiqe'
         }, (error, result) => { this.checkUploadResult(result) })
-        this.setState({widget})
+        this.setState({ widget })
         var todayDate = new Date(); //Getting current date (default date) in the right format
         const todayDateString = todayDate.getFullYear() + '-' +
             ('0' + (todayDate.getMonth() + 1)).slice(-2) + '-' +
@@ -68,7 +68,7 @@ class EventEdit extends React.Component {
     loadEvent = () => {
         const { id } = this.props.match.params;
         if (!id) return; // As it is s a new event, nothing to load... 
-        eventService.get(id)  
+        eventService.get(id)
             .then(event => {   //Making sure only event creator can edit
                 if (this.props.minimalLoggedInUser._id !== event.createdBy._id) {
                     return this.props.history.push('/')
@@ -272,90 +272,97 @@ class EventEdit extends React.Component {
     render() {
         const { category, title, description, startDate, startTime, address, price, capacity, tags, _id, imgUrl, images } = this.state
         return (
-
-            <section className="form-container">
-                <Tabs>
-                    <TabList>
-                        <Tab onClick={() => this.onTabSelect('form')}> Setup your event</Tab>
-                        <Tab onClick={() => this.onTabSelect('preview')}>See how it shapes out</Tab>
-                    </TabList>
-                    <TabPanel />
-                    <TabPanel />
-                </Tabs>
-                {this.state.selectedTab === 'form' &&
-                    <div>
-                        <form className="event-edit flex justify-center" onSubmit={this.handleSubmit}>
-                            <div className="event-desc flex column align-start">
-                                <FormControl required>
-                                    <InputLabel>Cateogry</InputLabel>
-                                    <Select name="category" value={category} onChange={this.handleChange} label="Category">
-                                        <MenuItem value="Choose Category">Choose Category</MenuItem>
-                                        <MenuItem value="Stand-up Comedy">Stand-up Comedy</MenuItem>
-                                        <MenuItem value="Sports">Sports</MenuItem>
-                                        <MenuItem value="Live Music">Live Music</MenuItem>
-                                        <MenuItem value="Parties">Parties</MenuItem>
-                                        <MenuItem value="Lectures">Lectures</MenuItem>
-                                        <MenuItem value="Workshops">Workshops</MenuItem>
-                                    </Select>
-                                </FormControl>
-                                <TextField label="Title" type="text" name="title" value={title} onChange={this.handleChange} />
-                                <TextField className="textarea-input" label="Description" multiline rows={8} name="description" variant="outlined" onChange={this.handleChange} value={description} />
-                                <TextField label="Tags" placeholder="Comma seperated" type="text" name="tags" value={tags} onChange={this.handleChange} />
-                            </div>
-                            <div className="flex column">
-                                <TextField className="address" label="Where?" type="text" name="address" value={address} onChange={this.handleChange} required />
-                                <label className="time-label">When?
+            <div className="main-container">
+                <div className="bg-img-container">
+                    <img className="bg-img" src={require("../assets/imgs/form-background.jpg")}/>
+                </div>
+                <section className="form-container">
+                    <Tabs>
+                        <TabList>
+                            <Tab onClick={() => this.onTabSelect('form')}> Setup your event</Tab>
+                            <Tab onClick={() => this.onTabSelect('preview')}>Check it out</Tab>
+                        </TabList>
+                        <TabPanel />
+                        <TabPanel />
+                    </Tabs>
+                    {this.state.selectedTab === 'form' &&
+                        <div>
+                            <form className="event-edit flex justify-center" onSubmit={this.handleSubmit}>
+                                <div className="event-desc flex column align-start">
+                                    <FormControl required>
+                                        <InputLabel>Cateogry</InputLabel>
+                                        <Select name="category" value={category} onChange={this.handleChange} label="Category">
+                                            <MenuItem value="Choose Category">Choose Category</MenuItem>
+                                            <MenuItem value="Stand-up Comedy">Stand-up Comedy</MenuItem>
+                                            <MenuItem value="Sports">Sports</MenuItem>
+                                            <MenuItem value="Live Music">Live Music</MenuItem>
+                                            <MenuItem value="Parties">Parties</MenuItem>
+                                            <MenuItem value="Lectures">Lectures</MenuItem>
+                                            <MenuItem value="Workshops">Workshops</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                    <TextField label="Title" type="text" name="title" value={title} onChange={this.handleChange} />
+                                    <TextField className="textarea-input" label="Description" multiline rows={8} name="description" variant="outlined" onChange={this.handleChange} value={description} />
+                                    <TextField label="Tags" placeholder="Comma seperated" type="text" name="tags" value={tags} onChange={this.handleChange} />
+                                </div>
+                                <div className="flex column">
+                                    <TextField className="address" label="Where?" type="text" name="address" value={address} onChange={this.handleChange} required />
+                                    <label className="time-label">When?
                                 <div className="time-input-container flex">
-                                        <input className="date-input" type="date" name="startDate" onChange={this.handleChange} value={startDate} />
-                                        <input className="time-input" type="time" name="startTime" onChange={this.handleChange} value={startTime} />
-                                    </div>
-                                </label>
-                                <FormGroup>
-                                    <FormControlLabel className="switch"
-                                        control={<Switch onChange={this.togglePrice} checked={this.state.enablePrice} color="primary" />}
-                                        label="Enternece fee?"
+                                            <input className="date-input" type="date" name="startDate" onChange={this.handleChange} value={startDate} />
+                                            <input className="time-input" type="time" name="startTime" onChange={this.handleChange} value={startTime} />
+                                        </div>
+                                    </label>
+                                    <FormGroup>
+                                        <FormControlLabel className="switch"
+                                            control={<Switch onChange={this.togglePrice} checked={this.state.enablePrice} color="primary" />}
+                                            label="Enternece fee?"
+                                        />
+                                        {this.state.enablePrice &&
+                                            <TextField className="text-switch" label="How much?" type="number" name="price" value={price} onChange={this.handleChange} ref={this.priceInput} />}
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <FormControlLabel className="switch"
+                                            control={<Switch onChange={this.toggleMaxCapacity} checked={this.state.enableMaxCapacity} color="primary" />}
+                                            label="Limit guests?"
+                                        />
+                                        {this.state.enableMaxCapacity &&
+                                            <TextField className="text-switch-capacity" label="How many?" type="number" name="capacity" value={capacity} onChange={this.handleChange} ref={this.capacityInput} />}
+                                    </FormGroup>
+                                    <FormGroup >
+                                        <FormControlLabel className="switch"
+                                            control={<Switch onChange={this.onToggleActive} checked={this.state.isActive} color="primary" />}
+                                            label="Event active and visible"
+                                        />
+                                    </FormGroup>
+                                    <input
+                                        type="hidden"
+                                        name="_id"
+                                        value={_id}
                                     />
-                                    {this.state.enablePrice &&
-                                        <TextField className="text-switch" label="How much?" type="number" name="price" value={price} onChange={this.handleChange} ref={this.priceInput} />}
-                                </FormGroup>
-                                <FormGroup>
-                                    <FormControlLabel className="switch"
-                                        control={<Switch onChange={this.toggleMaxCapacity} checked={this.state.enableMaxCapacity} color="primary" />}
-                                        label="Limit guests?"
-                                    />
-                                    {this.state.enableMaxCapacity &&
-                                        <TextField className="text-switch-capacity" label="How many?" type="number" name="capacity" value={capacity} onChange={this.handleChange} ref={this.capacityInput} />}
-                                </FormGroup>
-                                <FormGroup >
-                                    <FormControlLabel className="switch"
-                                        control={<Switch onChange={this.onToggleActive} checked={this.state.isActive} color="primary" />}
-                                        label="Event active and visible"
-                                    />
-                                </FormGroup>
-                                <input
-                                    type="hidden"
-                                    name="_id"
-                                    value={_id}
-                                />
-                                <Button className="upload-button" variant="contained" color="primary" onClick={() => this.showWidget(this.state.widget)}>Upload images</Button>
-                                <Button onClick={this.handleSubmit} className="save-button" variant="contained" color="primary"> Save Event </Button>
-                                <h3>{this.state.validationMsg}</h3>
+                                    <Button className="upload-button" variant="contained" color="primary" onClick={() => this.showWidget(this.state.widget)}>Upload images</Button>
+                                    <Button onClick={this.handleSubmit} className="save-button" variant="contained" color="primary"> Save Event </Button>
+                                    <h3>{this.state.validationMsg}</h3>
+                                </div>
+                            </form >
+                            <div className="images-container flex justify-center align-center">
+                                {images.length === 0 && category === 'Choose Category' && < h3 > Waiting for your images...</h3>}
+                                {images.length === 0 && category !== 'Choose Category' && <div className="img-container">
+                                    {imgUrl.includes('http') && <img className="img-preview" src={imgUrl} alt=""></img>}
+                                    {category && !imgUrl.includes('http') && <img className="img-preview" src={require(`../assets/imgs/${category.replace(/\s+/g, '')}.jpg`)} alt=""></img>}
+                                </div>}
+                                {images && <div className="img-upload-container flex wrap space-between">
+                                    {images.map((img, index) => { return <img className="img-preview" key={index} src={img.src} alt=""></img> })}
+                                </div>}
                             </div>
-                        </form >
-                        <div className="images-container flex justify-center align-center">
-                            {images.length === 0 && category !== 'Choose Category' && <div className="img-container">
-                                {imgUrl.includes('http') && <img className="img-preview" src={imgUrl} alt=""></img>}
-                                {category && !imgUrl.includes('http') && <img className="img-preview" src={require(`../assets/imgs/${category.replace(/\s+/g, '')}.jpg`)} alt=""></img>}
-                            </div>}
-                            {images && <div className="img-upload-container flex wrap space-between">
-                                {images.map((img, index) => { return <img className="img-preview" key={index} src={img.src} alt=""></img> })}
-                            </div>}
-                        </div>
-                    </div>}
+                        </div>}
 
-                {this.state.selectedTab === 'preview' && <EventDetails previewEvent={this.state} />}
+                    {this.state.selectedTab === 'preview' && <EventDetails previewEvent={this.state} />}
 
-            </section>
+                </section >
+
+            </div>
+
         )
     }
 }
