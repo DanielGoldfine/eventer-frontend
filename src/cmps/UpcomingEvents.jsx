@@ -70,11 +70,11 @@ export default class UpcomingEvents extends Component {
                     slidesSpacing={10}
                 >
         
-                        <EventPreview event={this.state.galleryItems[0]} />
+                        {/* <EventPreview event={this.state.galleryItems[0]} />
                         <EventPreview event={this.state.galleryItems[1]} />
                         <EventPreview event={this.state.galleryItems[2]} />
                         <EventPreview event={this.state.galleryItems[3]} />
-                        {/* <EventPreview event={this.state.galleryItems[4]} />
+                         <EventPreview event={this.state.galleryItems[4]} />
                         <EventPreview event={this.state.galleryItems[5]} />
                         <EventPreview event={this.state.galleryItems[6]} />
                         <EventPreview event={this.state.galleryItems[7]} />
@@ -84,7 +84,7 @@ export default class UpcomingEvents extends Component {
                         <EventPreview event={this.state.galleryItems[11]} />
                         <EventPreview event={this.state.galleryItems[12]} />
                         <EventPreview event={this.state.galleryItems[13]} />
-                        <EventPreview event={this.state.galleryItems[14]} />
+                        <EventPreview event={this.state.galleryItems[14]} /> */}
 
                 </InfiniteCarousel>}
             </main>
