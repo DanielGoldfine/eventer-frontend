@@ -210,7 +210,7 @@ class NavBar extends Component {
                         <section className="nav-bar-btns flex align-center">
                             {loggedInUser && <UserPreview className minimalUser={loggedInUser} />}
                             <button className="create-event  " onClick={() => { this.goToPage('edit') }}>Create Event</button>
-                            {loggedInUser && <NotificationsIcon className="notifications-icn" ref={notificationsOpen => this.notificationsOpen = notificationsOpen} onClick={this.toggleNotifications} />}
+                            {loggedInUser && loggedInUser.notification.msgs.length>0 && <NotificationsIcon className="notifications-icn" ref={notificationsOpen => this.notificationsOpen = notificationsOpen} onClick={this.toggleNotifications} />}
                             <PersonIcon className="user-icn" ref={userMenuOpen => this.userMenuOpen = userMenuOpen} onClick={this.toggleUserMenu} />
                             <ViewListIcon className='list-icn' />
                             {isUserMenuOpen && <div ref={userMenu => this.userMenu = userMenu} className="user-menu-modal flex column">
