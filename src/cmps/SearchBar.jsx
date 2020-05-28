@@ -21,22 +21,28 @@ class SearchBar extends Component {
     submitSearch = (ev) => {
         ev.preventDefault();
         const { searchTxt } = this.state;
-        let gFilter = this.props.filterBy;
+        let filter = { ...this.props.filterBy }
 
-        gFilter.txt = searchTxt;
-
+        filter = { ...filter, txt: searchTxt }
+        filter = { ...filter, category: '' }
+        
+        console.log('filter', filter);
+        
+        
         if (this.props.isHomePage) {
-            gFilter.sortDate = false;
-            gFilter.limit = null;
+            // filter.sortDate = false;
+            // filter.limit = null;
+            filter = { ...filter, sortBy: 'startAt'}
+            filter = { ...filter, limit: ''}
+            filter = { ...filter, category: ''}
         };
 
-        this.props.setFilter(gFilter)
+        this.props.setFilter(filter)
             .then(res => {
-                this.props.loadEvents(gFilter)
+                this.props.loadEvents(filter)
                 history.push('/event')
             });
     };
-
 
 
     render() {

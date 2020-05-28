@@ -26,7 +26,7 @@ class UpcomingEvents extends React.Component {
 
     setGallery = () => {
 
-        eventService.query()
+        eventService.query(this.props.filterBy)
             .then(events => {
                 const galleryItems = events.map(event => <EventPreview key={event._id} event={event} />)
                 this.setState({ galleryItems })

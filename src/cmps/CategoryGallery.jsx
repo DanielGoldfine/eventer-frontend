@@ -11,7 +11,6 @@ import { setFilter } from '../store/actions/eventActions'
 import { connect } from 'react-redux'
 
 class CategoryGallery extends Component {
-
     render() {
         return (
             <section className="category-gallery-container main-container">

@@ -11,8 +11,8 @@ const initialState = {
         locationType: '',
         userLocation: '',
         price: '',
-        sortDate: false,
-        sortNearby: false,
+        sortBy: 'startAt',
+        includePast: false,
         limit: null
     },
     isLoading: false

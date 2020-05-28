@@ -40,7 +40,7 @@ export default function EventPreview(props) {
 
 
         <section className="event-preview flex column space-between">
-            <div className="event-link" onClick={() => { history.push(`event/${props.event._id}`) }}>
+            <div className="event-link" onClick={() => { history.push(`/event/${props.event._id}`) }}>
                 <div className="event-img-container">
                     <img className="event-img" src={imgUrl} alt="" />
                 </div>
@@ -56,7 +56,7 @@ export default function EventPreview(props) {
             <div className="flex column bottom-container">
                 <div className="event-preview-bottom flex space-between align-center">
                     <UserPreview ranking minimalUser={props.event.createdBy} />
-                    <p className="price" onClick={() => { history.push(`event/${props.event._id}`) }}>{(props.event.price) ? `$${props.event.price}` : 'Free'}</p>
+                    <p className="price" onClick={() => { history.push(`/event/${props.event._id}`) }}>{(props.event.price) ? `$${props.event.price}` : 'Free'}</p>
                 </div>
             </div>
 

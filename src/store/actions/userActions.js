@@ -1,11 +1,11 @@
 import userService from '../../services/userService.js';
 
-export function signup(credentials,  loadingStatus) {
+export function signup(credentials, loadingStatus) {
     return async dispatch => {
         try {
             toggleLoad(credentials, loadingStatus)
             const user = await userService.signup(credentials)
-            dispatch(setUser(user), ()=>{toggleLoad(loadingStatus)});
+            dispatch(setUser(user), () => { toggleLoad(loadingStatus) });
         }
         catch (err) {
             console.log('userService: err in signup', err);
@@ -15,27 +15,27 @@ export function signup(credentials,  loadingStatus) {
 
 
 export function login(credentials, loadingStatus) {
-    console.log('login action,',credentials)
-        return async dispatch => {
-            try {
-                toggleLoad(credentials, loadingStatus)
-                const user = await userService.login(credentials)
-                dispatch(setLoggedInUser(user), () => { toggleLoad(loadingStatus) });
-            }
-            catch (err) {
-                console.log('userService: err in login', err);
-            }
+    console.log('login action,', credentials)
+    return async dispatch => {
+        try {
+            toggleLoad(credentials, loadingStatus)
+            const user = await userService.login(credentials)
+            dispatch(setLoggedInUser(user), () => { toggleLoad(loadingStatus) });
         }
+        catch (err) {
+            console.log('userService: err in login', err);
+        }
+    }
     // }
 }
 
-export function logout() { 
+export function logout() {
     return async dispatch => {
-      await userService.logout();
-      dispatch(setUser(null));
+        await userService.logout();
+        dispatch(setUser(null));
     };
-  }
-  
+}
+
 
 
 export function loadUser(id) {
@@ -92,9 +92,8 @@ export function addReview(review, user) {
 
 
 export function toggleNotifications(status) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({ type: 'TOGGLE_NOTIFICATIONS', status });
-        return Promise.resolve();
     };
 }
 

@@ -16,12 +16,22 @@ export default {
 }
 
 
-function query(filterBy) {
-    // console.log('frontend query')
+async function query(filterBy) {
+
+    console.log('frontend query: filterBy -', filterBy)
+    
     if (!filterBy) return HttpService.get(`${baseUrl}`);
+
     //for json server:
     //var queryStr = `?category_like=${filterBy.category}&title_like=${filterBy.txt}`
-    var queryStr = `?category=${filterBy.category}&title=${filterBy.txt}`
+    var queryStr = `?category=${filterBy.category}&title=${filterBy.txt}&sortBy=${filterBy.sortBy}`
+
+    console.log('filterBy.sortBy', filterBy.sortBy);
+    console.log('filterBy.sortBy', filterBy.category);
+
+    // console.log('filterBy.sortBy', filterBy.sortBy);
+    // console.log('filterBy.txt', filterBy.txt);
+    
     return HttpService.get(`${baseUrl}/${queryStr}`);
 }
 

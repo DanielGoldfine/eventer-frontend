@@ -42,21 +42,33 @@ class EventIndex extends Component {
         this.props.removeEvent(eventId)
     }
 
-    changeFilter = (filterBy) => {
-        this.props.setFilter(filterBy)
-            .then(res => this.props.loadEvents(filterBy))
+    changeFilter = async (filterBy) => {
+        await this.props.setFilter(filterBy)
+        this.props.loadEvents(filterBy)
     }
 
     chooseCategory = (chosenCategory) => {
-        let gFilter = this.props.filterBy;
+        const originalObj = { arr: [] };
+        const myobj = { ...originalObj }
+
+        myobj.arr.push('1');
+
+
+        // this.props.filterBy has a popo = {}
+        let filter = { ...this.props.filterBy };
 
         // console.log(this.props.filterBy);
+        // THE IMMUTABLE WAY
+        // filter.popo = { ...filter.popo, momo: 2 }
 
-        gFilter.sortDate = false;
-        gFilter.limit = null;
-        gFilter.category = chosenCategory;
+        filter = { ...filter, sortBy: 'startAt'}
+        filter = { ...filter, limit: null}
+        filter = { ...filter, category: chosenCategory }
+        
+        // filter.limit = null;
+        // filter.category = chosenCategory;
 
-        this.changeFilter(gFilter)
+        this.changeFilter(filter)
         // this.props.setFilter(gFilter)
         // .then(res => this.props.history.push(`/event/`));
     };
@@ -71,7 +83,7 @@ class EventIndex extends Component {
             <div className="event-index main-container">
                 <CategoryLinks chooseCategory={this.chooseCategory} currCtg={this.props.filterBy.category} />
                 <FilterBar filterBarClass={filterBarClass} changeFilter={this.changeFilter} gFilter={this.props.filterBy} handleChange={this.handleChange} />
-                    {this.props.events && <EventList onDelete={this.onDelete} events={this.props.events} onSubscribe={this.onSubscribe} />}
+                {this.props.events && <EventList futureEventsOnly onDelete={this.onDelete} events={this.props.events} onSubscribe={this.onSubscribe} />}
             </div>
         )
     }

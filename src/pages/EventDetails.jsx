@@ -55,9 +55,9 @@ class EventDetails extends React.Component {
   }
 
   onSetCategory = (category) => {
-    let gFilter = this.props.filterBy;
-    gFilter.category = category;
-    this.props.setFilter(gFilter)
+    let filter = this.props.filterBy;
+    filter.category = category;
+    this.props.setFilter(filter)
       .then(res => this.props.history.push(`/event/`));
   };
 

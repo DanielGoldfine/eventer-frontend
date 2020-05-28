@@ -2,8 +2,11 @@ import React from 'react'
 
 
 export function UserDesc(props) {
-    
-    const { user } = props;
+
+    const { user , isLoggedInUser , loggedInUser , doFollow , doUnfollow } = props;
+
+    // console.log('user', user);
+    console.log('props', props);
 
     return (
         <main className="user-desc flex column justify-center align-items-center space-between">
@@ -36,9 +39,14 @@ export function UserDesc(props) {
                     {user.rank.average !== 0 && <h4>{user.rank.average.toFixed(1)}</h4>}
                     {!user.rank.average && <h4>Not yet</h4>}
                 </div>
-                {props.children}
-    {/* Child:      <button className="cta-btn-full follow-btn">Follow</button>             */}
+                {/* {props.children && props.children} */}
+
+                {!isLoggedInUser && <button onClick={() => doFollow(loggedInUser)} className="cta-btn-full follow-btn">Follow</button>}
+                {!isLoggedInUser && <button onClick={() => doUnfollow(loggedInUser)} className="cta-btn-full follow-btn">Unfollow</button>}
+
+                
             </section>
+
         </main>
     )
 }

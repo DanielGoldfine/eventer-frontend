@@ -50,10 +50,11 @@ class EventEdit extends React.Component {
     }
 
     componentDidMount() {
+        // TODO: mb try switching to React cloudinary
         let widget = window.cloudinary.createUploadWidget({
             cloudName: 'dsqh7qhpg',
             uploadPreset: 'lh8fyiqe'
-        }, (error, result) => { this.checkUploadResult(result) })
+        }, (error, result) => { this.checkUploadResult(result) });
         this.setState({ widget })
         var todayDate = new Date(); //Getting current date (default date) in the right format
         const todayDateString = todayDate.getFullYear() + '-' +
@@ -72,17 +73,14 @@ class EventEdit extends React.Component {
             .then(event => {   //Making sure only event creator can edit
                 if (this.props.minimalLoggedInUser._id !== event.createdBy._id) {
                     return this.props.history.push('/')
-                }
-                else {  // Price check-box status
-                    let enablePrice = false
-                    if (event.price) {
-                        enablePrice = true
-                    }
+                } else {  // Price check-box status
+                    let enablePrice = (event.price) ? true : false;
 
-                    let enableMaxCapacity = false  // Max-capacity check-box status
+                    let enableMaxCapacity = false // Max-capacity check-box status
                     if (event.capacity) {
                         enableMaxCapacity = true
                     }
+
                     this.setState({
                         ...event,
                         address: event.location.address,
@@ -90,7 +88,6 @@ class EventEdit extends React.Component {
                         enableMaxCapacity
                     });
                 }
-
             })
     }
 
@@ -99,13 +96,13 @@ class EventEdit extends React.Component {
         value = ev.target.type === 'number' ? parseInt(value) : value;
         this.setState(prevState => (
             { ...prevState.filter, [name]: value }
-        ))
+        ));
     }
-
 
     handleSubmit = async (ev) => {
         ev.preventDefault();
         const validForm = this.formValidation()
+        // Guard clause
         if (!validForm) return
 
         let event = this.state
@@ -115,12 +112,11 @@ class EventEdit extends React.Component {
         event.startAt = startAt
 
         //handle tags
-        let tagsArr
+        let tagsArr;
         if (event.tags && (typeof event.tags === 'string')) {
             tagsArr = event.tags.split(',')
             event.tags = tagsArr
-        }
-        else {
+        } else {
             tagsArr = []
         }
 
@@ -130,8 +126,7 @@ class EventEdit extends React.Component {
             event.createdAt = Math.round(Date.now() / 1000)
             event.members = []
             event.posts = []
-        }
-        else {
+        } else {
             event.updatedAt = Math.round(Date.now() / 1000)
         }
 
@@ -149,12 +144,12 @@ class EventEdit extends React.Component {
             console.log('Error in google geocode request: ', err)
         }
 
-        delete event.validationMsg
-        delete event.address
-        delete event.enablePrice
-        delete event.enableMaxCapacity
-        delete event.selectedTab
-        delete event.widget
+        delete event.validationMsg;
+        delete event.address;
+        delete event.enablePrice;
+        delete event.enableMaxCapacity;
+        delete event.selectedTab;
+        delete event.widget;
 
         this.props.saveEvent(event)
             .then((event) => {
@@ -163,7 +158,9 @@ class EventEdit extends React.Component {
     }
 
     togglePrice = () => {
-        if (this.state.enablePrice) this.priceInput.current.value = ''
+        // TODO: try to remember why do I use priceInput ref for this
+        // price is in state, and value={price} should've been enough
+        if (this.state.enablePrice) this.priceInput.current.value = '';
         this.setState((prevState) => {
             return {
                 enablePrice: !prevState.enablePrice,
@@ -174,7 +171,8 @@ class EventEdit extends React.Component {
 
 
     toggleMaxCapacity = () => {
-        if (this.state.enableMaxCapacity) this.capacityInput.current.value = ''
+        if (this.state.enableMaxCapacity) this.capacityInput.current.value = '';
+
         this.setState((prevState) => {
             return {
                 enableMaxCapacity: !prevState.enableMaxCapacity,
@@ -184,23 +182,24 @@ class EventEdit extends React.Component {
     }
 
     formValidation = () => {
+        const clearValidationMsg = () => this.setState({ validationMsg: '' });
+
         if (this.state.category === 'Choose Category') {
             this.setState({ validationMsg: 'You need to choose a category!' }, () => {
-                setTimeout(() => this.setState({ validationMsg: '' }), 2000)
+                setTimeout(clearValidationMsg, 2000);
             })
             return false
         }
         if (this.state.address === '') {
             this.setState({ validationMsg: 'You need to choose an address!' }, () => {
-                setTimeout(() => this.setState({ validationMsg: '' }), 2000)
+                setTimeout(clearValidationMsg, 2000)
             })
-            return false
+            return false;
         }
-        return true
+        return true;
     }
 
     onTabSelect = async (type) => {
-
         if (type === 'form') {
             this.setState({ selectedTab: 'form' })
             return
@@ -227,7 +226,8 @@ class EventEdit extends React.Component {
             const location = {}
             location.lat = latlng.lat ? latlng.lat : ''
             location.lng = latlng.lng ? latlng.lng : ''
-            location.address = this.state.address
+            location.address = this.state.address;
+
             this.setState({
                 location,
                 selectedTab: 'preview'
@@ -270,11 +270,14 @@ class EventEdit extends React.Component {
     }
 
     render() {
-        const { category, title, description, startDate, startTime, address, price, capacity, tags, _id, imgUrl, images } = this.state
+        const { category, title, description,
+            startDate, startTime, address, price,
+            capacity, tags, _id, imgUrl, images } = this.state;
+
         return (
             <div className="main-container">
                 <div className="bg-img-container">
-                    <img className="bg-img" src={require("../assets/imgs/form-background.jpg")}/>
+                    <img className="bg-img" src={require("../assets/imgs/form-background.jpg")} />
                 </div>
                 <section className="form-container">
                     <Tabs>
