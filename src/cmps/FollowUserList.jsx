@@ -1,29 +1,36 @@
 import React from 'react'
 
-// import { ReviewPreview } from '../cmps/ReviewPreview'
+export class FollowUserList extends React.Component {
 
-export function FollowUserList(props) {
+    state = {
+        listState: 'Following'
+    }
 
-    return (
-        <section className="follow-user-list-container">
+    render() {
 
-            <div className="title flex space-between">
-                <h4>following users</h4>
-            <select name="filter-events" id="">
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                </select>
-            </div>
-            <div className="events">
-                <ul>
-                    <li>user</li>
-                    <li>user</li>
-                    <li>user</li>
-                    <li>user</li>
-                    <li>user</li>
-                </ul>
-            </div>
-            {/* {props.reviews.map(review => <ReviewPreview key={review.id} review={review} />)} */}
-        </section>
-    )
+        const {listState} = this.state;
+
+        return (
+            <section className="follow-list-container user-details-list">
+
+                <div className="list-header flex align-center space-between">
+                    <h4>Events</h4>
+                    <select name="list-filter" id="">
+                        <option value="active">Created</option>
+                        <option value="inactive">Subscribed</option>
+                    </select>
+                </div>
+                <div className="list">
+                    <ul>
+                        <li>event</li>
+                        <li>event</li>
+                        <li>event</li>
+                        <li>event</li>
+                        <li>event</li>
+                    </ul>
+                </div>
+                {/* {props.reviews.map(review => <ReviewPreview key={review.id} review={review} />)} */}
+            </section>
+        )
+    }
 }

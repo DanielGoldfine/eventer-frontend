@@ -2,7 +2,7 @@
     background-color: white;
     z-index: 3;
     height: 60px;
-    width: 100%;
+    width: 100vw;
     margin-bottom: 30px;
     .categories {
         width: 65%;
@@ -10,9 +10,9 @@
         > * {
             background-color: rgba(255, 255, 255, 0);
             border: none;
-            color: $brandingGrey;
+            color: $brandinggreybold;
             font-weight: bolder;
-            font-size: rem(20px);
+            font-size: rem(18px);
             cursor: pointer;
             transition: 0.2s;
         }
@@ -31,15 +31,15 @@
         .categories {
             width: 80%;
             >*{
-                font-size: 2vw;
+                font-size: 1.7vw;
             }
         }
     }
-    @media screen and (max-width: 750px) {
+    @media screen and (max-width: 500px) {
         .categories {
             width: 98%;
             >*{
-                font-size: 3vw;
+                font-size: 2.5vw;
             }
         }
     }

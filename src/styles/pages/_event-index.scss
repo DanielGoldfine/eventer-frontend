@@ -1,6 +1,6 @@
 .event-index {
     .event-list {
-        margin-top: 180px;
+        margin-top: 250px;
     }
 
     .event-list-filter {
@@ -40,6 +40,9 @@
         }
         .event-list-filter {
             display: none;
+        }
+        .category-links {
+            box-shadow: 0 1px 3px #00000057;
         }
     }
 }

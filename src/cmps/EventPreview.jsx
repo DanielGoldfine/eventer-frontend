@@ -12,24 +12,27 @@ export default function EventPreview(props) {
     let nth = 'th'
     let labelClass = ''
     let labelTxt = (props.event.capacity) ?
-        `${props.event.members.length}/${props.event.capacity} ARE IN` : `${props.event.members.length} ARE IN`
+        `${props.event.members.length}/${props.event.capacity} JOINED` : `${props.event.members.length} JOINED`
 
     if (props.event.capacity) labelClass = 'capacity'
-    if (props.event.capacity === props.event.members.length) labelClass = 'muted'
+    if (props.event.capacity === props.event.members.length) {
+        labelClass = 'muted'
+        labelTxt = 'Max Capacity Reached'
+    }
 
     switch (timeArr[2].split('')[timeArr[2].split('').length - 1]) {
-            case '1':
-                nth = 'st'
-                break;
-            case '2':
-                nth = 'nd'
-                break;
-            case '3':
-                nth = 'rd'
-                break;
-            default:
-                break;
-        }
+        case '1':
+            nth = 'st'
+            break;
+        case '2':
+            nth = 'nd'
+            break;
+        case '3':
+            nth = 'rd'
+            break;
+        default:
+            break;
+    }
 
     if (timeArr[2] === '11' || timeArr[2] === '12' || timeArr[2] === '13') nth = 'th'
 

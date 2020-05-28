@@ -32,28 +32,40 @@ export default class UpcomingEvents extends Component {
                 {this.state.galleryItems.length > 0 && <InfiniteCarousel
                     breakpoints={[
                         {
-                            breakpoint: 800,
+                            breakpoint: 700,
                             settings: {
                                 slidesToShow: 1,
                                 slidesToScroll: 1,
                             },
                         },
                         {
-                            breakpoint: 1600,
+                            breakpoint: 900,
+                            settings: {
+                                slidesToShow: 2,
+                                slidesToScroll: 2,
+                            },
+                        },
+                        {
+                            breakpoint: 1400,
                             settings: {
                                 slidesToShow: 3,
                                 slidesToScroll: 3,
+                            },
+                        },
+                        {
+                            breakpoint: 1600,
+                            settings: {
+                                slidesToShow: 4,
+                                slidesToScroll: 4,
                             },
                         },
                     ]}
                     swipe={true}
                     dots={true}
                     showSides={false}
-                    // sidesOpacity={1}
                     sideSize={.1}
-                    slidesToScroll={4}
-                    slidesToShow={4}
-                    scrollOnDevice={true}
+                    slidesToScroll={5}
+                    slidesToShow={5}
                     responsive={true}
                     slidesSpacing={10}
                 >
@@ -72,7 +84,7 @@ export default class UpcomingEvents extends Component {
                         <EventPreview event={this.state.galleryItems[11]} />
                         <EventPreview event={this.state.galleryItems[12]} />
                         <EventPreview event={this.state.galleryItems[13]} />
-                        <EventPreview event={this.state.galleryItems[14]} /> */}
+                        <EventPreview event={this.state.galleryItems[14]} />
 
                 </InfiniteCarousel>}
             </main>

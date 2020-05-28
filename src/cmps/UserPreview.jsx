@@ -7,10 +7,8 @@ export default function UserPreview(props) {
     const inactiveClr = '#d3d3d3';
     const activeClr = '#ffbf00';
 
-    const orientation = props.vertical ? 'column' : 'row'
-
     return (
-        <section className={`user-preview-min flex ${orientation} align-items-center`}>
+        <section className={`user-preview-min flex align-items-center`}>
             <Link to={`/user/${minimalUser._id}`}>
                 <div className="avatar">
                     <img alt="" src={minimalUser.imgUrl} />

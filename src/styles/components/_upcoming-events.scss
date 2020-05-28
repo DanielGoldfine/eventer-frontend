@@ -1,6 +1,6 @@
 .upcoming-container {
     .InfiniteCarousel {
-        width: 1500px !important;
+        width: 90% !important;
         margin: 0 auto !important;
     }
     .InfiniteCarouselFrame {
@@ -12,14 +12,15 @@
         display: flex !important;
         align-items: center;
         justify-content: center;
+        height: 525px !important;
     }
 
     .InfiniteCarouselArrowNext {
-        right: -25px;
+        right: -13px;
     }
 
     .InfiniteCarouselArrowPrev {
-        left: -25px;
+        left: -13px;
     }
 
     .InfiniteCarouselArrowIcon {
@@ -37,18 +38,18 @@
             background-color: $brandingBlue;
         }
     }
-    @media screen and (max-width: 1600px) {
-        .InfiniteCarousel {
-            width: 78% !important;
-        }
 
-    }
-    @media screen and (max-width: 800px) {
-        .InfiniteCarousel {
-            width: 78% !important;
-        }
+    @media screen and (max-width: 700) {
+        
         .InfiniteCarouselDot {
             margin: 0 0 !important;
+        }
+        .InfiniteCarouselArrowNext {
+            right: -18px;
+        }
+    
+        .InfiniteCarouselArrowPrev {
+            left: -18px;
         }
     }
 }

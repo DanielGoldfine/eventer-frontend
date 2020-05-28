@@ -4,60 +4,60 @@
     grid-template-columns: repeat(12, 1fr);
     gap: 16px;
     margin-bottom: 25px;
+    > * {
+        border-radius: 5px;
+    }
     .gallery-item {
-
+        overflow: hidden;
+        cursor: pointer;
         position: relative;
-        
-        .title-link {
 
+        h2 {
             position: absolute;
-            display: flex;
-            flex-direction: column;
-            align-items: baseline;
-            bottom: 20px;
+            bottom: 40px;
             left: 10px;
-            z-index: 1;
-            button {
-                border: none;
-                background-color: $brandingGreen;
-                color: white;
-                border-radius: 999px;
-                width: 120px;
-                height: 30px;
-                font-family: secondfontregular;
-                font-size: rem(20px);
-                cursor: pointer;
-            }
-
-            h2 {
-                color: white;
-                margin: 0 0;
-                left: 0;
-                width: auto;
-                margin-bottom: 10px;
-                margin-inline-end: 20px;
-            }
+            z-index: 2;
+            font-size: rem(40px);
+            color: white;
+            margin: 0 0;
+            left: 15px;
+            width: auto;
         }
+        .see-more {
+            font-size: rem(20px);
+            color: $brandingBlue;
+            bottom: 5px;
+            transform: translate(0, 110%);
+            transition: 0.2s; 
+        }
+
         .overlay {
             position: absolute;
-            z-index: 0;
+            z-index: 1;
             width: 100%;
             height: 100%;
-            background-color: rgb(0, 0, 0);
-            opacity: 15%;
+            background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 1) 90%);
+            mix-blend-mode: multiply;
         }
         img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: .2s;
+            // transform: scale(1.05);
+        }
+        img,
+        .overlay {
+            border-radius: 7px;
+
         }
     }
     .sports {
-        grid-column: 1/10;
+        grid-column: 1/9;
         grid-row: 1/2;
     }
     .stand-up {
-        grid-column: 10/13;
+        grid-column: 9/13;
     }
     .live-music {
         grid-column: 5/13;
@@ -72,5 +72,67 @@
     }
     .lectures {
         grid-column: 9/13;
+    }
+    :hover {
+        .see-more {
+            transform: translate(0%);
+        }
+        img {
+            // filter: contrast(5);
+            transform: scale(1.07);
+        }
+    }
+    @media screen and (max-width: 1330px) {
+        .sports {
+            grid-column: 1/13;
+            grid-row: 1/2;
+        }
+        .stand-up {
+            grid-column: 1/6;
+            grid-row: 2/3;
+        }
+        .live-music {
+            grid-column: 6/13;
+            grid-row: 2/3;
+            img {
+                object-position: right;
+            }
+        }
+        .parties {
+            grid-column: 1/13;
+            grid-row: 3/4;
+        }
+        .workshops {
+            grid-column: 1/7;
+        }
+        .lectures {
+            grid-column: 7/13;
+        }
+    }
+    @media screen and (max-width: 1070px) {
+        .sports {
+            grid-column: 1/13;
+            grid-row: 1/2;
+        }
+        .stand-up {
+            grid-column: 1/13;
+            grid-row: 2/3;
+        }
+        .live-music {
+            grid-column: 1/13;
+            grid-row: 3/4;
+        }
+        .parties {
+            grid-column: 1/13;
+            grid-row: 4/5;
+        }
+        .lectures {
+            grid-column: 1/13;
+            grid-row: 5/6;
+        }
+        .workshops {
+            grid-column: 1/13;
+            grid-row: 6/7;
+        }
     }
 }
