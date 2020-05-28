@@ -14,19 +14,30 @@ export default class UpcomingEvents extends Component {
 
     componentDidMount() {
         this.setGallery()
+        console.log('getFilter', this.props.getFilter);
+        
     }
 
     setGallery = () => {
         let galleryItems = [];
-        eventService.query()
+
+        console.log('UpcomingEvents props' , this.props);
+        
+        const filter = this.props.getFilter()
+        eventService.query(filter)
             .then(events => {
-                events.forEach(event => galleryItems.push(event))
+                events.forEach(event => { if (event.startAt >= Math.round(Date.now() / 1000)) galleryItems.push(event)})
                 this.setState({ galleryItems }, () => {
+                    // CallBack Option
+                    console.log('galleryItems', this.state.galleryItems);
+                    
                 })
             })
     }
 
     render() {
+
+
         return (
             <main className="upcoming-container">
                 {this.state.galleryItems.length > 0 && <InfiniteCarousel
@@ -69,22 +80,8 @@ export default class UpcomingEvents extends Component {
                     responsive={true}
                     slidesSpacing={10}
                 >
-        
-                        <EventPreview event={this.state.galleryItems[0]} />
-                        <EventPreview event={this.state.galleryItems[1]} />
-                        <EventPreview event={this.state.galleryItems[2]} />
-                        <EventPreview event={this.state.galleryItems[3]} />
-                        {/* <EventPreview event={this.state.galleryItems[4]} />
-                        <EventPreview event={this.state.galleryItems[5]} />
-                        <EventPreview event={this.state.galleryItems[6]} />
-                        <EventPreview event={this.state.galleryItems[7]} />
-                        <EventPreview event={this.state.galleryItems[8]} />
-                        <EventPreview event={this.state.galleryItems[9]} />
-                        <EventPreview event={this.state.galleryItems[10]} />
-                        <EventPreview event={this.state.galleryItems[11]} />
-                        <EventPreview event={this.state.galleryItems[12]} />
-                        <EventPreview event={this.state.galleryItems[13]} />
-                        <EventPreview event={this.state.galleryItems[14]} />
+                    {this.state.galleryItems.map(event => <EventPreview key={event._id} event={event} />)}
+
 
                 </InfiniteCarousel>}
             </main>

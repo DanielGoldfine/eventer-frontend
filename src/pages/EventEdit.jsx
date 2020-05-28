@@ -53,10 +53,11 @@ class EventEdit extends React.Component {
     }
 
     componentDidMount() {
+        // TODO: mb try switching to React cloudinary
         let widget = window.cloudinary.createUploadWidget({
             cloudName: 'dsqh7qhpg',
             uploadPreset: 'lh8fyiqe'
-        }, (error, result) => { this.checkUploadResult(result) })
+        }, (error, result) => { this.checkUploadResult(result) });
         this.setState({ widget })
         var todayDate = new Date(); //Getting current date (default date) in the right format
         const todayDateString = todayDate.getFullYear() + '-' +
@@ -92,9 +93,8 @@ class EventEdit extends React.Component {
         value = ev.target.type === 'number' ? parseInt(value) : value;
         this.setState(prevState => (
             { ...prevState.filter, [name]: value }
-        ))
+        ));
     }
-
 
     handleSubmit = async (ev) => {
         ev.preventDefault();
@@ -108,12 +108,11 @@ class EventEdit extends React.Component {
         event.startAt = startAt
 
         //handle tags
-        let tagsArr
+        let tagsArr;
         if (event.tags && (typeof event.tags === 'string')) {
             tagsArr = event.tags.split(',')
             event.tags = tagsArr
-        }
-        else {
+        } else {
             tagsArr = []
         }
 
@@ -123,8 +122,7 @@ class EventEdit extends React.Component {
             event.createdAt = Math.round(Date.now() / 1000)
             event.members = []
             event.posts = []
-        }
-        else {
+        } else {
             event.updatedAt = Math.round(Date.now() / 1000)
         }
 
@@ -134,12 +132,12 @@ class EventEdit extends React.Component {
         const location = await this.translateAddressToLatLng(event.address)
         event.location = location
 
-        delete event.validationMsg
-        delete event.address
-        delete event.enablePrice
-        delete event.enableMaxCapacity
-        delete event.selectedTab
-        delete event.widget
+        delete event.validationMsg;
+        delete event.address;
+        delete event.enablePrice;
+        delete event.enableMaxCapacity;
+        delete event.selectedTab;
+        delete event.widget;
 
         event = await this.props.saveEvent(event)
         this.socketUpdateEvent()
@@ -179,9 +177,9 @@ class EventEdit extends React.Component {
             }, () => {
                 setTimeout(clearValidationMsg, 2000)
             })
-            return false
+            return false;
         }
-        return true
+        return true;
     }
 
     translateAddressToLatLng = async (address) => {
@@ -199,7 +197,6 @@ class EventEdit extends React.Component {
     }
 
     onTabSelect = async (type) => {
-
         if (type === 'form') {
             this.setState({ selectedTab: 'form' })
             return
@@ -279,7 +276,10 @@ class EventEdit extends React.Component {
     }
 
     render() {
-        const { category, title, description, startDate, startTime, address, price, capacity, tags, _id, imgUrl, images } = this.state
+        const { category, title, description,
+            startDate, startTime, address, price,
+            capacity, tags, _id, imgUrl, images } = this.state;
+
         return (
             <div className="main-container">
                 {this.state.selectedTab === "form" && <div className="bg-img-container">

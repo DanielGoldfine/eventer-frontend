@@ -20,6 +20,7 @@ class HomePage extends Component {
         window.addEventListener('scroll', this.listenToScrollHome)
         this.props.setHomePage(true);
         this.initHomePage();
+        this.setSortBy();
     }
 
     componentWillUnmount() {
@@ -37,7 +38,7 @@ class HomePage extends Component {
         }
     };
 
-    initHomePage = () => {
+    initHomePage = async () => {
         let filterBy = {
             txt: '',
             category: '',
@@ -46,24 +47,42 @@ class HomePage extends Component {
             locationType: '',
             userLocation: '',
             price: '',
-            sortDate: true,
-            sortNearby: false,
+            sortBy: 'startAt',
             limit: 20
         }
-        this.props.setFilter(filterBy)
-        this.props.loadEvents()
+        await this.props.setFilter(filterBy)
+        this.props.loadEvents(filterBy)
     }
 
-    chooseCategory = (chosenCategory) => {
-        let gFilter = this.props.filterBy;
+    chooseCategory = async(chosenCategory) => {
+        let filter = { ...this.props.filterBy }
 
-        gFilter.sortDate = false;
-        gFilter.limit = null;
-        gFilter.category = chosenCategory;
+        filter = { ...filter, sortBy: 'startAt' }
+        filter = { ...filter, limit: null }
+        filter = { ...filter, category: chosenCategory }
 
-        this.props.setFilter(gFilter)
-            .then(res => this.props.history.push(`/event/`));
+        console.log('HomePage: filter - ', filter);
+        
+
+        await this.props.setFilter(filter);
+        this.props.history.push('/event');
     };
+
+    setSortBy = (sortBy = 'startAt') => {
+        let filter = { ...this.props.filterBy }
+
+        filter = { ...filter, sortBy }
+
+        console.log('filter', filter);
+
+
+        this.props.setFilter(filter);
+    }
+
+    getFilter = () => {
+        return { ...this.props.filterBy }
+    }
+    
 
     render() {
         const { isSearchBar } = this.state;
@@ -86,7 +105,7 @@ class HomePage extends Component {
                 </header>
                 <CategoryLinks homePage chooseCategory={this.chooseCategory} />
                 <h2>Upcoming Events</h2>
-                {this.props.events && <UpcomingEvents events={this.props.events} />}
+                {/* {this.props.events && <UpcomingEvents events={this.props.events} />} */}
                 < CategoryGallery chooseCategory={this.chooseCategory} />
             </div>
         )

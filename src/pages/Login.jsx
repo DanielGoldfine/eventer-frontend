@@ -152,7 +152,7 @@ class Login extends Component {
           autoComplete="off" ref={(ref) => this.myRef = ref}
         >
 
-          <span class="material-icons">face</span>
+          <span className="material-icons">face</span>
 
           <p className="txt">
             Please set yout credencials and click on SIGN-UP to submit
@@ -252,7 +252,7 @@ class Login extends Component {
       <div>
 
         <form onSubmit={this.doLogin} className={classes.root} className="flex column" noValidate autoComplete="off">
-          <span class="material-icons"> account_circle </span>
+          <span className="material-icons"> account_circle </span>
 
           <p className="txt">Please Login here.</p>
 

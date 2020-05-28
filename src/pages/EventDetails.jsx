@@ -124,10 +124,10 @@ class EventDetails extends React.Component {
   }
 
   onSetCategory = (category) => {
-    let gFilter = this.props.filterBy;
-    gFilter.category = category;
-    this.props.setFilter(gFilter)
-      .then(res => this.props.history.push(`/event`));
+    let filter = this.props.filterBy;
+    filter.category = category;
+    this.props.setFilter(filter)
+      .then(res => this.props.history.push(`/event/`));
   };
 
   handleChange = (ev, field) => {

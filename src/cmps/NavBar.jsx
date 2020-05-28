@@ -1,4 +1,11 @@
 import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+
+import PersonIcon from '@material-ui/icons/Person';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import ViewListIcon from '@material-ui/icons/ViewList';
+
 import SearchBar from './SearchBar'
 import UserPreview from './UserPreview'
 import { Notifications } from './Notifications'
@@ -6,12 +13,9 @@ import history from '../history.js'
 import eventerLogo from '../assets/design/eventer-logo-new.png'
 import eventerIcn from '../assets/design/eventer-icn.png'
 import modalConnector from '../assets/helpers/modal-connector.png'
-import { connect } from 'react-redux'
 import { login, addNotification, loadUser } from '../store/actions/userActions'
 
-import PersonIcon from '@material-ui/icons/Person';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import ViewListIcon from '@material-ui/icons/ViewList';
+
 
 import socketService from '../services/socketService';
 
@@ -30,6 +34,7 @@ class NavBar extends Component {
 
     componentDidMount() {
         console.log('navbar mounted')
+        
         if (this.props.isHomePage) {
             this.setState({ navState: 'bright' })
             this.setState({ isHomePage: this.props.isHomePage })
@@ -241,4 +246,4 @@ const mapDispatchToProps = {
     login, addNotification, loadUser
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NavBar));

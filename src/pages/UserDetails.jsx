@@ -8,6 +8,7 @@ import { MinimalEventList } from '../cmps/MinimalEventList'
 import { FollowUserList } from '../cmps/FollowUserList'
 
 import { addReview, loadUser } from '../store/actions/userActions'
+import userService from '../services/userService'
 
 
 
@@ -53,6 +54,7 @@ class UserDetails extends Component {
     }
 
     submitReview = (newReview) => {
+        // TODO: WHO WRITES .then in 2020
         this.props.addReview(newReview, this.state.user)
             .then(user => {
                 this.setState({ user })
@@ -66,25 +68,55 @@ class UserDetails extends Component {
 
     }
 
+    doFollow = (loggedInUser) => {
+        // const { loggedInUser } = this.props;
+        const { user } = this.state;
+
+        // if (loggedInUser.userName !== 'Guest') {
+        // console.log('loggedInUser:', loggedInUser);
+        // console.log('user:', user);
+
+        userService.doFollow(user, loggedInUser);
+
+
+        // } else {
+        //     //push to login page - confirm with modal?
+        // }
+        // this.isFollowing()
+    }
+
+    doUnfollow = (loggedInUser) => {
+        const { user } = this.state;
+
+        userService.doUnfollow(user, loggedInUser);
+
+
+    }
+
+    isFollowing = (loggedInUser) => {
+        const { user } = this.state;
+
+        userService.checkFollowing(user, loggedInUser )
+    }
+
     render() {
+
+        const { loggedInUser } = this.props;
         const { isLoggedInUser, user, } = this.state;
+
         return (
             <React.Fragment>
                 <main className="user-grid-container">
                     {user && <section className="user-details-container">
 
-                        <UserDesc isLoggedInUser={isLoggedInUser} user={user} >
-                            <button className="cta-btn-full follow-btn">Follow</button>
-                        </UserDesc>
+                    <UserDesc isLoggedInUser={isLoggedInUser} user={user} doFollow={this.doFollow} doUnfollow={this.doUnfollow} loggedInUser={loggedInUser} />
 
                         {!isLoggedInUser && this.props.minimalLoggedInUser &&
                             <ReviewForm
                                 submitReview={this.submitReview}
                                 minimalUser={this.props.minimalLoggedInUser} />}
 
-
                         <ReviewList reviews={user.reviews} />
-
 
                         <div className="user-lists">
                             <MinimalEventList minimalEventList={this.minimalEventList} />
@@ -103,9 +135,11 @@ class UserDetails extends Component {
 
 
 const mapStateToProps = (state) => {
+    const { loggedInUser, minimalLoggedInUser } = state.userStore;
+
     return {
-        loggedInUser: state.userStore.loggedInUser,
-        minimalLoggedInUser: state.userStore.minimalLoggedInUser
+        loggedInUser: loggedInUser,
+        minimalLoggedInUser: minimalLoggedInUser
     };
 };
 

@@ -107,9 +107,8 @@ export function addNotification(notification) {
 
 
 export function toggleNotifications(status) {
-    return (dispatch) => {
+    return async (dispatch) => {
         dispatch({ type: 'TOGGLE_NOTIFICATIONS', status });
-        return Promise.resolve();
     };
 }
 
