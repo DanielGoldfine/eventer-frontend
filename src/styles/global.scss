@@ -14,9 +14,7 @@
 @import "basics/avatar.scss";
 
 // components
-
-@import "pages/home-page.scss";
-@import "pages/login.scss";
+@import "components/hero-dissolve.scss";
 @import "components/nav-bar.scss";
 @import "components/search-bar.scss";
 @import "components/category-links.scss";
@@ -32,9 +30,9 @@
 @import "components/map-container.scss";
 @import "components/category-gallery.scss";
 
-
-
 // pages
+@import "pages/login.scss";
+@import "pages/home-page.scss";
 @import "pages/event-edit.scss";
 @import "pages/event-details.scss";
 @import "pages/event-index.scss";

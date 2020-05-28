@@ -4,7 +4,7 @@ import UserPreview from './UserPreview'
 import { Notifications } from './Notifications'
 import history from '../history.js'
 import eventerLogo from '../assets/design/eventer-logo-new.png'
-import eventerIcn from '../assets/design/eventer.icn.png'
+import eventerIcn from '../assets/design/eventer-icn.png'
 import modalConnector from '../assets/helpers/modal-connector.png'
 import { connect } from 'react-redux'
 import { login } from '../store/actions/userActions'
@@ -30,6 +30,7 @@ class NavBar extends Component {
         if (this.props.isHomePage) {
             this.setState({ navState: 'bright' })
             this.setState({ isHomePage: this.props.isHomePage })
+            this.setState({isSearchBar: false })
         } else {
             this.setState({ navState: 'dark' })
             this.setState({ isHomePage: this.props.isHomePage })
@@ -42,6 +43,7 @@ class NavBar extends Component {
                 window.addEventListener('scroll', this.listenToScrollNav)
                 this.setState({ navState: 'bright' })
                 this.setState({ isHomePage: this.props.isHomePage })
+                this.setState({isSearchBar: false })
             } else {
                 window.removeEventListener('scroll', this.listenToScrollNav)
                 this.setState({ navState: 'dark' })
@@ -55,7 +57,6 @@ class NavBar extends Component {
     }
 
     listenToScrollNav = () => {
-        console.log('scroll')
         if (!this.props.isHomePage) return;
         const winScroll =
             document.body.scrollTop || document.documentElement.scrollTop;

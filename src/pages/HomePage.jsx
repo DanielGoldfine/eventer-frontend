@@ -4,13 +4,10 @@ import { connect } from 'react-redux'
 import { loadEvents, setFilter } from '../store/actions/eventActions'
 import { setHomePage } from '../store/actions/appActions'
 
-import heroOverlay from '../assets/design/hero-overlay.png'
 import SearchBar from '../cmps/SearchBar'
 import { CategoryLinks } from '../cmps/CategoryLinks'
 import UpcomingEvents from '../cmps/UpcomingEvents'
 import CategoryGallery from '../cmps/CategoryGallery'
-import RotatingHero from '../cmps/RotatingHero'
-
 
 class HomePage extends Component {
 
@@ -71,20 +68,27 @@ class HomePage extends Component {
     render() {
         const { isSearchBar } = this.state;
         return (
-                <div onSwiping={this.eventHandler} className="home-page-container">
-                    <header className="main-header-container flex justify-center align-items-center">
-                        <div className="header flex column align-center">
-                            <h1>Enter a World of Events</h1>
-                            {isSearchBar && <SearchBar />}
-                        </div>
-                        <img className="hero-overlay" src={heroOverlay} alt="" />
-                        <RotatingHero />
-                    </header>
-                    <CategoryLinks homePage chooseCategory={this.chooseCategory} />
-                    <h2>Upcoming Events</h2>
-                    {this.props.events && <UpcomingEvents events={this.props.events} />}
-                    < CategoryGallery chooseCategory={this.chooseCategory} />
-                </div>
+            <div onSwiping={this.eventHandler} className="home-page-container">
+                <header className="main-header-container flex justify-center align-items-center">
+                    <div className="header flex column align-center">
+                        <h1>Enter a World of Events</h1>
+                        {isSearchBar && <SearchBar />}
+                    </div>
+                    <div className="hero-dissolve">
+                        <div className="hero-image"></div>
+                        <div className="hero-image"></div>
+                        <div className="hero-image"></div>
+                        <div className="hero-image"></div>
+                        <div className="hero-image"></div>
+                        <div className="hero-image"></div>
+                        <div className="hero-image"></div>
+                    </div>
+                </header>
+                <CategoryLinks homePage chooseCategory={this.chooseCategory} />
+                <h2>Upcoming Events</h2>
+                {this.props.events && <UpcomingEvents events={this.props.events} />}
+                < CategoryGallery chooseCategory={this.chooseCategory} />
+            </div>
         )
     }
 }

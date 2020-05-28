@@ -67,19 +67,13 @@ class UserDetails extends Component {
     }
 
     render() {
-
         const { isLoggedInUser, user, } = this.state;
         return (
             <React.Fragment>
-                <img className="bg-img" src={require('../assets/imgs/page-header.png')} />
-                
-                {user && <section className="user-details-container flex column justify-center align-items-center">
-
-
-                    <div className="left-side">
+                <main className="user-grid-container">
+                    {user && <section className="user-details-container">
 
                         <UserDesc isLoggedInUser={isLoggedInUser} user={user} >
-                {/* ==================Children to avoid props drilling================== */}
                             <button className="cta-btn-full follow-btn">Follow</button>
                         </UserDesc>
 
@@ -88,17 +82,19 @@ class UserDetails extends Component {
                                 submitReview={this.submitReview}
                                 minimalUser={this.props.minimalLoggedInUser} />}
 
+
                         <ReviewList reviews={user.reviews} />
 
-                    </div>
 
-                    <div className="right-side fixed">
-                        <MinimalEventList minimalEventList={this.minimalEventList} />
-                        <MinimalEventList minimalEventList={this.minimalEventList} />
-                        <FollowUserList followUserList={this.followUserList} />
-                    </div>
-                </section>}
+                        <div className="user-lists">
+                            <MinimalEventList minimalEventList={this.minimalEventList} />
+                            <FollowUserList followUserList={this.followUserList} />
+                        </div>
 
+                    </section>}
+                </main>
+
+                <img className="bg-img" src={require('../assets/imgs/page-header.png')} />
 
             </React.Fragment>
         )

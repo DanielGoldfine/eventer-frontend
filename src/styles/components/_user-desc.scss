@@ -1,38 +1,35 @@
-
-
 .user-desc {
-    // width: 250px;
-    // border: 1px solid $clrborder;
-    padding: 40px !important;
-    padding-bottom: 15px !important;
+    padding: 30px;
+    padding-bottom: 15px;
 
-    >* {
+    > * {
         width: 100%;
     }
 
     .user-info {
-        // border-bottom: 1px solid $clrborderBottom;
         .full-name {
-            font-size: 25px;
+            font-size: rem(25px);
             font-weight: 700;
             line-height: 40px;
+            font-family: secondfontbold;
         }
         h4 {
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            font-family: secondfontlight;
+            font-size: rem(20px);
         }
         margin-bottom: 5px;
     }
 
     .user-img {
         width: 150px;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
     }
     .user-stats {
-        padding: 0 7px;
-        >* {
-            width: 100%;
+        // padding: 0 7px;
+        > * {
+            width: 220px;
             justify-content: space-between;
-            // text-align: left;
             font-size: 20px;
             font-weight: 400;
             line-height: 40px;
@@ -43,9 +40,14 @@
     }
 
     .follow-btn {
-        margin-bottom: 15px;
-        // text-align: center;
+        margin-bottom: 10px;
+        padding-top: 5px;
+        width: 220px;
+        height: 50px;
         margin-top: 20px;
-        background: lightgreen;
+        background: $brandingGreen;
+        text-transform: uppercase;
+        justify-content: center;
+        font-size: rem(25px);
     }
 }

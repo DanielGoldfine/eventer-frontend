@@ -37,7 +37,6 @@ export function UserDesc(props) {
                     {!user.rank.average && <h4>Not yet</h4>}
                 </div>
                 {props.children}
-    {/* Child:      <button className="cta-btn-full follow-btn">Follow</button>             */}
             </section>
         </main>
     )

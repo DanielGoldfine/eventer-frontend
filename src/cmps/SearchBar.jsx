@@ -21,18 +21,23 @@ class SearchBar extends Component {
     submitSearch = (ev) => {
         ev.preventDefault();
         const { searchTxt } = this.state;
-        let gFilter = this.props.filterBy;
 
-        gFilter.txt = searchTxt;
+        let filterBy = {
+            txt: searchTxt,
+            category: '',
+            date: '',
+            radius: '',
+            locationType: '',
+            userLocation: '',
+            price: '',
+            sortDate: false,
+            sortNearby: false,
+            limit: null
+        }
 
-        if (this.props.isHomePage) {
-            gFilter.sortDate = false;
-            gFilter.limit = null;
-        };
-
-        this.props.setFilter(gFilter)
+        this.props.setFilter(filterBy)
             .then(res => {
-                this.props.loadEvents(gFilter)
+                this.props.loadEvents(filterBy)
                 history.push('/event')
             });
     };
@@ -44,10 +49,11 @@ class SearchBar extends Component {
         const { searchTxt } = this.state;
 
         return (
-            <section className="seach-bar-container flex align-items-center space-between">
+            <form onSubmit={this.submitSearch} className="seach-bar-container flex align-items-center space-between">
                 <input className="search-input" onChange={this.handleChange} type="text" name="txt" placeholder="What are you up to?" value={searchTxt} />
                 <SearchIcon onClick={this.submitSearch} className="search-icn" />
-            </section>
+                <button hidden></button>
+            </form>
         )
     }
 }

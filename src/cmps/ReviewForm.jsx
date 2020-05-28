@@ -15,12 +15,12 @@ export class ReviewForm extends Component {
         this.setState({ rating: value });
     }
 
-    handleChange = ({target}) => {
-        this.setState({txt : target.value})
+    handleChange = ({ target }) => {
+        this.setState({ txt: target.value })
     }
 
     onSubmitReview = () => {
-        const {minimalUser} = this.props;
+        const { minimalUser } = this.props;
         const newReview = {
             createdAt: Date.now(),
             creator: {
@@ -32,8 +32,8 @@ export class ReviewForm extends Component {
             rate: this.state.rating
         };
         this.props.submitReview(newReview)
-        this.setState({txt : ''})
-        this.setState({rating : 0})
+        this.setState({ txt: '' })
+        this.setState({ rating: 0 })
     }
 
     render() {
@@ -43,9 +43,12 @@ export class ReviewForm extends Component {
         return (
             <section className="review-form flex column justify-center align-items-center">
                 <div className="user-preview-container">
-                    <UserPreview ranking={true} minimalUser={this.props.minimalUser} />
+                    <UserPreview minimalUser={this.props.minimalUser} />
                 </div>
-                <textarea style={{ resize: "none" }} placeholder="Say something..." onChange={this.handleChange} value={this.state.txt}></textarea>
+                <form onSubmit={this.onSubmitReview}>
+                    <textarea style={{ resize: "none" }} placeholder="Say something..." onChange={this.handleChange} value={this.state.txt}></textarea>
+                    <button hidden></button>
+                </form>
                 <section className="rate-post flex space-between align-items-center">
                     <div className="rate-icns flex justify-center align-items-center">
                         <svg className="star-btn" viewBox="0 0 576 512">
