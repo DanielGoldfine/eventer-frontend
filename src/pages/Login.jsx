@@ -8,6 +8,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
+
+
 class Login extends Component {
   state = {
     msg: '',
@@ -36,8 +38,8 @@ class Login extends Component {
         croppingAspectRatio: 1,
         maxFiles: 1
       }, (error, result) => { this.checkUploadResult(result) })
-      
-      this.setState({ msg: `Hello, welcome ${this.props.loggedInUser.fullName  }` , widget })
+
+      this.setState({ msg: `Hello, welcome ${this.props.loggedInUser.fullName}`, widget })
     }
   }
 
@@ -72,10 +74,12 @@ class Login extends Component {
     const userCreds = { userName, password };
     this.props.login(userCreds)
       .then(res => {
+
         const { loggedInUser } = this.props;
-        // console.log('loggedInUser', loggedInUser);
+
         if (loggedInUser.userName !== 'Guest') {
           this.props.history.push(`/`)
+
         }
         else this.setState({ msg: 'Incorrect User-Name / Password' })
       })
@@ -326,9 +330,9 @@ class Login extends Component {
 
           {(loggedInUser && loggedInUser.userName !== "Guest") &&
             <div>
-              
-            {this.props.loggedInUser.imgUrl && (<div><img className="profile-img square-ratio" alt="" src={this.props.loggedInUser.imgUrl} />
-              <h1>{this.props.loggedInUser.fullName}</h1></div>)}
+
+              {this.props.loggedInUser.imgUrl && (<div><img className="profile-img square-ratio" alt="" src={this.props.loggedInUser.imgUrl} />
+                <h1>{this.props.loggedInUser.fullName}</h1></div>)}
 
               <Button variant="contained"
                 color="primary"

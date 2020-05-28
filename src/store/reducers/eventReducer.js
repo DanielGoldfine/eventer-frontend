@@ -48,7 +48,8 @@ export default function EventReducer(state = initialState, action) {
                 events: state.events.map(event => {
                     if (event._id === action.event._id) return action.event;
                     return event;
-                })
+                }),
+                currEvent:{ ...action.event }
             }
         case 'SET_FILTER':
             return {

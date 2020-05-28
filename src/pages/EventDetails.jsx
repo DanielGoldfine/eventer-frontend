@@ -1,5 +1,5 @@
 import React from 'react';
-import { loadEvent, subscribeEvent, unsubscribeEvent, setFilter, updateEvent } from '../store/actions/eventActions.js'
+import { loadEvent, subscribeEvent, unsubscribeEvent, setFilter, updateEvent, updateEventLocal } from '../store/actions/eventActions.js'
 import { login } from '../store/actions/userActions.js'
 import { connect } from "react-redux";
 import Moment from 'moment';
@@ -11,6 +11,8 @@ import UserPreview from '../cmps/UserPreview'
 import EventPosts from '../cmps/EventPosts'
 import EventImagesGallery from '../cmps/EventImagesGallery'
 import Button from '@material-ui/core/Button';
+
+import socketService from '../services/socketService';
 
 
 
@@ -35,30 +37,97 @@ class EventDetails extends React.Component {
     if (this.props.match) {  // "preview" mode doesn't use URL and params...
       const { id } = this.props.match.params;
       this.props.loadEvent(id)
+        .then(() => {
+          socketService.emit('viewEventDetails', this.props.event._id);
+          socketService.on('memberJoin', this.socketAddMemebr);
+          socketService.on('memberLeave', this.socketLeaveMember);
+        })
+
     }
+
   }
 
-  onUnsubscribeEvent = (userId) => {
-    this.props.unsubscribeEvent(this.props.event, userId)
-      .then((event) => {
-        this.setState({ event })
-      })
+  componentWillUnmount() {
+    socketService.off('memberJoin', this.socketAddPost);
+    socketService.off('memberLeave', this.socketRemovePost);
   }
 
+  socketAddMemebr = event => {
+    this.props.updateEventLocal(event)
+  };
 
-  onSubscribeEvent = () => {
-    this.props.subscribeEvent(this.props.event, this.props.minimalLoggedInUser)
-      .then((event) => {
-        this.setState({ event })
-      })
+  socketLeaveMember = (event) => {
+    this.props.updateEventLocal(event)
+  };
 
+
+  onUnsubscribeEvent = async (userId) => {
+    const event = await this.props.unsubscribeEvent(this.props.event, userId)
+    this.setState({ event })
+    //Show live update of event members
+    socketService.emit('memberLeave', event)
+    //Send notification for all event members that someone had left
+    const minimalEvent = {
+      _id: this.props.event._id,
+      title: this.props.event.title,
+      imgUrl: this.props.event.imgUrl
+    }
+    const minimalUser = this.props.minimalLoggedInUser
+    event.members.forEach(member => {
+      const payload = {
+        userId: member._id,
+        minimalEvent,
+        minimalUser,
+        type: 'user_left_event'
+      }
+      socketService.emit('user left event', payload)
+    })
+    //Send notification also to the event creator
+    const payload = {
+      userId: this.props.event.createdBy._id,
+      minimalEvent,
+      minimalUser,
+      type: 'user_left_event'
+    }
+    socketService.emit('user left event', payload)
+  }
+
+  onSubscribeEvent = async () => {
+    const event = await this.props.subscribeEvent(this.props.event, this.props.minimalLoggedInUser)
+    this.setState({ event })
+    //Show live update of event members
+    socketService.emit('memberJoin', event)
+    //Send notification for all event members that someone new has joined
+    const minimalEvent = {
+      _id: this.props.event._id,
+      title: this.props.event.title,
+      imgUrl: this.props.event.imgUrl
+    }
+    const minimalUser = this.props.minimalLoggedInUser
+    event.members.forEach(member => {
+      const payload = {
+        userId: member._id,
+        minimalEvent,
+        minimalUser,
+        type: 'user_join_event'
+      }
+      socketService.emit('user left event', payload)
+    })
+    //Send notification also to the event creator
+    const payload = {
+      userId: this.props.event.createdBy._id,
+      minimalEvent,
+      minimalUser,
+      type: 'user_join_event'
+    }
+    socketService.emit('user joined event', payload)
   }
 
   onSetCategory = (category) => {
     let gFilter = this.props.filterBy;
     gFilter.category = category;
     this.props.setFilter(gFilter)
-      .then(res => this.props.history.push(`/event/`));
+      .then(res => this.props.history.push(`/event`));
   };
 
   handleChange = (ev, field) => {
@@ -68,6 +137,23 @@ class EventDetails extends React.Component {
   onUpdateContent = (field, refInput) => {
     this.props.updateEvent(this.props.event, this.state[field], field)
     refInput.current.contentEditable = false
+    //Update all members of the event
+    const minimalEvent = {
+      _id: this.props.event._id,
+      title: this.props.event.title,
+      imgUrl: this.props.event.imgUrl
+    }
+    const minimalUser = this.props.event.createdBy
+
+    this.props.event.members.forEach(member => {
+      const payload = {
+        userId: member._id,
+        minimalEvent,
+        minimalUser,
+        type: 'update_event_details'
+      }
+      socketService.emit('event got updated', payload)
+    })
   }
 
   onPublishEvent = () => {
@@ -138,7 +224,6 @@ class EventDetails extends React.Component {
               <span>{updatedAtStr.split(' ')[4].substring(0, 5)}</span>
             </small>
           </div>
-          {/* <EventImagesGallery></EventImagesGallery> */}
           {images && <EventImagesGallery images={images}></EventImagesGallery>}
           {images.length === 0 && imgUrl.includes('http') && <img src={imgUrl} alt=""></img>}
           {images.length === 0 && category && !imgUrl.includes('http') && <img src={require(`../assets/imgs/${category.replace(/\s+/g, '')}.jpg`)} alt=""></img>}
@@ -166,12 +251,12 @@ class EventDetails extends React.Component {
           {event && <EventMembers event={event} onSubscribeEvent={this.onSubscribeEvent} onUnsubscribeEvent={this.onUnsubscribeEvent} loggedInUserId={this.props.minimalLoggedInUser._id} />}
           {this.props.previewEvent && <EventMembers previewMode={true} event={this.props.previewEvent} loggedInUserId={this.props.minimalLoggedInUser._id} />}
         </section>
-        {event && !this.props.previewEvent && <EventPosts eventCreatorId={this.props.event.createdBy._id} posts={this.props.event.posts} isLoggedUserAdmin={this.props.minimalLoggedInUser.isAdmin} />}
+        {event && !this.props.previewEvent && <EventPosts eventCreatorId={this.props.event.createdBy._id} isLoggedUserAdmin={this.props.minimalLoggedInUser.isAdmin} />}
         <MapContainer loc={location} name={location.address} />
 
 
       </div>
-      
+
     </div>
 
   }
@@ -188,7 +273,7 @@ const mapStateToProps = (state) => {
 
 
 const mapDispatchToProps = {
-  loadEvent, unsubscribeEvent, subscribeEvent, setFilter, login, updateEvent
+  loadEvent, unsubscribeEvent, subscribeEvent, setFilter, login, updateEvent, updateEventLocal
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventDetails);

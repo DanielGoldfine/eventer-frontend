@@ -1,11 +1,11 @@
 import userService from '../../services/userService.js';
 
-export function signup(credentials,  loadingStatus) {
+export function signup(credentials, loadingStatus) {
     return async dispatch => {
         try {
             toggleLoad(credentials, loadingStatus)
             const user = await userService.signup(credentials)
-            dispatch(setUser(user), ()=>{toggleLoad(loadingStatus)});
+            dispatch(setUser(user), () => { toggleLoad(loadingStatus) });
         }
         catch (err) {
             console.log('userService: err in signup', err);
@@ -15,35 +15,36 @@ export function signup(credentials,  loadingStatus) {
 
 
 export function login(credentials, loadingStatus) {
-    console.log('login action,',credentials)
-        return async dispatch => {
-            try {
-                toggleLoad(credentials, loadingStatus)
-                const user = await userService.login(credentials)
-                dispatch(setLoggedInUser(user), () => { toggleLoad(loadingStatus) });
-            }
-            catch (err) {
-                console.log('userService: err in login', err);
-            }
+    // console.log('login action,', credentials)
+    return async dispatch => {
+        try {
+            toggleLoad(credentials, loadingStatus)
+            const user = await userService.login(credentials)
+            dispatch(setLoggedInUser(user), () => { toggleLoad(loadingStatus) });
         }
+        catch (err) {
+            console.log('userService: err in login', err);
+        }
+    }
     // }
 }
 
-export function logout() { 
+export function logout() {
     return async dispatch => {
-      await userService.logout();
-      dispatch(setUser(null));
+        await userService.logout();
+        dispatch(setUser(null));
     };
-  }
-  
+}
+
 
 
 export function loadUser(id) {
     return async dispatch => {
         try {
             const user = await userService.get(id)
+            dispatch(setUser(user));
             return user
-            // dispatch(setUser(user));
+
         }
         catch (err) {
             console.log('userService: err in loading user', err);
@@ -90,6 +91,20 @@ export function addReview(review, user) {
     }
 }
 
+export function addNotification(notification) {
+    return async dispatch => {
+        try {
+            const updatedUser = await userService.addNotification(notification)
+            // console.log('updated user in actions',updatedUser )
+            dispatch(_saveUser('UPDATE_USER', updatedUser));
+            return updatedUser
+        }
+        catch (err) {
+            console.log('eventService: err in addNotification action', err);
+        }
+    }
+}
+
 
 export function toggleNotifications(status) {
     return (dispatch) => {
@@ -127,7 +142,7 @@ function _removeUser(userId) {
     };
 }
 
-function _saveUser(user, type) {
+function _saveUser(type, user) {
     return {
         type,
         user

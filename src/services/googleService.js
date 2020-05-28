@@ -7,11 +7,10 @@ export default {
     getLatLng
 }
 
-
 async function getLatLng(address) {
     const res = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${API_KEY}`)
     if (res.data.results.length) return res.data.results[0].geometry.location
-    else return ''
+    else return null
 }
 
 // function getDistasnce() {

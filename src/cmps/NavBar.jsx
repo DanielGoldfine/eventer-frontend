@@ -7,11 +7,13 @@ import eventerLogo from '../assets/design/eventer-logo-new.png'
 import eventerIcn from '../assets/design/eventer.icn.png'
 import modalConnector from '../assets/helpers/modal-connector.png'
 import { connect } from 'react-redux'
-import { login } from '../store/actions/userActions'
+import { login, addNotification, loadUser } from '../store/actions/userActions'
 
 import PersonIcon from '@material-ui/icons/Person';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ViewListIcon from '@material-ui/icons/ViewList';
+
+import socketService from '../services/socketService';
 
 
 
@@ -27,6 +29,7 @@ class NavBar extends Component {
 
 
     componentDidMount() {
+        console.log('navbar mounted')
         if (this.props.isHomePage) {
             this.setState({ navState: 'bright' })
             this.setState({ isHomePage: this.props.isHomePage })
@@ -34,7 +37,21 @@ class NavBar extends Component {
             this.setState({ navState: 'dark' })
             this.setState({ isHomePage: this.props.isHomePage })
         };
+        console.log('logged user nav bar', this.props.loggedInUser)
+        if (this.props.loggedInUser) {
+            this.props.loadUser(this.props.loggedInUser._id)
+            socketService.setup();
+            socketService.emit('userLogin', this.props.loggedInUser._id);
+            socketService.on('event got updated', this.eventUpdateNotification);
+            socketService.on('user joined event', this.newMemberNotification);
+            socketService.on('user left event', this.memeberLeftNotification);
+        }
     }
+
+    // componentDidUpdate(prevProps) { // To properly apply logging the user
+    //     if (this.props.loggedInUser !== prevProps.loggedInUser)
+    //         this.props.loadUser(this.props.loggedInUser._id)
+    // }
 
     componentWillUpdate = (nextProps, nextState) => {
         if (nextState.isHomePage !== nextProps.isHomePage) {
@@ -52,6 +69,25 @@ class NavBar extends Component {
 
     componentWillUnmount() {
         window.removeEventListener('scroll', this.listenToScrollNav)
+        socketService.off('event got updated', this.eventUpdateNotification);
+        socketService.off('user joined event', this.newMemberNotification);
+        socketService.off('user left event', this.memeberLeftNotification);
+    }
+
+
+    eventUpdateNotification = async (notification) => {
+        const user = await this.props.addNotification(notification)
+        this.props.loadUser(user._id)
+    }
+
+    newMemberNotification = async (notification) => {
+        const user = await this.props.addNotification(notification)
+        this.props.loadUser(user._id)
+    }
+
+    memeberLeftNotification = async (notification) => {
+        const user = await this.props.addNotification(notification)
+        this.props.loadUser(user._id)
     }
 
     listenToScrollNav = () => {
@@ -162,7 +198,7 @@ class NavBar extends Component {
         return (
             <main className={navState}>
                 {isNotificationsOpen && <div ref={notifications => this.notifications = notifications}>
-                    < Notifications />
+                {loggedInUser.notification && < Notifications notification={loggedInUser.notification} />}
                 </div>}
                 <nav className="nav-bar-container main-container flex space-between align-items-center">
                     <div className="flex space-between align-items-center">
@@ -201,7 +237,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-    login
+    login, addNotification, loadUser
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

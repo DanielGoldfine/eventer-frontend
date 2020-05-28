@@ -16,8 +16,10 @@
     padding-top: 20px;
     margin:0;
     .react-tabs__tab {
-      color:#8080808c;
+      color:#808080d9;
       font-size: 1.2rem !important;
+      border:1px solid grey;
+      border-radius: 5px 5px 0 0 ;
     }
     .react-tabs__tab--selected {
       color: $clr2 !important;

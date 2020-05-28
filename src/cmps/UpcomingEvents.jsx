@@ -60,9 +60,9 @@ export default class UpcomingEvents extends Component {
         
                         <EventPreview event={this.state.galleryItems[0]} />
                         <EventPreview event={this.state.galleryItems[1]} />
-                        {/* <EventPreview event={this.state.galleryItems[2]} />
+                        <EventPreview event={this.state.galleryItems[2]} />
                         <EventPreview event={this.state.galleryItems[3]} />
-                        <EventPreview event={this.state.galleryItems[4]} />
+                        {/* <EventPreview event={this.state.galleryItems[4]} />
                         <EventPreview event={this.state.galleryItems[5]} />
                         <EventPreview event={this.state.galleryItems[6]} />
                         <EventPreview event={this.state.galleryItems[7]} />

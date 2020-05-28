@@ -71,7 +71,7 @@ export function updateEvent(event,value,field) {
 export function addPost(event, minimalUser,text) {
     return async dispatch => {
         try {
-            const updatedEvent = await eventService.addPost(event,minimalUser,text)
+            const updatedEvent = await eventService.addPost(event,minimalUser,text) 
             dispatch(_saveEvent('UPDATE_EVENT', updatedEvent));
             return updatedEvent
         }
@@ -80,6 +80,7 @@ export function addPost(event, minimalUser,text) {
         }
     }
 }
+
 export function removePost(event,postId) {
     return async dispatch => {
         try {
@@ -88,6 +89,17 @@ export function removePost(event,postId) {
         }
         catch (err) {
             console.log('eventService: err in remove post action', err);
+        }
+    }
+}
+
+export function updateEventLocal(event) {
+    return async dispatch => {
+        try {
+            dispatch(_saveEvent('UPDATE_EVENT', event));
+        }
+        catch (err) {
+            console.log('eventService: err in updateEventLocal action', err);
         }
     }
 }

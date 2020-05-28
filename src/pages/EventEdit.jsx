@@ -15,6 +15,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+import socketService from '../services/socketService';
+
+
 
 
 class EventEdit extends React.Component {
@@ -65,33 +68,23 @@ class EventEdit extends React.Component {
         this.loadEvent();
     }
 
-    loadEvent = () => {
+    loadEvent = async () => {
         const { id } = this.props.match.params;
         if (!id) return; // As it is s a new event, nothing to load... 
-        eventService.get(id)
-            .then(event => {   //Making sure only event creator can edit
-                if (this.props.minimalLoggedInUser._id !== event.createdBy._id) {
-                    return this.props.history.push('/')
-                }
-                else {  // Price check-box status
-                    let enablePrice = false
-                    if (event.price) {
-                        enablePrice = true
-                    }
-
-                    let enableMaxCapacity = false  // Max-capacity check-box status
-                    if (event.capacity) {
-                        enableMaxCapacity = true
-                    }
-                    this.setState({
-                        ...event,
-                        address: event.location.address,
-                        enablePrice,
-                        enableMaxCapacity
-                    });
-                }
-
-            })
+        const event = await eventService.get(id) //Making sure only event creator can edit
+        if (this.props.minimalLoggedInUser._id !== event.createdBy._id) {
+            return this.props.history.push('/')
+        }
+        else {  // Price check-box status
+            let enablePrice = event.price ? true : false
+            let enableMaxCapacity = event.capacity ? true : false  // Max-capacity check-box status
+            this.setState({
+                ...event,
+                address: event.location.address,
+                enablePrice,
+                enableMaxCapacity
+            });
+        }
     }
 
     handleChange = (ev) => {
@@ -105,7 +98,7 @@ class EventEdit extends React.Component {
 
     handleSubmit = async (ev) => {
         ev.preventDefault();
-        const validForm = this.formValidation()
+        const validForm = this.isFormValid()
         if (!validForm) return
 
         let event = this.state
@@ -138,16 +131,8 @@ class EventEdit extends React.Component {
         if (!this.state.createdBy) event.createdBy = this.props.minimalLoggedInUser
 
         //handle getting lat/lng
-        const latlng = await googleService.getLatLng(event.address)
-        try {
-            event.location = {}
-            event.location.lat = latlng.lat ? latlng.lat : ''
-            event.location.lng = latlng.lng ? latlng.lng : ''
-            event.location.address = event.address
-        }
-        catch (err) {
-            console.log('Error in google geocode request: ', err)
-        }
+        const location = await this.translateAddressToLatLng(event.address)
+        event.location = location
 
         delete event.validationMsg
         delete event.address
@@ -156,14 +141,12 @@ class EventEdit extends React.Component {
         delete event.selectedTab
         delete event.widget
 
-        this.props.saveEvent(event)
-            .then((event) => {
-                this.props.history.push(`/event/${event._id}`)
-            })
+        event = await this.props.saveEvent(event)
+        this.socketUpdateEvent()
+        this.props.history.push(`/event/${event._id}`)
     }
 
     togglePrice = () => {
-        if (this.state.enablePrice) this.priceInput.current.value = ''
         this.setState((prevState) => {
             return {
                 enablePrice: !prevState.enablePrice,
@@ -174,7 +157,6 @@ class EventEdit extends React.Component {
 
 
     toggleMaxCapacity = () => {
-        if (this.state.enableMaxCapacity) this.capacityInput.current.value = ''
         this.setState((prevState) => {
             return {
                 enableMaxCapacity: !prevState.enableMaxCapacity,
@@ -183,20 +165,37 @@ class EventEdit extends React.Component {
         })
     }
 
-    formValidation = () => {
+    isFormValid = () => {
+        const clearValidationMsg = () => this.setState({ validationMsg: '' })
         if (this.state.category === 'Choose Category') {
             this.setState({ validationMsg: 'You need to choose a category!' }, () => {
-                setTimeout(() => this.setState({ validationMsg: '' }), 2000)
+                setTimeout(clearValidationMsg, 2000)
             })
             return false
         }
         if (this.state.address === '') {
-            this.setState({ validationMsg: 'You need to choose an address!' }, () => {
-                setTimeout(() => this.setState({ validationMsg: '' }), 2000)
+            this.setState({
+                validationMsg: 'You need to choose an address!'
+            }, () => {
+                setTimeout(clearValidationMsg, 2000)
             })
             return false
         }
         return true
+    }
+
+    translateAddressToLatLng = async (address) => {
+        const latlng = await googleService.getLatLng(address)
+        try {
+            const location = {}
+            location.lat = latlng.lat ? latlng.lat : ''
+            location.lng = latlng.lng ? latlng.lng : ''
+            location.address = this.state.address
+            return location
+        }
+        catch (err) {
+            console.log('Error in google geocode request: ', err)
+        }
     }
 
     onTabSelect = async (type) => {
@@ -206,7 +205,7 @@ class EventEdit extends React.Component {
             return
         }
 
-        const validForm = this.formValidation()
+        const validForm = this.isFormValid()
         if (!validForm) return
 
         if (!this.state.createdBy) { // setup preview mode
@@ -222,21 +221,11 @@ class EventEdit extends React.Component {
             })
         }
 
-        const latlng = await googleService.getLatLng(this.state.address)
-        try {
-            const location = {}
-            location.lat = latlng.lat ? latlng.lat : ''
-            location.lng = latlng.lng ? latlng.lng : ''
-            location.address = this.state.address
-            this.setState({
-                location,
-                selectedTab: 'preview'
-            })
-
-        }
-        catch (err) {
-            console.log('Error in google geocode request: ', err)
-        }
+        const location = await this.translateAddressToLatLng(this.state.address)
+        this.setState({
+            location,
+            selectedTab: 'preview'
+        })
     }
 
     onToggleActive = async () => {
@@ -269,13 +258,33 @@ class EventEdit extends React.Component {
         }
     }
 
+    socketUpdateEvent = () => {
+        //Send notification for all event members about the event update
+        const minimalEvent = {
+            _id: this.state._id,
+            title: this.state.title,
+            imgUrl: this.state.imgUrl
+        }
+        const minimalUser = this.state.createdBy
+
+        this.state.members.forEach(member => {
+            const payload = {
+                userId: member._id,
+                minimalEvent,
+                minimalUser,
+                type: 'update_event_details'
+            }
+            socketService.emit('event got updated', payload)
+        })
+    }
+
     render() {
         const { category, title, description, startDate, startTime, address, price, capacity, tags, _id, imgUrl, images } = this.state
         return (
             <div className="main-container">
-                <div className="bg-img-container">
-                    <img className="bg-img" src={require("../assets/imgs/form-background.jpg")}/>
-                </div>
+                {this.state.selectedTab === "form" && <div className="bg-img-container">
+                    <img className="bg-img" src={require("../assets/imgs/form-background.jpg")} />
+                </div>}
                 <section className="form-container">
                     <Tabs>
                         <TabList>
@@ -355,6 +364,7 @@ class EventEdit extends React.Component {
                                     {images.map((img, index) => { return <img className="img-preview" key={index} src={img.src} alt=""></img> })}
                                 </div>}
                             </div>
+                            {/* <button onClick={() => this.socketUpdateEvent()}>Trigger socket</button> */}
                         </div>}
 
                     {this.state.selectedTab === 'preview' && <EventDetails previewEvent={this.state} />}

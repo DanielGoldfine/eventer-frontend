@@ -14,7 +14,7 @@ import {
 export class SocialShare extends Component {
 
   render() {
-    const shareUrl = 'http://localhost:3000/event/' + this.props.eventId
+    const shareUrl = 'https://proj-eventer.herokuapp.com/' + this.props.eventId
     const title = 'Check this amazing event ' + this.props.eventTitle
     return (
       <div className="social-share flex space-around align-items justify-center">
