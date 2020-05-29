@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import { connect } from 'react-redux'
-import { loadEvents, setFilter } from '../store/actions/eventActions'
+import { setFilter,loadEvents } from '../store/actions/eventActions'
 import { setHomePage } from '../store/actions/appActions'
 
 import SearchBar from '../cmps/SearchBar'
@@ -12,14 +12,15 @@ import CategoryGallery from '../cmps/CategoryGallery'
 class HomePage extends Component {
 
     state = {
-        filterBy: {},
         isSearchBar: true
     }
 
     componentDidMount() {
         window.addEventListener('scroll', this.listenToScrollHome)
         this.props.setHomePage(true);
-        this.initHomePage();
+        let filter = { ...this.props.filterBy, futureOnly: true };
+        this.props.setFilter(filter)
+            .then(() => { this.props.loadEvents(this.props.filterBy) })
     }
 
     componentWillUnmount() {
@@ -37,38 +38,20 @@ class HomePage extends Component {
         }
     };
 
-    initHomePage = () => {
-        let filterBy = {
-            txt: '',
-            category: '',
-            date: '',
-            radius: '',
-            locationType: '',
-            userLocation: '',
-            price: '',
-            sortDate: true,
-            sortNearby: false,
-            limit: 20
-        }
-        this.props.setFilter(filterBy)
-        this.props.loadEvents()
-    }
+    chooseCategory = async (chosenCategory) => {
+        let filter = { ...this.props.filterBy }
 
-    chooseCategory = (chosenCategory) => {
-        let gFilter = this.props.filterBy;
+        filter = { ...filter, sortBy: 'startAt' }
+        filter = { ...filter, category: chosenCategory }
 
-        gFilter.sortDate = false;
-        gFilter.limit = null;
-        gFilter.category = chosenCategory;
-
-        this.props.setFilter(gFilter)
-            .then(res => this.props.history.push(`/event/`));
+        await this.props.setFilter(filter);
+        this.props.history.push('/event');
     };
 
     render() {
         const { isSearchBar } = this.state;
         return (
-            <div onSwiping={this.eventHandler} className="home-page-container">
+            <div className="home-page-container">
                 <header className="main-header-container flex justify-center align-items-center">
                     <div className="header flex column align-center">
                         <h1>Enter a World of Events</h1>
@@ -86,7 +69,7 @@ class HomePage extends Component {
                 </header>
                 <CategoryLinks homePage chooseCategory={this.chooseCategory} />
                 <h2>Upcoming Events</h2>
-                {this.props.events && <UpcomingEvents events={this.props.events} />}
+                {this.props.events.length>0 && <UpcomingEvents events={this.props.events} />}
                 < CategoryGallery chooseCategory={this.chooseCategory} />
             </div>
         )
@@ -101,9 +84,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-    loadEvents,
     setFilter,
-    setHomePage
+    setHomePage,
+    loadEvents
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

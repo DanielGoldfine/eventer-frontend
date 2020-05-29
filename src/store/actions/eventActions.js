@@ -5,8 +5,8 @@ export function loadEvents(filterBy, loadingStatus) {
     return async dispatch => {
         try {
             toggleLoad(loadingStatus)
-            const events = await eventService.query(filterBy)
-            dispatch(setEvents(events), ()=>{toggleLoad(loadingStatus)});
+            const events = await eventService.query(filterBy) 
+            dispatch(setEvents(events), () => { toggleLoad(loadingStatus) });
         }
         catch (err) {
             console.log('eventService: err in loading events', err);
@@ -54,10 +54,10 @@ export function removeEvent(eventId) {
     }
 }
 
-export function updateEvent(event,value,field) {
+export function updateEvent(event, value, field) {
     return async dispatch => {
         try {
-            const updatedEvent = await eventService.update(event,value,field)
+            const updatedEvent = await eventService.update(event, value, field)
             dispatch(_saveEvent('UPDATE_EVENT', updatedEvent));
         }
         catch (err) {
@@ -68,7 +68,7 @@ export function updateEvent(event,value,field) {
 
 
 
-export function addPost(event, minimalUser,text) {
+export function addPost(event, minimalUser, text) {
     return async dispatch => {
         try {
             const updatedEvent = await eventService.addPost(event,minimalUser,text) 
@@ -108,7 +108,7 @@ export function updateEventLocal(event) {
 export function subscribeEvent(event, minimalUser) {
     return async dispatch => {
         try {
-            const updatedEvent = await eventService.addUserToEvent(event,minimalUser)
+            const updatedEvent = await eventService.addUserToEvent(event, minimalUser)
             dispatch(_saveEvent('UPDATE_EVENT', updatedEvent));
             return updatedEvent
         }
@@ -119,17 +119,17 @@ export function subscribeEvent(event, minimalUser) {
 }
 
 export function unsubscribeEvent(event, userId) {
-     return async dispatch => {
-         try {
-             const updatedEvent = await eventService.removeUserFromEvent(event,userId)
-             dispatch(_saveEvent('UPDATE_EVENT', updatedEvent));
-             return updatedEvent
-         }
-         catch (err) {
-             console.log('eventService: err in joinEvent', err);
-         }
-     }
- }
+    return async dispatch => {
+        try {
+            const updatedEvent = await eventService.removeUserFromEvent(event, userId)
+            dispatch(_saveEvent('UPDATE_EVENT', updatedEvent));
+            return updatedEvent
+        }
+        catch (err) {
+            console.log('eventService: err in joinEvent', err);
+        }
+    }
+}
 
 
 export function setFilter(filter) {
@@ -169,7 +169,7 @@ function _removeEvent(eventId) {
 
 
 
-function _saveEvent(type,event) {
+function _saveEvent(type, event) {
     return {
         type,
         event

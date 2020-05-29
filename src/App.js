@@ -4,6 +4,7 @@ import React from 'react';
 import './styles/global.scss';
 import HomePage from './pages/HomePage'
 import NavBar from './cmps/NavBar'
+import Footer from './cmps/Footer'
 import EventIndex from './pages/EventIndex'
 import EventEdit from './pages/EventEdit'
 import UserDetails from './pages/UserDetails'
@@ -25,7 +26,7 @@ class App extends React.Component {
     }
     render() {
         return (
-            <section className="events-app">
+            <section className="events-app full-height flex column space-between ">
                 <NavBar />
                 <Switch>
                     <Route component={HomePage} exact path="/" />
@@ -35,6 +36,7 @@ class App extends React.Component {
                     <Route component={EventDetails} exact path="/event/:id?" />
                     <Route component={Login} exact path="/login" />
                 </Switch>
+                <Footer  />
             </section>
         )
     }
