@@ -19,10 +19,6 @@ export function UserDesc(props) {
                     <h4>Events Created</h4>
                     <h4>{props.eventsCreated.length}</h4>
                 </div>
-                {/* <div className="flex align-items-center">
-                    <h4>Events Subscribed</h4>
-                    <h4>53</h4>
-                </div> */}
                 <div className="flex align-items-center">
                     <h4>Followers</h4>
                     <h4>{user.followers.length}</h4>
@@ -36,8 +32,6 @@ export function UserDesc(props) {
                     {user.rank.average !== 0 && <h4>{user.rank.average.toFixed(1)}</h4>}
                     {!user.rank.average && <h4>Not yet</h4>}
                 </div>
-                {/* {props.children && props.children} */}
-
                 {!isLoggedInUser && <button onClick={() => doFollow(loggedInUser)} className="cta-btn-full follow-btn">Follow</button>}
                 {!isLoggedInUser && <button onClick={() => doUnfollow(loggedInUser)} className="cta-btn-full follow-btn">Unfollow</button>}
 

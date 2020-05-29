@@ -175,9 +175,10 @@ class NavBar extends Component {
             this.setState({ isNotificationsOpen: !notificationsState });
             document.addEventListener('mousedown', this.closeNotifications);
             window.addEventListener('keydown', this.closeNotifications);
+
             if (this.props.loggedInUser.notification.unseenCount > 0) {
                 let loggedInUser = { ...this.props.loggedInUser }
-                loggedInUser.notification.unseen = 0;
+                loggedInUser.notification.unseenCount = 0;
 
                 this.props.saveUser(loggedInUser)
             }
