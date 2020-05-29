@@ -60,32 +60,17 @@ class UserDetails extends Component {
     }
 
     doFollow = (loggedInUser) => {
-        // const { loggedInUser } = this.props;
         const { user } = this.state;
-
-        // if (loggedInUser.userName !== 'Guest') {
-        // console.log('loggedInUser:', loggedInUser);
-        // console.log('user:', user);
-
         userService.doFollow(user, loggedInUser);
-
-
-        // } else {
-        //     //push to login page - confirm with modal?
-        // }
-        // this.isFollowing()
     }
 
     doUnfollow = (loggedInUser) => {
         const { user } = this.state;
-
         userService.doUnfollow(user, loggedInUser);
-
     }
 
     isFollowing = (loggedInUser) => {
         const { user } = this.state;
-
         userService.checkFollowing(user, loggedInUser)
     }
 
@@ -99,7 +84,7 @@ class UserDetails extends Component {
                 <main className="user-grid-container">
                     {user && <section className="user-details-container">
 
-                        <UserDesc isLoggedInUser={isLoggedInUser} user={user} doFollow={this.doFollow} doUnfollow={this.doUnfollow} loggedInUser={loggedInUser} />
+                        <UserDesc eventsCreated={this.props.events} isLoggedInUser={isLoggedInUser} user={user} doFollow={this.doFollow} doUnfollow={this.doUnfollow} loggedInUser={loggedInUser} />
 
                         {!isLoggedInUser && this.props.minimalLoggedInUser &&
                             <ReviewForm
@@ -110,7 +95,7 @@ class UserDetails extends Component {
 
                         <div className="user-lists">
                             <MinimalEventList events={events} />
-                            <FollowUserList followers={user} />
+                            <FollowUserList followers={user.followers} />
                         </div>
 
                     </section>}

@@ -9,56 +9,23 @@ export class FollowUserList extends React.Component {
 
     render() {
 
-        // const { listState } = this.state;
+        const { listState } = this.state;
 
         return (
             <section className="follow-list-container user-details-list">
 
                 <div className="list-header flex align-center space-between">
                     <h4>Followers</h4>
-                    <select name="list-filter" id="">
+                    {/* <select name="list-filter" id="">
                         <option value="active">Following</option>
                         <option value="inactive">Followers</option>
-                    </select>
+                    </select> */}
                 </div>
                 <div className="list">
                     <div className="followers-grid">
-                        {/* {this.props.followers.map(follower => <UserPreview minimalUser={follower} />)} */}
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
-                        <UserPreview minimalUser={this.props.followers} />
+                        {this.props.followers.map(follower => <UserPreview minimalUser={follower} />)}
                     </div>
                 </div>
-                {/* {props.reviews.map(review => <ReviewPreview key={review.id} review={review} />)} */}
             </section>
         )
     }

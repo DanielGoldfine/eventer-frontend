@@ -18,7 +18,7 @@ class SearchBar extends Component {
     }
 
 
-    submitSearch = (ev) => {
+    submitSearch = async (ev) => {
         ev.preventDefault();
         const { searchTxt } = this.state;
         let filter = { ...this.props.filterBy }

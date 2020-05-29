@@ -17,18 +17,15 @@ export default {
 
 
 async function query(filterBy) {
-    
     if (!filterBy) return HttpService.get(`${baseUrl}`);
-
+    var queryStr;
     if (filterBy.userId) {
-        var queryStr = `?userId=${filterBy.userId}`
+        queryStr = `?userId=${filterBy.userId}`
         return HttpService.get(`${baseUrl}/${queryStr}`);
     }
 
-    //for json server:
-    //var queryStr = `?category_like=${filterBy.category}&title_like=${filterBy.txt}`
     queryStr = `?category=${filterBy.category}&title=${filterBy.txt}&sortBy=${filterBy.sortBy}&futureOnly=${filterBy.futureOnly}`
-    
+
     return HttpService.get(`${baseUrl}/${queryStr}`);
 }
 

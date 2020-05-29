@@ -17,12 +17,12 @@ export function UserDesc(props) {
             <section className="user-stats flex column justify-center align-items-center">
                 <div className="flex align-items-center">
                     <h4>Events Created</h4>
-                    <h4>47</h4>
+                    <h4>{props.eventsCreated.length}</h4>
                 </div>
-                <div className="flex align-items-center">
+                {/* <div className="flex align-items-center">
                     <h4>Events Subscribed</h4>
                     <h4>53</h4>
-                </div>
+                </div> */}
                 <div className="flex align-items-center">
                     <h4>Followers</h4>
                     <h4>{user.followers.length}</h4>
