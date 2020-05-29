@@ -6,6 +6,7 @@
     opacity: 0.4;
     z-index: 1;
     height: 100%;
+    @include aspect-ratio(1, 1);
   }
 }
 .form-container {

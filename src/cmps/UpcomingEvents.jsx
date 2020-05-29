@@ -14,7 +14,7 @@ export default class UpcomingEvents extends Component {
 
     componentDidMount() {
         this.setGallery()
-        console.log('getFilter', this.props.getFilter);
+        // console.log('getFilter', this.props.getFilter);
         
     }
 
@@ -23,10 +23,10 @@ export default class UpcomingEvents extends Component {
 
         console.log('UpcomingEvents props' , this.props);
         
-        const filter = this.props.getFilter()
-        eventService.query(filter)
+        // const filter = this.props.getFilter()
+        eventService.query()
             .then(events => {
-                events.forEach(event => { if (event.startAt >= Math.round(Date.now() / 1000)) galleryItems.push(event)})
+                // events.forEach(event => { if (event.startAt >= Math.round(Date.now() / 1000)) galleryItems.push(event)})
                 this.setState({ galleryItems }, () => {
                     // CallBack Option
                     console.log('galleryItems', this.state.galleryItems);

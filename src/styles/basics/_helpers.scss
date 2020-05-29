@@ -104,3 +104,9 @@
   @include aspect-ratio(1, 1);
   object-fit: cover;
 }
+
+.full-height {
+  min-height: 100vh;
+}
+
+

@@ -104,8 +104,8 @@ class HomePage extends Component {
                     </div>
                 </header>
                 <CategoryLinks homePage chooseCategory={this.chooseCategory} />
-                <h2>Upcoming Events</h2>
-                {/* {this.props.events && <UpcomingEvents events={this.props.events} />} */}
+                <h2>COMING UP</h2>
+                {this.props.events && <UpcomingEvents events={this.props.events} />}
                 < CategoryGallery chooseCategory={this.chooseCategory} />
             </div>
         )

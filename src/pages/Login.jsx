@@ -146,8 +146,7 @@ class Login extends Component {
       <div>
 
         <form onSubmit={this.doSignup}
-          className={classes.root}
-          className="flex column"
+          className={`${classes.root} flex column`}
           noValidate
           autoComplete="off" ref={(ref) => this.myRef = ref}
         >
@@ -251,7 +250,7 @@ class Login extends Component {
     let loginSection = (
       <div>
 
-        <form onSubmit={this.doLogin} className={classes.root} className="flex column" noValidate autoComplete="off">
+        <form onSubmit={this.doLogin} className={`${classes.root} flex column`} noValidate autoComplete="off">
           <span className="material-icons"> account_circle </span>
 
           <p className="txt">Please Login here.</p>
