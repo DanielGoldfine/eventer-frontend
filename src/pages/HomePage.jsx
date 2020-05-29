@@ -12,15 +12,12 @@ import CategoryGallery from '../cmps/CategoryGallery'
 class HomePage extends Component {
 
     state = {
-        filterBy: {},
         isSearchBar: true
     }
 
     componentDidMount() {
         window.addEventListener('scroll', this.listenToScrollHome)
         this.props.setHomePage(true);
-        this.initHomePage();
-        this.setSortBy();
     }
 
     componentWillUnmount() {
@@ -38,56 +35,20 @@ class HomePage extends Component {
         }
     };
 
-    initHomePage = async () => {
-        let filterBy = {
-            txt: '',
-            category: '',
-            date: '',
-            radius: '',
-            locationType: '',
-            userLocation: '',
-            price: '',
-            sortBy: 'startAt',
-            limit: 20
-        }
-        await this.props.setFilter(filterBy)
-        this.props.loadEvents(filterBy)
-    }
-
     chooseCategory = async(chosenCategory) => {
         let filter = { ...this.props.filterBy }
 
         filter = { ...filter, sortBy: 'startAt' }
-        filter = { ...filter, limit: null }
         filter = { ...filter, category: chosenCategory }
-
-        console.log('HomePage: filter - ', filter);
-        
 
         await this.props.setFilter(filter);
         this.props.history.push('/event');
     };
 
-    setSortBy = (sortBy = 'startAt') => {
-        let filter = { ...this.props.filterBy }
-
-        filter = { ...filter, sortBy }
-
-        console.log('filter', filter);
-
-
-        this.props.setFilter(filter);
-    }
-
-    getFilter = () => {
-        return { ...this.props.filterBy }
-    }
-    
-
     render() {
         const { isSearchBar } = this.state;
         return (
-            <div onSwiping={this.eventHandler} className="home-page-container">
+            <div className="home-page-container">
                 <header className="main-header-container flex justify-center align-items-center">
                     <div className="header flex column align-center">
                         <h1>Enter a World of Events</h1>
@@ -105,7 +66,7 @@ class HomePage extends Component {
                 </header>
                 <CategoryLinks homePage chooseCategory={this.chooseCategory} />
                 <h2>Upcoming Events</h2>
-                {/* {this.props.events && <UpcomingEvents events={this.props.events} />} */}
+                {this.props.events && <UpcomingEvents events={this.props.events} />}
                 < CategoryGallery chooseCategory={this.chooseCategory} />
             </div>
         )

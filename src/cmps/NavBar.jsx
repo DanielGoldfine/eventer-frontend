@@ -13,7 +13,9 @@ import history from '../history.js'
 import eventerLogo from '../assets/design/eventer-logo-new.png'
 import eventerIcn from '../assets/design/eventer-icn.png'
 import modalConnector from '../assets/helpers/modal-connector.png'
-import { login, addNotification, loadUser } from '../store/actions/userActions'
+import { login, addNotification, loadUser, saveUser } from '../store/actions/userActions'
+
+import eventBusService from "../services/eventBusService.js";
 
 
 
@@ -28,25 +30,31 @@ class NavBar extends Component {
         isUserMenuOpen: false,
         navState: 'bright',
         isHomePage: true,
-        isSearchBar: false
+        isSearchBar: false,
     }
 
 
     componentDidMount() {
-        console.log('navbar mounted')
-        
+        socketService.setup();
+        this.unsubscribeFromEventBus = eventBusService.on('user-login', (userId) => {
+            socketService.emit('userLogin', userId);
+            socketService.on('event got updated', this.eventUpdateNotification);
+            socketService.on('user joined event', this.newMemberNotification);
+            socketService.on('user left event', this.memeberLeftNotification);
+        })
+
         if (this.props.isHomePage) {
             this.setState({ navState: 'bright' })
             this.setState({ isHomePage: this.props.isHomePage })
-            this.setState({isSearchBar: false })
+            this.setState({ isSearchBar: false })
         } else {
             this.setState({ navState: 'dark' })
             this.setState({ isHomePage: this.props.isHomePage })
         };
-        console.log('logged user nav bar', this.props.loggedInUser)
+        this.setState({ loggedInUser: this.props.loggedInUser })
         if (this.props.loggedInUser) {
-            this.props.loadUser(this.props.loggedInUser._id)
-            socketService.setup();
+            // this.props.loadUser(this.props.loggedInUser._id)
+            // socketService.setup();
             socketService.emit('userLogin', this.props.loggedInUser._id);
             socketService.on('event got updated', this.eventUpdateNotification);
             socketService.on('user joined event', this.newMemberNotification);
@@ -54,18 +62,13 @@ class NavBar extends Component {
         }
     }
 
-    // componentDidUpdate(prevProps) { // To properly apply logging the user
-    //     if (this.props.loggedInUser !== prevProps.loggedInUser)
-    //         this.props.loadUser(this.props.loggedInUser._id)
-    // }
-
     componentWillUpdate = (nextProps, nextState) => {
         if (nextState.isHomePage !== nextProps.isHomePage) {
             if (this.props.isHomePage) {
                 window.addEventListener('scroll', this.listenToScrollNav)
                 this.setState({ navState: 'bright' })
                 this.setState({ isHomePage: this.props.isHomePage })
-                this.setState({isSearchBar: false })
+                this.setState({ isSearchBar: false })
             } else {
                 window.removeEventListener('scroll', this.listenToScrollNav)
                 this.setState({ navState: 'dark' })
@@ -75,6 +78,7 @@ class NavBar extends Component {
     };
 
     componentWillUnmount() {
+        this.unsubscribeFromEventBus();
         window.removeEventListener('scroll', this.listenToScrollNav)
         socketService.off('event got updated', this.eventUpdateNotification);
         socketService.off('user joined event', this.newMemberNotification);
@@ -165,7 +169,6 @@ class NavBar extends Component {
         if (this.userMenu.contains(e.target) || this.userMenuOpen.contains(e.target)) {
             return;
         }
-
         document.removeEventListener('mousedown', this.closeUserMenu)
         window.removeEventListener('keydown', this.closeUserMenu)
         this.setState({ isUserMenuOpen: false });
@@ -178,6 +181,12 @@ class NavBar extends Component {
             this.setState({ isNotificationsOpen: !notificationsState });
             document.addEventListener('mousedown', this.closeNotifications);
             window.addEventListener('keydown', this.closeNotifications);
+            if (this.props.loggedInUser.notification.unseenCount > 0) {
+                let loggedInUser = { ...this.props.loggedInUser }
+                loggedInUser.notification.unseen = 0;
+
+                this.props.saveUser(loggedInUser)
+            }
         } else {
             this.setState({ isNotificationsOpen: !notificationsState });
             document.removeEventListener('mousedown', this.closeNotifications);
@@ -196,16 +205,16 @@ class NavBar extends Component {
         this.setState({ isNotificationsOpen: false });
     }
 
+    onClickNotification = (id) => {
+
+    }
+
     render() {
 
         const { isNotificationsOpen, isUserMenuOpen, navState, isSearchBar } = this.state;
         const { loggedInUser } = this.props;
-
         return (
             <main className={navState}>
-                {isNotificationsOpen && <div ref={notifications => this.notifications = notifications}>
-                {loggedInUser.notification && < Notifications notification={loggedInUser.notification} />}
-                </div>}
                 <nav className="nav-bar-container main-container flex space-between align-items-center">
                     <div className="flex space-between align-items-center">
                         <div className="search-logo flex align-items-center">
@@ -214,17 +223,43 @@ class NavBar extends Component {
                             {(!this.props.isHomePage || isSearchBar) && <SearchBar className="search-for-wide" setTxtFilter={this.setTxtFilter} />}
                         </div>
                         <section className="nav-bar-btns flex align-center">
+
+
                             {loggedInUser && <UserPreview className minimalUser={loggedInUser} />}
-                            <button className="create-event  " onClick={() => { this.goToPage('edit') }}>Create Event</button>
-                            {loggedInUser && loggedInUser.notification.msgs.length>0 && <NotificationsIcon className="notifications-icn" ref={notificationsOpen => this.notificationsOpen = notificationsOpen} onClick={this.toggleNotifications} />}
-                            <PersonIcon className="user-icn" ref={userMenuOpen => this.userMenuOpen = userMenuOpen} onClick={this.toggleUserMenu} />
+
+
+                            <button className="create-event" onClick={() => { this.goToPage('edit') }}>Create Event</button>
+
+
+                            {loggedInUser && loggedInUser.notification.unseenCount > 0 && <h3 className="not-count">{loggedInUser.notification.unseenCount}</h3>}
+
+
+                            {loggedInUser && <NotificationsIcon className={`notifications-icn ${isNotificationsOpen ? 'highlight' : ""}`}
+                                ref={notificationsOpen => this.notificationsOpen = notificationsOpen} onClick={this.toggleNotifications} />}
+
+
+                            <PersonIcon className={`user-icn ${isUserMenuOpen ? 'highlight' : ''}`}
+                                ref={userMenuOpen => this.userMenuOpen = userMenuOpen} onClick={this.toggleUserMenu} />
+
+
                             <ViewListIcon className='list-icn' />
+
+
+                            {isNotificationsOpen && <div className="notifications" ref={notifications => this.notifications = notifications}>
+                                {loggedInUser.notification && < Notifications notification={loggedInUser.notification}
+                                    onClickNotification={this.onClickNotification} />}
+                                <img className="connector" src={modalConnector} alt="" />
+                            </div>}
+
+
                             {isUserMenuOpen && <div ref={userMenu => this.userMenu = userMenu} className="user-menu-modal flex column">
                                 <button onClick={() => { this.goToPage('user') }}>My Profile</button>
                                 {loggedInUser.userName === 'Guest' && <button onClick={() => { this.goToPage('login') }}>Login</button>}
                                 {loggedInUser.userName !== 'Guest' && <button onClick={() => { this.goToPage('logout') }}>Logout</button>}
                                 <img className="connector" src={modalConnector} alt="" />
                             </div>}
+
+
                         </section>
                     </div>
                 </nav >
@@ -243,7 +278,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-    login, addNotification, loadUser
+    login, addNotification, loadUser, saveUser
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NavBar));

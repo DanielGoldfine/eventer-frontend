@@ -35,12 +35,15 @@ export function NotificationPreview(props) {
 
     }
     return (
-        <section>
-            <UserPreview minimalUser={props.msg.user}></UserPreview>
-            <span>{notificationTxt}</span>
-            {notificationTopic === 'event' && <Link to={`/event/${props.msg.event._id}`}>{props.msg.event.title}</Link>}
-            {notificationTopic === 'user' && <Link to={`/user/${props.msg.user._id}`}>Check it out</Link>}
-            <small>{Moment(props.msg.createdAt).fromNow()} </small>
+        <section className={`notification-preview flex align-items-end ${props.msg.isRead ? 'read' : ''}`}>
+            <UserPreview minimalUser={props.msg.user}/>
+            <div className="msg-body flex column align-items-end">
+                <h4>{props.msg.user.fullName + ' '}
+                    {notificationTxt} {notificationTopic === 'event' ? props.msg.event.title : ' '}</h4>
+                {/* {notificationTopic === 'event' && <Link to={`/event/${props.msg.event._id}`}>{props.msg.event.title}</Link>}
+                {notificationTopic === 'user' && <Link to={`/user/${props.msg.user._id}`}>Check it out</Link>} */}
+                <p>{Moment(props.msg.createdAt).fromNow()} </p>
+            </div>
         </section>
     )
 }

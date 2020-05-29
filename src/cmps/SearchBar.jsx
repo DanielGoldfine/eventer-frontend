@@ -18,30 +18,16 @@ class SearchBar extends Component {
     }
 
 
-    submitSearch = (ev) => {
+    submitSearch = async (ev) => {
         ev.preventDefault();
         const { searchTxt } = this.state;
         let filter = { ...this.props.filterBy }
 
         filter = { ...filter, txt: searchTxt }
-        filter = { ...filter, category: '' }
-        
-        console.log('filter', filter);
-        
-        
-        if (this.props.isHomePage) {
-            // filter.sortDate = false;
-            // filter.limit = null;
-            filter = { ...filter, sortBy: 'startAt'}
-            filter = { ...filter, limit: ''}
-            filter = { ...filter, category: ''}
-        };
 
-        this.props.setFilter(filter)
-            .then(res => {
-                this.props.loadEvents(filter)
-                history.push('/event')
-            });
+        await this.props.setFilter(filter)
+        await this.props.loadEvents(filter)
+        history.push('/event')
     };
 
 

@@ -17,21 +17,15 @@ export default {
 
 
 async function query(filterBy) {
-
-    console.log('frontend query: filterBy -', filterBy)
-    
     if (!filterBy) return HttpService.get(`${baseUrl}`);
 
-    //for json server:
-    //var queryStr = `?category_like=${filterBy.category}&title_like=${filterBy.txt}`
-    var queryStr = `?category=${filterBy.category}&title=${filterBy.txt}&sortBy=${filterBy.sortBy}`
+    if (filterBy.userId) {
+        var queryStr = `?userId=${filterBy.userId}`
+        return HttpService.get(`${baseUrl}/${queryStr}`);
+    }
 
-    console.log('filterBy.sortBy', filterBy.sortBy);
-    console.log('filterBy.sortBy', filterBy.category);
+    var queryStr = `?category=${filterBy.category}&title=${filterBy.txt}&sortBy=${filterBy.sortBy}&futureOnly=${filterBy.futureOnly}`
 
-    // console.log('filterBy.sortBy', filterBy.sortBy);
-    // console.log('filterBy.txt', filterBy.txt);
-    
     return HttpService.get(`${baseUrl}/${queryStr}`);
 }
 

@@ -77,7 +77,7 @@ export class ReviewForm extends Component {
                          105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z" />
                         </svg>
                     </div>
-                    <button onClick={this.onSubmitReview} className="cta-btn-small">Post</button>
+                    <button onClick={this.onSubmitReview} className="post-review-btn">Post</button>
                 </section>
             </section>
         )

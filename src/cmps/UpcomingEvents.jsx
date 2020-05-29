@@ -14,29 +14,33 @@ export default class UpcomingEvents extends Component {
 
     componentDidMount() {
         this.setGallery()
-        console.log('getFilter', this.props.getFilter);
-        
     }
 
     setGallery = () => {
         let galleryItems = [];
 
-        console.log('UpcomingEvents props' , this.props);
+        const filterBy = {
+            txt: '',
+            category: '',
+            date: '',
+            radius: '',
+            locationType: '',
+            userLocation: '',
+            price: '',
+            sortBy: 'startAt',
+            includePast: false,
+            limit: null
+        }
         
-        const filter = this.props.getFilter()
-        eventService.query(filter)
+        eventService.query(filterBy)
             .then(events => {
-                events.forEach(event => { if (event.startAt >= Math.round(Date.now() / 1000)) galleryItems.push(event)})
+                events.forEach(event => galleryItems.push(event))
                 this.setState({ galleryItems }, () => {
-                    // CallBack Option
-                    console.log('galleryItems', this.state.galleryItems);
-                    
                 })
             })
     }
 
     render() {
-
 
         return (
             <main className="upcoming-container">
@@ -80,8 +84,8 @@ export default class UpcomingEvents extends Component {
                     responsive={true}
                     slidesSpacing={10}
                 >
-                    {this.state.galleryItems.map(event => <EventPreview key={event._id} event={event} />)}
 
+                    {this.state.galleryItems.map(event => <EventPreview key={event._id} event={event} />)}
 
                 </InfiniteCarousel>}
             </main>
