@@ -2,7 +2,7 @@ import React from 'react'
 
 export function CategoryLinks(props) {
 
-    const { chooseCategory, currCtg, homePage } = props
+    const { chooseCategory, currCtg } = props
 
     return (
         <section className="category-links flex justify-center align-center margin0auto">

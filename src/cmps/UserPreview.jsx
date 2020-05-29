@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 
+import eventBusService from "../services/eventBusService.js";
+
 export default function UserPreview(props) {
 
     const {minimalUser} = props;
@@ -9,13 +11,14 @@ export default function UserPreview(props) {
 
     return (
         <section className={`user-preview-min flex align-items-center`}>
-            <Link to={`/user/${minimalUser._id}`}>
+            <Link onClick={()=>{ eventBusService.emit('user-preview-click',minimalUser._id)}} to={`/user/${minimalUser._id}`}>
                 <div className="avatar">
                     <img alt="" src={minimalUser.imgUrl} />
                 </div>
             </Link>
             <div className="flex column space-between">
-                <Link className="user-preview-name-link" to={`/user/${minimalUser._id}`}><h4>{minimalUser.fullName}</h4></Link>
+                <Link onClick={()=>{ eventBusService.emit('user-preview-click',minimalUser._id)}} className="user-preview-name-link" to={`/user/${minimalUser._id}`}><h4>{minimalUser.fullName} </h4></Link>
+
                 {props.ranking && <div className="ranking flex justify-end align-items-baseline">
                     {(minimalUser.rank.average < 1.5 || minimalUser.rank.average > 4.5) && <svg className="rank-icn" viewBox="0 0 576 512">
                         <path fill={minimalUser.rank.average > 2.5 ? activeClr : inactiveClr} d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 

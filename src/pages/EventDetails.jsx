@@ -38,13 +38,25 @@ class EventDetails extends React.Component {
       const { id } = this.props.match.params;
       this.props.loadEvent(id)
         .then(() => {
+          // console.log('componentDidMount')
           socketService.emit('viewEventDetails', this.props.event._id);
           socketService.on('memberJoin', this.socketAddMemebr);
           socketService.on('memberLeave', this.socketLeaveMember);
         })
-
     }
+  }
 
+  componentDidUpdate(prevProps) { // To properly allow moving between event details thru the notifications
+    if (this.props.match.params.id !== prevProps.match.params.id) {
+      const { id } = this.props.match.params;
+      this.props.loadEvent(id)
+        .then(() => {
+          // console.log('details componentDidUpdate')
+          socketService.emit('viewEventDetails', this.props.event._id);
+          socketService.on('memberJoin', this.socketAddMemebr);
+          socketService.on('memberLeave', this.socketLeaveMember);
+        })
+    }
   }
 
   componentWillUnmount() {
@@ -225,7 +237,6 @@ class EventDetails extends React.Component {
             </small>
           </div>
           {images && <EventImagesGallery images={images}></EventImagesGallery>}
-          {images.length === 0 && imgUrl.includes('http') && <img src={imgUrl} alt=""></img>}
           {images.length === 0 && category && !imgUrl.includes('http') && <img src={require(`../assets/imgs/${category.replace(/\s+/g, '')}.jpg`)} alt=""></img>}
           <p className="event-time-place">
             <span className="event-month">{dateStr.split(' ')[1]} </span>

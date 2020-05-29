@@ -4,6 +4,7 @@ const initialState = {
     events: [],
     currEvent: null, //for the edit and details pages
     filterBy: {
+        futureOnly: true,
         txt: '',
         category: '',
         date: '',
@@ -12,7 +13,6 @@ const initialState = {
         userLocation: '',
         price: '',
         sortBy: 'startAt',
-        includePast: false,
         limit: null
     },
     isLoading: false
@@ -49,7 +49,7 @@ export default function EventReducer(state = initialState, action) {
                     if (event._id === action.event._id) return action.event;
                     return event;
                 }),
-                currEvent:{ ...action.event }
+                currEvent: { ...action.event }
             }
         case 'SET_FILTER':
             return {

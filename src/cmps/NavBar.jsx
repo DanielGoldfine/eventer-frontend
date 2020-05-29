@@ -15,6 +15,8 @@ import eventerIcn from '../assets/design/eventer-icn.png'
 import modalConnector from '../assets/helpers/modal-connector.png'
 import { login, addNotification, loadUser } from '../store/actions/userActions'
 
+import eventBusService from "../services/eventBusService.js";
+
 
 
 import socketService from '../services/socketService';
@@ -33,26 +35,46 @@ class NavBar extends Component {
 
 
     componentDidMount() {
-        console.log('navbar mounted')
-        
+        socketService.setup();
+        this.unsubscribeFromEventBus = eventBusService.on('user-login', (userId) => {
+            socketService.emit('userLogin', userId);
+            socketService.on('event got updated', this.addNotification);
+            socketService.on('new event created', this.addNotification);
+            socketService.on('user joined event', this.addNotification);
+            socketService.on('user left event', this.addNotification);
+            socketService.on('user rank', this.addNotification);
+            this.props.loadUser(userId)
+        })
+
         if (this.props.isHomePage) {
             this.setState({ navState: 'bright' })
             this.setState({ isHomePage: this.props.isHomePage })
-            this.setState({isSearchBar: false })
+            this.setState({ isSearchBar: false })
         } else {
             this.setState({ navState: 'dark' })
             this.setState({ isHomePage: this.props.isHomePage })
         };
-        console.log('logged user nav bar', this.props.loggedInUser)
+        this.setState({ loggedInUser: this.props.loggedInUser })
+        //console.log('logged user nav bar', this.props.loggedInUser)
         if (this.props.loggedInUser) {
             this.props.loadUser(this.props.loggedInUser._id)
-            socketService.setup();
             socketService.emit('userLogin', this.props.loggedInUser._id);
-            socketService.on('event got updated', this.eventUpdateNotification);
-            socketService.on('user joined event', this.newMemberNotification);
-            socketService.on('user left event', this.memeberLeftNotification);
+            socketService.on('event got updated', this.addNotification);
+            socketService.on('new event created', this.addNotification);
+            socketService.on('user joined event', this.addNotification);
+            socketService.on('user left event', this.addNotification);
+            socketService.on('user rank', this.addNotification);
         }
     }
+
+    // componentDidUpdate(prevProps) { // To properly apply logging the user
+    //     if (this.props.loggedInUser !== prevProps.loggedInUser) {
+    //         // socketService.setup();
+    //         socketService.emit('userLogin', this.props.loggedInUser._id);
+
+    //     }
+    // }
+
 
     // componentDidUpdate(prevProps) { // To properly apply logging the user
     //     if (this.props.loggedInUser !== prevProps.loggedInUser)
@@ -65,7 +87,7 @@ class NavBar extends Component {
                 window.addEventListener('scroll', this.listenToScrollNav)
                 this.setState({ navState: 'bright' })
                 this.setState({ isHomePage: this.props.isHomePage })
-                this.setState({isSearchBar: false })
+                this.setState({ isSearchBar: false })
             } else {
                 window.removeEventListener('scroll', this.listenToScrollNav)
                 this.setState({ navState: 'dark' })
@@ -75,24 +97,17 @@ class NavBar extends Component {
     };
 
     componentWillUnmount() {
+        this.unsubscribeFromEventBus();
         window.removeEventListener('scroll', this.listenToScrollNav)
-        socketService.off('event got updated', this.eventUpdateNotification);
-        socketService.off('user joined event', this.newMemberNotification);
-        socketService.off('user left event', this.memeberLeftNotification);
+        socketService.off('event got updated', this.addNotification);
+        socketService.off('new event created', this.addNotification);
+        socketService.off('user joined event', this.addNotification);
+        socketService.off('user left event', this.addNotification);
+        socketService.off('user rank', this.addNotification);
     }
 
 
-    eventUpdateNotification = async (notification) => {
-        const user = await this.props.addNotification(notification)
-        this.props.loadUser(user._id)
-    }
-
-    newMemberNotification = async (notification) => {
-        const user = await this.props.addNotification(notification)
-        this.props.loadUser(user._id)
-    }
-
-    memeberLeftNotification = async (notification) => {
+    addNotification = async (notification) => {
         const user = await this.props.addNotification(notification)
         this.props.loadUser(user._id)
     }
@@ -204,7 +219,7 @@ class NavBar extends Component {
         return (
             <main className={navState}>
                 {isNotificationsOpen && <div ref={notifications => this.notifications = notifications}>
-                {loggedInUser.notification && < Notifications notification={loggedInUser.notification} />}
+                    {loggedInUser.notification && < Notifications notification={loggedInUser.notification} />}
                 </div>}
                 <nav className="nav-bar-container main-container flex space-between align-items-center">
                     <div className="flex space-between align-items-center">
@@ -216,7 +231,7 @@ class NavBar extends Component {
                         <section className="nav-bar-btns flex align-center">
                             {loggedInUser && <UserPreview className minimalUser={loggedInUser} />}
                             <button className="create-event  " onClick={() => { this.goToPage('edit') }}>Create Event</button>
-                            {loggedInUser && loggedInUser.notification.msgs.length>0 && <NotificationsIcon className="notifications-icn" ref={notificationsOpen => this.notificationsOpen = notificationsOpen} onClick={this.toggleNotifications} />}
+                            {loggedInUser && loggedInUser.notification.msgs.length > 0 && <NotificationsIcon className="notifications-icn" ref={notificationsOpen => this.notificationsOpen = notificationsOpen} onClick={this.toggleNotifications} />}
                             <PersonIcon className="user-icn" ref={userMenuOpen => this.userMenuOpen = userMenuOpen} onClick={this.toggleUserMenu} />
                             <ViewListIcon className='list-icn' />
                             {isUserMenuOpen && <div ref={userMenu => this.userMenu = userMenu} className="user-menu-modal flex column">

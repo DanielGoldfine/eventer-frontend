@@ -5,9 +5,6 @@ export function UserDesc(props) {
 
     const { user , isLoggedInUser , loggedInUser , doFollow , doUnfollow } = props;
 
-    // console.log('user', user);
-    console.log('props', props);
-
     return (
         <main className="user-desc flex column justify-center align-items-center space-between">
             <section className="user-info flex column justify-center align-items-center">

@@ -3,7 +3,7 @@ import React from 'react'
 import { NotificationPreview } from './NotificationPreview'
 
 export function Notifications(props) {
-    console.log(props)
+    // console.log(props)
     return (
         <section className="notifications-container">
             <p className="header">Notifications</p>

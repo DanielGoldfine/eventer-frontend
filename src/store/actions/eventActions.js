@@ -5,7 +5,7 @@ export function loadEvents(filterBy, loadingStatus) {
     return async dispatch => {
         try {
             toggleLoad(loadingStatus)
-            const events = await eventService.query(filterBy)
+            const events = await eventService.query(filterBy) 
             dispatch(setEvents(events), () => { toggleLoad(loadingStatus) });
         }
         catch (err) {
