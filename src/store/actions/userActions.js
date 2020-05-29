@@ -21,6 +21,7 @@ export function login(credentials, loadingStatus) {
             toggleLoad(credentials, loadingStatus)
             const user = await userService.login(credentials)
             dispatch(setLoggedInUser(user), () => { toggleLoad(loadingStatus) });
+            return user
         }
         catch (err) {
             console.log('userService: err in login', err);
@@ -45,6 +46,19 @@ export function loadUser(id) {
             dispatch(setUser(user));
             return user
 
+        }
+        catch (err) {
+            console.log('userService: err in loading user', err);
+        }
+    }
+}
+
+export function loadUserLocal(id) {
+    return async dispatch => {
+        try {
+            const user = await userService.get(id)
+            dispatch(setLocalUser(user));
+            return user
         }
         catch (err) {
             console.log('userService: err in loading user', err);
@@ -82,7 +96,7 @@ export function addReview(review, user) {
     return async dispatch => {
         try {
             const updatedUser = await userService.addReview(review, user)
-            dispatch(_saveUser('UPDATE_USER', updatedUser));
+            dispatch(_saveUser('UPDATE_LOCAL_USER', updatedUser));
             return updatedUser
         }
         catch (err) {
@@ -94,7 +108,7 @@ export function addReview(review, user) {
 export function addNotification(notification) {
     return async dispatch => {
         try {
-            const updatedUser = await userService.addNotification(notification)
+            const updatedUser = await userService.addNotification(notification) 
             // console.log('updated user in actions',updatedUser )
             dispatch(_saveUser('UPDATE_USER', updatedUser));
             return updatedUser
@@ -130,6 +144,13 @@ function setLoggedInUser(user) {
 function setUser(user) {
     return {
         type: 'SET_USER',
+        user
+    };
+}
+
+function setLocalUser(user) {
+    return {
+        type: 'SET_LOCAL_USER',
         user
     };
 }

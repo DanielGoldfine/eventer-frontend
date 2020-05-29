@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import eventService from '../services/eventService.js';
 import googleService from '../services/googleService.js';
 import EventDetails from '../pages/EventDetails';
+import ImagePreview from '../cmps/ImagePreview'
+import utilService from '../services/utilService'
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -16,6 +18,7 @@ import Button from '@material-ui/core/Button';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import socketService from '../services/socketService';
+
 
 
 
@@ -56,7 +59,8 @@ class EventEdit extends React.Component {
         // TODO: mb try switching to React cloudinary
         let widget = window.cloudinary.createUploadWidget({
             cloudName: 'dsqh7qhpg',
-            uploadPreset: 'lh8fyiqe'
+            uploadPreset: 'lh8fyiqe',
+            maxFiles: 5
         }, (error, result) => { this.checkUploadResult(result) });
         this.setState({ widget })
         var todayDate = new Date(); //Getting current date (default date) in the right format
@@ -103,6 +107,8 @@ class EventEdit extends React.Component {
 
         let event = this.state
 
+        let isNewEvent = event._id ? false : true
+
         const startAtString = `${event.startDate} ${event.startTime}`
         const startAt = Math.round(new Date(startAtString).getTime() / 1000)
         event.startAt = startAt
@@ -118,15 +124,14 @@ class EventEdit extends React.Component {
 
         event.imgUrl = this.state.imgUrl ? this.state.imgUrl : `../assets/imgs/${event.category.replace(/\s+/g, '')}.jpg`
 
-        if (!event._id) { //additions to new event
+        if (isNewEvent) { //additions to new event
+            event.createdBy = this.props.minimalLoggedInUser
             event.createdAt = Math.round(Date.now() / 1000)
             event.members = []
             event.posts = []
         } else {
             event.updatedAt = Math.round(Date.now() / 1000)
         }
-
-        if (!this.state.createdBy) event.createdBy = this.props.minimalLoggedInUser
 
         //handle getting lat/lng
         const location = await this.translateAddressToLatLng(event.address)
@@ -140,7 +145,12 @@ class EventEdit extends React.Component {
         delete event.widget;
 
         event = await this.props.saveEvent(event)
-        this.socketUpdateEvent()
+        if (isNewEvent) { //New event
+            this.socketNewEvent(event)
+        }
+        else {              //Update existing event
+            this.socketUpdateEvent()
+        }
         this.props.history.push(`/event/${event._id}`)
     }
 
@@ -152,7 +162,6 @@ class EventEdit extends React.Component {
             }
         })
     }
-
 
     toggleMaxCapacity = () => {
         this.setState((prevState) => {
@@ -244,6 +253,7 @@ class EventEdit extends React.Component {
                 thumbnail: resultEvent.info.url,
                 thumbnailWidth: resultEvent.info.width,
                 thumbnailHeight: resultEvent.info.height,
+                _id: utilService.makeId(),
                 caption: "Your image"
             }
             this.setState((prevState) => {
@@ -253,6 +263,26 @@ class EventEdit extends React.Component {
                 }
             })
         }
+    }
+
+    socketNewEvent = (event) => {
+        //Send notification for all user followers about the new event
+        const minimalEvent = {
+            _id: event._id,
+            title: this.state.title,
+            imgUrl: this.state.imgUrl
+        }
+        const minimalUser = this.state.createdBy
+
+        this.state.createdBy.followers.forEach(follower => {
+            const payload = {
+                userId: follower._id,
+                minimalEvent,
+                minimalUser,
+                type: 'new_event'
+            }
+            socketService.emit('new event created', payload)
+        })
     }
 
     socketUpdateEvent = () => {
@@ -275,6 +305,15 @@ class EventEdit extends React.Component {
         })
     }
 
+    onDeleteImg = (imgId) => {
+        this.setState(prevState => (
+            {
+                ...prevState,
+                images: this.state.images.filter(img => img._id !== imgId)
+            }
+        ));
+    }
+
     render() {
         const { category, title, description,
             startDate, startTime, address, price,
@@ -283,7 +322,7 @@ class EventEdit extends React.Component {
         return (
             <div className="main-container">
                 {this.state.selectedTab === "form" && <div className="bg-img-container">
-                    <img className="bg-img" src={require("../assets/imgs/form-background.jpg")} />
+                    <img className="bg-img" src={require("../assets/imgs/form-background.jpg")} alt=""/>
                 </div>}
                 <section className="form-container">
                     <Tabs>
@@ -357,14 +396,13 @@ class EventEdit extends React.Component {
                             <div className="images-container flex justify-center align-center">
                                 {images.length === 0 && category === 'Choose Category' && < h3 > Waiting for your images...</h3>}
                                 {images.length === 0 && category !== 'Choose Category' && <div className="img-container">
-                                    {imgUrl.includes('http') && <img className="img-preview" src={imgUrl} alt=""></img>}
                                     {category && !imgUrl.includes('http') && <img className="img-preview" src={require(`../assets/imgs/${category.replace(/\s+/g, '')}.jpg`)} alt=""></img>}
                                 </div>}
-                                {images && <div className="img-upload-container flex wrap space-between">
-                                    {images.map((img, index) => { return <img className="img-preview" key={index} src={img.src} alt=""></img> })}
+                                {images.length > 0 && <div className="img-upload-container flex wrap space-between">
+                                    {/* {images.map((img, index) => { return <img className="img-preview" key={index} src={img.src} alt=""></img> })} */}
+                                    {images.map((img, index) => { return <ImagePreview key={index} img={img} onDeleteImg={this.onDeleteImg} /> })}
                                 </div>}
                             </div>
-                            {/* <button onClick={() => this.socketUpdateEvent()}>Trigger socket</button> */}
                         </div>}
 
                     {this.state.selectedTab === 'preview' && <EventDetails previewEvent={this.state} />}

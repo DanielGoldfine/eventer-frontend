@@ -1,6 +1,6 @@
 import React from 'react'
 
-import MinimalEvent from './MinimalEvent'
+import MinimalEventPreview from './MinimalEventPreview'
 
 export class MinimalEventList extends React.Component {
 
@@ -10,7 +10,7 @@ export class MinimalEventList extends React.Component {
 
     render() {
 
-        const {listState} = this.state;
+        // const { listState } = this.state;
 
         return (
             <section className="minimal-event-list-container user-details-list">
@@ -24,15 +24,9 @@ export class MinimalEventList extends React.Component {
                 </div>
                 <div className="list">
                     <ul>
-                        <MinimalEvent/>
-                        <li>event</li>
-                        <li>event</li>
-                        <li>event</li>
-                        <li>event</li>
-                        <li>event</li>
+                        {this.props.events.map(event => <MinimalEventPreview key={event._id} event={event} />)}
                     </ul>
                 </div>
-                {/* {props.reviews.map(review => <ReviewPreview key={review.id} review={review} />)} */}
             </section>
         )
     }

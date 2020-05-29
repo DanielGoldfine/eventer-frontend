@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
+import eventBusService from "../services/eventBusService.js";
 
 
 class Login extends Component {
@@ -72,17 +73,15 @@ class Login extends Component {
       return this.setState({ msg: 'Please enter both User-Name and Password' });
     }
     const userCreds = { userName, password };
-    this.props.login(userCreds)
-      .then(res => {
+    //this.props.login(userCreds)s
+    const user = await this.props.login(userCreds);
+    const { loggedInUser } = this.props;
+    if (loggedInUser.userName !== 'Guest') {
+      eventBusService.emit('user-login', user._id)
+      this.props.history.push(`/`)
+    }
+    else this.setState({ msg: 'Incorrect User-Name / Password' })
 
-        const { loggedInUser } = this.props;
-
-        if (loggedInUser.userName !== 'Guest') {
-          this.props.history.push(`/`)
-
-        }
-        else this.setState({ msg: 'Incorrect User-Name / Password' })
-      })
 
     // 5ecaec6c25278e479037e6cd
     // this.setState({ loginCred: { userName: '', password: '' } }, () => {
@@ -105,9 +104,10 @@ class Login extends Component {
     const signupCreds = { userName, password, fullName, imgUrl };
     const userCreds = { userName, password };
     this.props.signup(signupCreds);
-    console.log('Signup befor login', userCreds);
+    //console.log('Signup befor login', userCreds);
 
-    this.props.login(userCreds);
+    const user = await this.props.login(userCreds);
+    eventBusService.emit('user-login', user._id)
     this.setState({ signupCred: { userName: '', password: '', fullName: '' } }, () => {
       this.props.history.push(`/`);
     })
@@ -179,7 +179,7 @@ class Login extends Component {
           <TextField
             id="passwordSignup"
             label="Password"
-            defaultValue="Default Value"
+            //  defaultValue="Default Value"
             helperText="*Required"
             variant="outlined"
             className="TextField"
@@ -198,7 +198,7 @@ class Login extends Component {
           <TextField
             id="fullName"
             label="Your full name"
-            defaultValue="Default Value"
+            // defaultValue="Default Value"
             helperText="*Required"
             variant="outlined"
             className="TextField"
@@ -236,7 +236,11 @@ class Login extends Component {
 
         <Button variant="contained"
           color="default"
-          onClick={() => { this.props.login({ userName: "Guest", password: "1" }); this.props.history.push(`/`) }}>
+          onClick={async () => {
+            const user = await this.props.login({ userName: "Guest", password: "1" });
+            eventBusService.emit('user-login', user._id)
+            this.props.history.push(`/`)
+          }}>
           Continue as Guest</Button>
 
 
@@ -258,7 +262,7 @@ class Login extends Component {
           <TextField
             id="userName"
             label="Email"
-            defaultValue="Default Value"
+            // defaultValue="Default Value"
             helperText="*Required"
             variant="outlined"
             className="TextField"
@@ -279,7 +283,7 @@ class Login extends Component {
           <TextField
             id="password"
             label="Password"
-            defaultValue="Default Value"
+            // defaultValue="Default Value"
             helperText="*Required"
             variant="outlined"
             className="TextField"
@@ -306,7 +310,11 @@ class Login extends Component {
 
         <Button variant="contained"
           color="default"
-          onClick={() => { this.props.login({ userName: "Guest", password: "1" }); this.props.history.push(`/`) }}>
+          onClick={async() => {
+            const user = await this.props.login({ userName: "Guest", password: "1" })
+            eventBusService.emit('user-login', user._id)
+            this.props.history.push(`/`)
+          }}>
           Continue as Guest</Button>
 
 

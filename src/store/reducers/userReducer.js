@@ -7,14 +7,16 @@ if (sessionStorage.user) {
         fullName: localLoggedinUser.fullName,
         imgUrl: localLoggedinUser.imgUrl,
         rank: localLoggedinUser.rank,
-        isAdmin: localLoggedinUser.isAdmin
+        isAdmin: localLoggedinUser.isAdmin,
+        followers: localLoggedinUser.followers
     }
 }
 
 const initialState = {
     loggedInUser: localLoggedinUser,
     minimalLoggedInUser: localMinimalLoggedInUser,
-    isNotificationsOpen: false
+    isNotificationsOpen: false,
+    currUser:''
 }
 
 export default function UserReducer(state = initialState, action) {
@@ -25,7 +27,8 @@ export default function UserReducer(state = initialState, action) {
                 fullName: action.user.fullName,
                 imgUrl: action.user.imgUrl,
                 rank: action.user.rank,
-                isAdmin: action.user.isAdmin
+                isAdmin: action.user.isAdmin,
+                followers: action.user.followers
             }
             return {
                 ...state,
@@ -36,6 +39,11 @@ export default function UserReducer(state = initialState, action) {
             return {
                 ...state,
                 loggedInUser: { ...action.user }
+            };
+        case 'SET_LOCAL_USER':
+            return {
+                ...state,
+                currUser: { ...action.user }
             };
         case 'REMOVE_USER':
             return {
@@ -51,6 +59,11 @@ export default function UserReducer(state = initialState, action) {
             return {
                 ...state,
                 loggedInUser: { ...action.user }
+            }
+        case 'UPDATE_LOCAL_USER':
+            return {
+                ...state,
+                currUser: { ...action.user }
             }
         case 'TOGGLE_NOTIFICATIONS':
             return {

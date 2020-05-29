@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import { addPost, removePost , updateEventLocal } from '../store/actions/eventActions.js' 
+import { addPost, removePost, updateEventLocal } from '../store/actions/eventActions.js'
 import UserPreview from './UserPreview'
 import Moment from 'moment';
 import TextField from '@material-ui/core/TextField';
@@ -15,21 +15,16 @@ class EventPosts extends Component {
     }
 
     componentDidMount() {
-      //  socketService.setup();
+        //  socketService.setup();
         // socketService.emit('viewEventDetails', this.props.event._id);
         socketService.on('newEventPost', this.socketAddPost);
         socketService.on('removeEventPost', this.socketRemovePost);
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.event._id !== prevProps.event._id)
-            socketService.emit('viewEventDetails', this.props.event._id);
-    }
 
     componentWillUnmount() {
         socketService.off('newEventPost', this.socketAddPost);
         socketService.off('removeEventPost', this.socketRemovePost);
-        //socketService.terminate();
     }
 
     socketAddPost = event => {
@@ -78,8 +73,9 @@ class EventPosts extends Component {
                                 {/* <p className="post-time">{Moment.unix(post.createdAt / 1000).format("DD/MM,HH:mm")} </p>   */}
                                 <p className="post-time">{Moment(post.createdAt).fromNow()} </p>
                             </div>
-                            <DeleteIcon style={{ fontSize: 25 }} color="action" className="delete-post-icon" onClick={() => this.onRemovePost(post._id)} />
-                            {/* {(this.props.isLoggedUserAdmin || this.props.eventCreatorId === post.author._id) && <DeleteIcon style={{ fontSize: 25 }} color="action" className="delete-post-icon" onClick={() => this.onRemovePost(post._id)} />} */}
+                            {/* <DeleteIcon style={{ fontSize: 25 }} color="action" className="delete-post-icon" onClick={() => this.onRemovePost(post._id)} /> */}
+                            {(this.props.isLoggedUserAdmin || this.props.minimalLoggedInUser._id === post.author._id || this.props.minimalLoggedInUser._id === this.props.event.createdBy._id)
+                                && <DeleteIcon style={{ fontSize: 25 }} color="action" className="delete-post-icon" onClick={() => this.onRemovePost(post._id)} />}
                         </div>
                     ))}
                 </ul>
@@ -96,6 +92,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-    addPost, removePost , updateEventLocal
+    addPost, removePost, updateEventLocal
 }
 export default connect(mapStateToProps, mapDispatchToProps)(EventPosts);

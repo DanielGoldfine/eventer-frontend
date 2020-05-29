@@ -12,12 +12,14 @@ class EventIndex extends Component {
 
     state = {
         prevScrollpos: 0,
-        filterBarClass: 'active'
+        filterBarClass: 'active',
     }
 
     componentDidMount() {
         window.addEventListener('scroll', this.listenToScrollFilter);
-        this.props.loadEvents(this.props.filterBy);
+        let filter = { ...this.props.filterBy, futureOnly: true };
+        this.props.setFilter(filter)
+            .then(()=>{this.props.loadEvents(this.props.filterBy)})
     };
 
     componentWillUnmount() {
@@ -42,9 +44,10 @@ class EventIndex extends Component {
         this.props.removeEvent(eventId)
     }
 
-    changeFilter = async (filterBy) => {
-        await this.props.setFilter(filterBy)
-        this.props.loadEvents(filterBy)
+    changeFilter =  (filterBy) => {
+        let filter = { ...filterBy, futureOnly: true };
+        this.props.setFilter(filter)
+            .then(()=>{this.props.loadEvents(this.props.filterBy)})
     }
 
     chooseCategory = (chosenCategory) => {
@@ -61,10 +64,10 @@ class EventIndex extends Component {
         // THE IMMUTABLE WAY
         // filter.popo = { ...filter.popo, momo: 2 }
 
-        filter = { ...filter, sortBy: 'startAt'}
-        filter = { ...filter, limit: null}
+        filter = { ...filter, sortBy: 'startAt' }
+        filter = { ...filter, limit: null }
         filter = { ...filter, category: chosenCategory }
-        
+
         // filter.limit = null;
         // filter.category = chosenCategory;
 
@@ -76,14 +79,14 @@ class EventIndex extends Component {
 
     render() {
 
-        const { filterBarClass } = this.state;
+        const { filterBarClass } = this.state; 
 
         return (
 
             <div className="event-index main-container">
                 <CategoryLinks chooseCategory={this.chooseCategory} currCtg={this.props.filterBy.category} />
                 <FilterBar filterBarClass={filterBarClass} changeFilter={this.changeFilter} gFilter={this.props.filterBy} handleChange={this.handleChange} />
-                {this.props.events && <EventList futureEventsOnly onDelete={this.onDelete} events={this.props.events} onSubscribe={this.onSubscribe} />}
+                {this.props.events && <EventList onDelete={this.onDelete} events={this.props.events} onSubscribe={this.onSubscribe} />}
             </div>
         )
     }
