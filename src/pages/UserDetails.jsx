@@ -32,7 +32,7 @@ class UserDetails extends Component {
         this.initPage()
     }
 
-    initPage = async (userId) => {
+    initPage = async (userId) => { 
         let id = (userId) ? userId : this.props.match.params.id
         this.props.loadUserLocal(id)
         let filter = { ...this.props.filterBy, futureOnly: false, userId: id ,isActive:'show all'};

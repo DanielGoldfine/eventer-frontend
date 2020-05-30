@@ -29,6 +29,18 @@ export function loadEvent(id) {
     }
 }
 
+export function clearEvent() {
+    // console.log('clear action')
+    return async dispatch => {
+        try {
+            await dispatch(_clear());
+        }
+        catch (err) {
+            console.log('eventService: err in clearing event', err);
+        }
+    }
+}
+
 export function saveEvent(event) {
     return async dispatch => {
         try {
@@ -166,6 +178,12 @@ function _removeEvent(eventId) {
     return {
         type: 'REMOVE_EVENT',
         eventId
+    };
+}
+
+function _clear() {
+    return {
+        type: 'CLEAR_EVENT'
     };
 }
 

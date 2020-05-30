@@ -1,5 +1,5 @@
 import React from 'react';
-import { loadEvent, subscribeEvent, unsubscribeEvent, setFilter, updateEvent, updateEventLocal } from '../store/actions/eventActions.js'
+import { loadEvent, subscribeEvent, unsubscribeEvent, setFilter, updateEvent, updateEventLocal,clearEvent } from '../store/actions/eventActions.js'
 import { connect } from "react-redux";
 import Moment from 'moment';
 import EventTags from '../cmps/EventTags'
@@ -63,6 +63,7 @@ class EventDetails extends React.Component {
   }
 
   componentWillUnmount() {
+    this.props.clearEvent()
     socketService.off('memberJoin', this.socketAddPost);
     socketService.off('memberLeave', this.socketRemovePost);
   }
@@ -344,7 +345,7 @@ const mapStateToProps = (state) => {
 
 
 const mapDispatchToProps = {
-  loadEvent, unsubscribeEvent, subscribeEvent, setFilter, updateEvent, updateEventLocal
+  loadEvent, unsubscribeEvent, subscribeEvent, setFilter, updateEvent, updateEventLocal,clearEvent
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventDetails);

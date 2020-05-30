@@ -2,7 +2,7 @@
 
 const initialState = {
     events: [],
-    currEvent:'', //for the edit and details pages
+    currEvent: '', //for the edit and details pages
     filterBy: {
         futureOnly: true,
         txt: '',
@@ -14,7 +14,7 @@ const initialState = {
         price: '',
         orderBy: '1',
         sortBy: 'startAt',
-        userId:'',
+        userId: '',
         limit: null
     },
     isLoading: false
@@ -58,6 +58,12 @@ export default function EventReducer(state = initialState, action) {
             return {
                 ...state,
                 filterBy: { ...action.filter }
+            }
+        case 'CLEAR_EVENT':
+            // console.log(action)
+            return {
+                ...state,
+                currEvent: ''
             }
         case 'TOGGLE_LOAD':
             return {
