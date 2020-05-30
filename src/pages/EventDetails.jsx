@@ -1,5 +1,6 @@
 import React from 'react';
 import { loadEvent, subscribeEvent, unsubscribeEvent, setFilter, updateEvent, updateEventLocal } from '../store/actions/eventActions.js'
+import { login } from '../store/actions/userActions.js'
 import { connect } from "react-redux";
 import Moment from 'moment';
 import EventTags from '../cmps/EventTags'
@@ -34,16 +35,14 @@ class EventDetails extends React.Component {
 
 
   componentDidMount() {
-    console.log('event details didmount Id')
     if (this.props.match) {  // "preview" mode doesn't use URL and params...
       const { id } = this.props.match.params;
       this.props.loadEvent(id)
-        .then((event) => {
-          if (event) {
-            socketService.emit('viewEventDetails', event._id);
-            socketService.on('memberJoin', this.socketAddMemebr);
-            socketService.on('memberLeave', this.socketLeaveMember);
-          }
+        .then(() => {
+          // console.log('componentDidMount')
+          socketService.emit('viewEventDetails', this.props.event._id);
+          socketService.on('memberJoin', this.socketAddMemebr);
+          socketService.on('memberLeave', this.socketLeaveMember);
         })
     }
   }
@@ -52,13 +51,11 @@ class EventDetails extends React.Component {
     if (this.props.match.params.id !== prevProps.match.params.id) {
       const { id } = this.props.match.params;
       this.props.loadEvent(id)
-        .then((event) => {
-          if (event) {
-            // console.log('details componentDidUpdate')
-            socketService.emit('viewEventDetails', this.props.event._id);
-            socketService.on('memberJoin', this.socketAddMemebr);
-            socketService.on('memberLeave', this.socketLeaveMember);
-          }
+        .then(() => {
+          // console.log('details componentDidUpdate')
+          socketService.emit('viewEventDetails', this.props.event._id);
+          socketService.on('memberJoin', this.socketAddMemebr);
+          socketService.on('memberLeave', this.socketLeaveMember);
         })
     }
   }
@@ -184,32 +181,26 @@ class EventDetails extends React.Component {
 
   render() {
 
-    const activeProps = this.props.previewEvent ? this.props.previewEvent : this.props.event
 
-    if (!activeProps) return <div>LOADING...</div>
+    if (this.props.previewEvent) { // handle timestamp for preview mode
+      const startAtString = `${this.props.previewEvent.startDate} ${this.props.previewEvent.startTime}`
+      const startAt = Math.round(new Date(startAtString).getTime() / 1000)
+      this.props.previewEvent.startAt = startAt
+    }
 
-      if (this.props.previewEvent) { // handle timestamp for preview mode
-        const startAtString = `${this.props.previewEvent.startDate} ${this.props.previewEvent.startTime}`
-        const startAt = Math.round(new Date(startAtString).getTime() / 1000)
-        this.props.previewEvent.startAt = startAt
-      }
+    const { event } = this.props;
+    if (!event && !this.props.previewEvent) return 'Loading...';
 
-      const { event } = this.props;
-      // if (!event && !this.props.previewEvent) return <div>Loading...</div>
+    const activeProps = this.props.previewEvent ? this.props.previewEvent : event
+    const { _id, isActive, createdAt, updatedAt, title, category, imgUrl, description, startAt, location, createdBy, tags, images, members, price, capacity } = activeProps
 
-      const { _id, isActive, createdAt, title, category, imgUrl, description, startAt, location, createdBy, tags, images, members, price, capacity } = activeProps
+    const dateStr = Moment(startAt * 1000).toString()
+    const createdDateStr = createdAt ? Moment(createdAt * 1000).toString() : Moment(undefined).toString()
+    const updatedAtStr = updatedAt ? Moment(updatedAt * 1000).toString() : Moment(undefined).toString()
+    const eventCostStr = price ? `Join for only $${price}` : 'Join for free!'
+    const eventFull = (members.length === capacity) ? true : false
 
-      const dateStr = Moment(startAt * 1000).toString()
-      const createdDateStr = createdAt ? Moment(createdAt * 1000).toString() : Moment(undefined).toString()
-      const eventCostStr = price ? `Join for only $${price}` : 'Join for free!'
-      console.log("members", members)
-      console.log("active props", this.props)
-      console.log('event details didmount Id')
-      const eventFull = (members.length === capacity) ? true : false
-
-      const userInEvent = members.findIndex(member => member._id === this.props.minimalLoggedInUser._id)
-
-
+    const userInEvent = members.findIndex(member => member._id === this.props.minimalLoggedInUser._id)
 
     return (
 
@@ -299,31 +290,32 @@ class EventDetails extends React.Component {
 
             {tags && <EventTags tags={tags} />}
 
-
-
-
-
           </section>
 
-          <SocialShare eventId={_id} eventTitle={title} />
+          <div className="right-side">
 
-          <section className="user-lists">
-            <AttendeesList membersNum={members.length} capacity={capacity} followers={this.props.event.members} />
+            <div className="social-share-container flex align-center justify-center">
+              <SocialShare eventId={_id} eventTitle={title} />
+            </div>
 
-            {this.props.previewEvent && <button className="cta-btn attend">{eventCostStr}</button>}
-            {!this.props.previewEvent && !eventFull && userInEvent === -1 && this.props.minimalLoggedInUser._id !== createdBy._id && <button onClick={() => { this.onSubscribeEvent(this.props.minimalLoggedInUser._id) }} className="cta-btn attend">{eventCostStr}</button>}
-            {!this.props.previewEvent && userInEvent >= 0 && <button onClick={() => { this.onUnsubscribeEvent(this.props.minimalLoggedInUser._id) }} className="cta-btn leave">Leave</button>}
+            <section className="user-lists">
+              <AttendeesList membersNum={members.length} capacity={capacity} followers={this.props.event.members} />
 
-            {/* <section>
+              {this.props.previewEvent && <button className="cta-btn attend">{eventCostStr}</button>}
+              {!this.props.previewEvent && !eventFull && userInEvent === -1 && this.props.minimalLoggedInUser._id !== createdBy._id && <button onClick={() => { this.onSubscribeEvent(this.props.minimalLoggedInUser._id) }} className="cta-btn attend">{eventCostStr}</button>}
+              {!this.props.previewEvent && userInEvent >= 0 && <button onClick={() => { this.onUnsubscribeEvent(this.props.minimalLoggedInUser._id) }} className="cta-btn leave">Leave</button>}
+
+              {/* <section>
             {event && <EventMembers event={event} onSubscribeEvent={this.onSubscribeEvent} onUnsubscribeEvent={this.onUnsubscribeEvent} loggedInUserId={this.props.minimalLoggedInUser._id} />}
             {this.props.previewEvent && <EventMembers previewMode={true} event={this.props.previewEvent} loggedInUserId={this.props.minimalLoggedInUser._id} />}
           </section> */}
-            <div className="map">
-              <MapContainer loc={location} name={location.address} />
-            </div>
+              <div className="map">
+                <MapContainer loc={location} name={location.address} />
+              </div>
 
           </section>
 
+          </div>
 
 
 
@@ -348,7 +340,7 @@ const mapStateToProps = (state) => {
 
 
 const mapDispatchToProps = {
-  loadEvent, unsubscribeEvent, subscribeEvent, setFilter, updateEvent, updateEventLocal
+  loadEvent, unsubscribeEvent, subscribeEvent, setFilter, login, updateEvent, updateEventLocal
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventDetails);
