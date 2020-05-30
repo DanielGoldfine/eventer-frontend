@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
+import { Grid } from '@material-ui/core';
 
 class MapContainer extends Component {
     
@@ -10,15 +11,14 @@ class MapContainer extends Component {
     };
 
     containerStyle = {
-        position: 'fixed',
-        width:'447px',
-        height: '250px',
-        top:'510px',
-        right:'80px',
-        border:'1px solid lightgrey',
-        borderRadius:'15px',
-        boxShadow: "0 1px 3px #00000038"
-
+        // position: 'fixed',
+        // width:'447px',
+        height: '48%',
+        // top:'510px',
+        // right:'80px',
+        // border:'1px solid lightgrey',
+        // borderRadius:'15px',
+        // boxShadow: "0 1px 3px #00000038"
     }
       
     style = {

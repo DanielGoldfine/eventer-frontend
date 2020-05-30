@@ -18,7 +18,7 @@ export function Notifications(props) {
             </div>
             {/* <p>Total notifications {props.notification.msgs.length}</p> */}
             <div className="notifications-list">
-                {props.notification.msgs.map(msg => <NotificationPreview key={msg._id} msg={msg} />)}
+                {props.notification.msgs.map(msg => <NotificationPreview notificationClicked={props.notificationClicked} key={msg._id} msg={msg} />)}
             </div>
         </section>
     )

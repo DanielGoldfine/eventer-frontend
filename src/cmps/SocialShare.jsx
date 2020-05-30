@@ -17,8 +17,9 @@ export class SocialShare extends Component {
     const shareUrl = 'https://proj-eventer.herokuapp.com/event/' + this.props.eventId
     const title = 'Check this amazing event ' + this.props.eventTitle
     return (
-      <div className="social-share flex space-around align-items justify-center">
+      <div className="social-share flex column space-around align-items">
         <h3 className="align-self-center">Invite your friends</h3>
+        <div className="flex space-around align-items">
         <div className="share-icon">
           <TwitterShareButton
             url={shareUrl}
@@ -50,6 +51,7 @@ export class SocialShare extends Component {
           >
             <FacebookIcon size={32} round />
           </FacebookShareButton>
+        </div>
         </div>
       </div>
     )

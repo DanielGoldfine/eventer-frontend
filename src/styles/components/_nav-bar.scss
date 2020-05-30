@@ -6,6 +6,16 @@
     top: 0;
     left: 0;
 
+    .narrow-modal-container {
+        display: none;
+        transform: translate(105%);
+        transition: 0.3s;
+    }
+
+    .narrow-active {
+        transform: translate(0%);
+    }
+
     .main-logo,
     .main-icn {
         width: 165px;
@@ -117,11 +127,11 @@
                     width: 7px;
                     border-radius: 999px;
                 }
-                
+
                 .notifications-list::-webkit-scrollbar-track {
                     background-color: rgba(0, 0, 0, 0);
                 }
-                
+
                 .notifications-list::-webkit-scrollbar-thumb {
                     background-color: $brandingBlue;
                     border-radius: 100px;
@@ -131,7 +141,7 @@
                 }
 
                 .notification-preview {
-                    transition: .2s;
+                    transition: 0.2s;
                     .user-preview-min {
                         margin-top: 10px;
                         margin-left: 10px;
@@ -157,11 +167,14 @@
                     p {
                         margin-left: 10px;
                         margin-bottom: 5px;
+                        font-size: rem(15px);
+                        color: $brandinggreybold;
                     }
                 }
                 .read {
                     h4 {
                         font-weight: lighter;
+                        color: $brandinggreybold;
                     }
                 }
             }
@@ -196,6 +209,10 @@
         }
     }
     @media screen and (max-width: 1070px) {
+        .narrow-modal-container {
+            display: block;
+        }
+
         .main-logo {
             display: none;
         }
@@ -214,12 +231,20 @@
             .user-icn {
                 display: none;
             }
+            .not-count {
+                display: none;
+            }
         }
         .seach-bar-container {
             width: 40vw;
         }
     }
     @media screen and (max-width: 550px) {
+        .search-logo {
+            .main-icn {
+                filter: none;
+            }
+        }
         .search-logo {
             width: 100%;
             .seach-bar-container {
@@ -233,7 +258,7 @@
                 }
                 .search-icn {
                     border-left: 1px solid rgb(17, 17, 17);
-                    display: none;
+                    width: 30px;
                 }
             }
         }
@@ -246,6 +271,137 @@
         .nav-bar-btns {
             > * {
                 margin-inline-start: 10px;
+            }
+        }
+    }
+}
+
+.narrow-modal-container {
+    background-color: rgb(17, 17, 17);
+    z-index: 13;
+    position: fixed;
+    right: 0;
+    top: 60px;
+    width: 250px;
+    height: 100vh;
+    border-top: 1px solid rgb(61, 61, 61);
+    .create-event {
+        width: 120px;
+        height: 30px;
+        border-radius: 99px;
+        border: 2px solid $brandingBlue;
+        background-color: $brandingBlue;
+        color: rgb(17, 17, 17);
+        font-family: secondfontbold;
+        font-size: rem(15px);
+        margin-top: 30px;
+        margin-bottom: 20px;
+        transition: 0.2s;
+        outline: none;
+    }
+    .narow-notifications-container {
+        position: relative;
+    }
+    .narrow-section {
+        cursor: pointer;
+        color: white;
+        margin-top: 15px;
+        margin-bottom: 25px;
+        .not-count {
+            position: absolute;
+            color: $brandingBlue;
+            left: 23px;
+            top: -5px;
+        }
+        svg {
+            margin-left: 30px;
+            margin-right: 27px;
+        }
+        .login {
+            margin-left: 82px;
+        }
+    }
+    .highlight {
+        color: $brandingBlue;
+    }
+    .notifications {
+        .notifications-container {
+            background-color: white;
+            width: 100%;
+            height: 430px;
+            padding-top: 5px;
+            .not-header {
+                border-bottom: 2px solid $clrborderlight;
+                height: 35px;
+                h1 {
+                    text-align: left;
+                    margin-left: 10px;
+                    font-size: rem(15px);
+                    span {
+                        font-weight: lighter;
+                        margin-left: 10px;
+                    }
+                }
+            }
+            .notifications-list {
+                overflow: auto;
+                width: 100%;
+                height: 92%;
+            }
+            .notifications-list::-webkit-scrollbar {
+                width: 7px;
+                border-radius: 999px;
+            }
+
+            .notifications-list::-webkit-scrollbar-track {
+                background-color: rgba(0, 0, 0, 0);
+            }
+
+            .notifications-list::-webkit-scrollbar-thumb {
+                background-color: $brandingBlue;
+                border-radius: 100px;
+            }
+            .notification-preview:hover {
+                background-color: rgb(233, 233, 233);
+            }
+
+            .notification-preview {
+                transition: 0.2s;
+                .user-preview-min {
+                    margin-top: 10px;
+                    margin-left: 10px;
+                    padding: 0;
+                    border: none;
+                    .avatar {
+                        width: 40px;
+                        height: 40px;
+                    }
+                    .user-preview-name-link {
+                        display: none;
+                    }
+                }
+                border-bottom: 2px solid $clrborderlight;
+                width: 100%;
+                // height: 80px;
+                h4 {
+                    text-align: left;
+                    margin-top: 10px;
+                    margin-left: 10px;
+                    font-size: rem(15px);
+                    cursor: pointer;
+                }
+                p {
+                    margin-left: 10px;
+                    margin-bottom: 5px;
+                    font-size: rem(13px);
+                    color: $brandinggreybold;
+                }
+            }
+            .read {
+                h4 {
+                    font-weight: lighter;
+                    color: $brandinggreybold;
+                }
             }
         }
     }
@@ -302,7 +458,7 @@
     transition: opacity 0.35s;
     // transition: top 0.4s;
     @media screen and (max-width: 550px) {
-        top: 0px;
+        opacity: 1;
     }
 }
 
