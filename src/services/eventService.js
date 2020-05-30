@@ -20,11 +20,11 @@ async function query(filterBy) {
     if (!filterBy) return HttpService.get(`${baseUrl}`);
     var queryStr;
     if (filterBy.userId) {
-        queryStr = `?userId=${filterBy.userId}`
+        queryStr = `?userId=${filterBy.userId}&isActive=${filterBy.isActive}}`
         return HttpService.get(`${baseUrl}/${queryStr}`);
     }
 
-    queryStr = `?category=${filterBy.category}&title=${filterBy.txt}&sortBy=${filterBy.sortBy}&futureOnly=${filterBy.futureOnly}`
+    queryStr = `?category=${filterBy.category}&title=${filterBy.txt}&sortBy=${filterBy.sortBy}&futureOnly=${filterBy.futureOnly}&price=${filterBy.price}&date=${filterBy.date}&orderBy=${filterBy.orderBy}&isActvie=${filterBy.isActive}`
 
     return HttpService.get(`${baseUrl}/${queryStr}`);
 }

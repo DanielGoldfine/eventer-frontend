@@ -17,7 +17,7 @@ export default function EventPreview(props) {
     if (props.event.capacity) labelClass = 'capacity'
     if (props.event.capacity === props.event.members.length) {
         labelClass = 'muted'
-        labelTxt = 'Max Capacity Reached'
+        labelTxt = 'SOLD OUT'
     }
 
     switch (timeArr[2].split('')[timeArr[2].split('').length - 1]) {
@@ -60,6 +60,7 @@ export default function EventPreview(props) {
                 <div className="event-preview-bottom flex space-between align-center">
                     <UserPreview ranking minimalUser={props.event.createdBy} />
                     <p className="price" onClick={() => { history.push(`/event/${props.event._id}`) }}>{(props.event.price) ? `$${props.event.price}` : 'Free'}</p>
+                    {props.minimalLoggedInUser && props.minimalLoggedInUser.isAdmin && <button onClick={()=>{props.onDelete(props.event._id)}}>Remove</button>}
                 </div>
             </div>
 

@@ -27,13 +27,16 @@
     padding-top: 10px;
     width: 447px;
     border: 1px solid #3333332e;
-    border-radius: 15px;
+    border-radius: 999px;
     .share-icon {
       margin: 5px;
       cursor: pointer;
       &:hover {
         opacity: 0.7;
       }
+    }
+    h3 {
+      margin-left: 10px;
     }
   }
 

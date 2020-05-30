@@ -51,9 +51,8 @@ class NavBar extends Component {
             this.setState({ isHomePage: this.props.isHomePage })
         };
         this.setState({ loggedInUser: this.props.loggedInUser })
-        //console.log('logged user nav bar', this.props.loggedInUser)
         if (this.props.loggedInUser) {
-            this.props.loadUser(this.props.loggedInUser._id)
+           this.props.loadUser(this.props.loggedInUser._id)
             socketService.emit('userLogin', this.props.loggedInUser._id);
             socketService.on('event got updated', this.addNotification);
             socketService.on('new event created', this.addNotification);
@@ -90,7 +89,6 @@ class NavBar extends Component {
 
 
     addNotification = async (notification) => {
-        console.log(notification)
         const user = await this.props.addNotification(notification)
         this.props.loadUser(user._id)
     }

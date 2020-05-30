@@ -15,7 +15,6 @@ export default class EventMembers extends Component {
             <section className="event-members-container" >
                 <div className="members-section">
                     {/* Adding a lot of users with the below button */}
-                    {/* <Button variant="contained" color="primary" onClick={() => this.props.onSubscribeEvent()}>{eventCostStr}</Button> */}
                     {!eventFull && (userInEvent === -1) && this.props.loggedInUserId !== createdBy._id && <Button variant="contained" color="primary" onClick={() => this.props.onSubscribeEvent(this.props.loggedInUserId)}>{eventCostStr}</Button>}
                     {this.props.previewMode && <Button variant="contained" color="primary">{eventCostStr}</Button>}
                     {userInEvent >= 0 && <Button variant="contained" color="primary" onClick={() => this.props.onUnsubscribeEvent(this.props.loggedInUserId)}>Leave event</Button>}

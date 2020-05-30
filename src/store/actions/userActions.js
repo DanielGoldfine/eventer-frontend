@@ -15,7 +15,6 @@ export function signup(credentials, loadingStatus) {
 
 
 export function login(credentials, loadingStatus) {
-    // console.log('login action,', credentials)
     return async dispatch => {
         try {
             toggleLoad(credentials, loadingStatus)
@@ -104,6 +103,40 @@ export function addReview(review, user) {
         }
     }
 }
+
+export function addFollower(user, follower) {
+    console.log(follower);
+    
+    return async dispatch => {
+        try {
+            const updatedUser = await userService.addFollower(user, follower)
+            console.log('updatedUser', updatedUser);
+            
+            dispatch(_saveUser('UPDATE_LOCAL_USER', updatedUser));
+            return updatedUser
+        }
+        catch (err) {
+            console.log('eventService: err in subsscribe action', err);
+        }
+    }
+}
+export function removeFollower(user, follower) {
+    console.log(follower);
+    
+    return async dispatch => {
+        try {
+            const updatedUser = await userService.removeFollower(user, follower)
+            console.log('updatedUser', updatedUser);
+            
+            dispatch(_saveUser('UPDATE_LOCAL_USER', updatedUser));
+            return updatedUser
+        }
+        catch (err) {
+            console.log('eventService: err in subsscribe action', err);
+        }
+    }
+}
+
 
 export function addNotification(notification) {
     return async dispatch => {

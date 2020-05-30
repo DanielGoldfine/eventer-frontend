@@ -17,12 +17,9 @@ export class MinimalEventList extends React.Component {
 
                 <div className="list-header flex align-center space-between">
                     <h4>Created Events</h4>
-                    {/* <select name="list-filter" id="">
-                        <option value="active">Created</option>
-                        <option value="inactive">Subscribed</option>
-                    </select> */}
                 </div>
                 <div className="list">
+                    {this.props.events.length === 0 && <h5>No Events yet, Create and invite your friends</h5>}
                     <ul>
                         {this.props.events.map(event => <MinimalEventPreview key={event._id} event={event} />)}
                     </ul>

@@ -28,12 +28,10 @@ class EventPosts extends Component {
     }
 
     socketAddPost = event => {
-        // console.log('got socket!', event)
         this.props.updateEventLocal(event)
     };
 
     socketRemovePost = (event, postId) => {
-        // console.log('got socket to remove post', event, postId)
         this.props.updateEventLocal(event)
     };
 

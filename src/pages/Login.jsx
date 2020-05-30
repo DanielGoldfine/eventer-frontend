@@ -28,19 +28,20 @@ class Login extends Component {
   };
 
   componentDidMount() {
-    if (window.cloudinary) {
+    if (this.props.loggedInUser) {
+      if (window.cloudinary) {
+        let widget = window.cloudinary.createUploadWidget({
+          cloudName: 'dsqh7qhpg',
+          uploadPreset: 'lh8fyiqe',
+          // cropping: true,
+          // croppingCoordinatesMode: 'custom',
+          // gravity: 'custom',
+          croppingAspectRatio: 1,
+          maxFiles: 1
+        }, (error, result) => { this.checkUploadResult(result) })
 
-      let widget = window.cloudinary.createUploadWidget({
-        cloudName: 'dsqh7qhpg',
-        uploadPreset: 'lh8fyiqe',
-        // cropping: true,
-        // croppingCoordinatesMode: 'custom',
-        // gravity: 'custom',
-        croppingAspectRatio: 1,
-        maxFiles: 1
-      }, (error, result) => { this.checkUploadResult(result) })
-
-      this.setState({ msg: `Hello, welcome ${this.props.loggedInUser.fullName}`, widget })
+        this.setState({ msg: `Hello, welcome ${this.props.loggedInUser.fullName}`, widget })
+      }
     }
   }
 
@@ -82,16 +83,6 @@ class Login extends Component {
     }
     else this.setState({ msg: 'Incorrect User-Name / Password' })
 
-
-    // 5ecaec6c25278e479037e6cd
-    // this.setState({ loginCred: { userName: '', password: '' } }, () => {
-    // const { loggedInUser } = this.props;
-    // console.log('loggedInUser', loggedInUser);
-    // if (loggedInUser._id !== "5ecaec6c25278e479037e6cd" ) {
-    //   this.props.history.push(`/`)
-    // }
-    // else this.setState({ msg: 'User-Name / Password is incorrect' })
-    // })
   };
 
   doSignup = async ev => {
@@ -103,11 +94,9 @@ class Login extends Component {
     }
     const signupCreds = { userName, password, fullName, imgUrl };
     const userCreds = { userName, password };
-    this.props.signup(signupCreds);
-    //console.log('Signup befor login', userCreds);
-
+    await this.props.signup(signupCreds);
     const user = await this.props.login(userCreds);
-    eventBusService.emit('user-login', user._id)
+    if (user) eventBusService.emit('user-login', user._id)
     this.setState({ signupCred: { userName: '', password: '', fullName: '' } }, () => {
       this.props.history.push(`/`);
     })
@@ -310,7 +299,7 @@ class Login extends Component {
 
         <Button variant="contained"
           color="default"
-          onClick={async() => {
+          onClick={async () => {
             const user = await this.props.login({ userName: "Guest", password: "1" })
             eventBusService.emit('user-login', user._id)
             this.props.history.push(`/`)
@@ -329,7 +318,7 @@ class Login extends Component {
 
     const { loggedInUser } = this.props;
 
-
+    if (!loggedInUser) return <div>Loading...</div>
     return (
       <div className="login-container">
         <h2>{this.state.msg}</h2>

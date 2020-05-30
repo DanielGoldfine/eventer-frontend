@@ -17,7 +17,7 @@ class EventIndex extends Component {
 
     componentDidMount() {
         window.addEventListener('scroll', this.listenToScrollFilter);
-        let filter = { ...this.props.filterBy, futureOnly: true };
+        let filter = { ...this.props.filterBy, futureOnly: true, userId:'' };
         this.props.setFilter(filter)
             .then(()=>{this.props.loadEvents(this.props.filterBy)})
     };
@@ -45,7 +45,7 @@ class EventIndex extends Component {
     }
 
     changeFilter =  (filterBy) => {
-        let filter = { ...filterBy, futureOnly: true };
+        let filter = { ...filterBy, futureOnly: true,userId:''};
         this.props.setFilter(filter)
             .then(()=>{this.props.loadEvents(this.props.filterBy)})
     }
@@ -55,19 +55,9 @@ class EventIndex extends Component {
         const myobj = { ...originalObj }
 
         myobj.arr.push('1');
-
-
-        // this.props.filterBy has a popo = {}
         let filter = { ...this.props.filterBy };
 
-        // console.log(this.props.filterBy);
-        // THE IMMUTABLE WAY
-        // filter.popo = { ...filter.popo, momo: 2 }
-
-        filter = { ...filter, sortBy: 'startAt' }
-        filter = { ...filter, limit: null }
-        filter = { ...filter, category: chosenCategory }
-
+        filter = { ...filter, sortBy: 'startAt', limit: null , category: chosenCategory }
         // filter.limit = null;
         // filter.category = chosenCategory;
 
@@ -80,13 +70,15 @@ class EventIndex extends Component {
     render() {
 
         const { filterBarClass } = this.state; 
+        console.log('this.props.events', this.props.events);
 
         return (
 
-            <div className="event-index main-container">
+            <div className="event-index main-container ">
                 <CategoryLinks chooseCategory={this.chooseCategory} currCtg={this.props.filterBy.category} />
                 <FilterBar filterBarClass={filterBarClass} changeFilter={this.changeFilter} gFilter={this.props.filterBy} handleChange={this.handleChange} />
-                {this.props.events && <EventList onDelete={this.onDelete} events={this.props.events} onSubscribe={this.onSubscribe} />}
+                {this.props.events && <EventList onDelete={this.onDelete} events={this.props.events} minimalLoggedInUser={this.props.minimalLoggedInUser}   />}
+                {this.props.events.length === 0 && <h1 className="no-events">No Events found</h1>}
             </div>
         )
     }
@@ -95,7 +87,8 @@ class EventIndex extends Component {
 const mapStateToProps = (state) => {
     return {
         events: state.eventsStore.events,
-        filterBy: state.eventsStore.filterBy
+        filterBy: state.eventsStore.filterBy,
+        minimalLoggedInUser : state.userStore.minimalLoggedInUser
     };
 };
 
