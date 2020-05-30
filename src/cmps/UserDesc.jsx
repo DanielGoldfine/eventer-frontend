@@ -3,7 +3,8 @@ import React from 'react'
 
 export function UserDesc(props) {
 
-    const { user , isLoggedInUser , loggedInUser , doFollow , doUnfollow } = props;
+    const { user , isLoggedInUser , loggedInUser , addFollower , doUnfollow , checkFollowing , removeFollower } = props;
+    const isFollow = checkFollowing();
 
     return (
         <main className="user-desc flex column justify-center align-items-center space-between">
@@ -34,12 +35,16 @@ export function UserDesc(props) {
                 <div className="flex align-items-center">
                     <h4>Rating</h4>
                     {user.rank.average !== 0 && <h4>{user.rank.average.toFixed(1)}</h4>}
-                    {!user.rank.average && <h4>Not yet</h4>}
+                    {!user.rank.average && <h6>None</h6>}
                 </div>
                 {/* {props.children && props.children} */}
 
-                {!isLoggedInUser && <button onClick={() => doFollow(loggedInUser)} className="cta-btn-full follow-btn">Follow</button>}
-                {!isLoggedInUser && <button onClick={() => doUnfollow(loggedInUser)} className="cta-btn-full follow-btn">Unfollow</button>}
+                {!isLoggedInUser && !isFollow &&
+                    <button onClick={() => addFollower(loggedInUser)}
+                        className="cta-btn-full follow-btn">Follow</button>}
+                {!isLoggedInUser && isFollow &&
+                    <button onClick={() => removeFollower(loggedInUser)}
+                        className="cta-btn-full follow-btn">Unfollow</button>}
 
                 
             </section>

@@ -38,7 +38,6 @@ class EventDetails extends React.Component {
       const { id } = this.props.match.params;
       this.props.loadEvent(id)
         .then(() => {
-          // console.log('componentDidMount')
           socketService.emit('viewEventDetails', this.props.event._id);
           socketService.on('memberJoin', this.socketAddMemebr);
           socketService.on('memberLeave', this.socketLeaveMember);
@@ -51,7 +50,6 @@ class EventDetails extends React.Component {
       const { id } = this.props.match.params;
       this.props.loadEvent(id)
         .then(() => {
-          // console.log('details componentDidUpdate')
           socketService.emit('viewEventDetails', this.props.event._id);
           socketService.on('memberJoin', this.socketAddMemebr);
           socketService.on('memberLeave', this.socketLeaveMember);

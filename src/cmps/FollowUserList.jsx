@@ -3,14 +3,7 @@ import UserPreview from './UserPreview'
 
 export class FollowUserList extends React.Component {
 
-    state = {
-        listState: 'Following'
-    }
-
     render() {
-
-        const { listState } = this.state;
-
         return (
             <section className="follow-list-container user-details-list">
 
@@ -22,8 +15,9 @@ export class FollowUserList extends React.Component {
                     </select> */}
                 </div>
                 <div className="list">
+                    {this.props.followers.length === 0 && <h1>No Followers yet</h1>}
                     <div className="followers-grid">
-                        {this.props.followers.map(follower => <UserPreview minimalUser={follower} />)}
+                        {this.props.followers.map(follower => <UserPreview key={follower._id} minimalUser={follower} />)}
                     </div>
                 </div>
             </section>

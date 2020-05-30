@@ -12,8 +12,9 @@ export function Notifications(props) {
 
     return (
         <section className="notifications-container">
-            <div className="not-header flex  column justify-center">
-                <h1>Notifications {unreadCount > 0 && <span>{unreadCount} Unread</span>}</h1>
+            <div className="not-header flex space-between">
+                <h1>Notifications  </h1>
+                {unreadCount > 0 && <p className="unread">{unreadCount} Unread</p>}
             </div>
             {/* <p>Total notifications {props.notification.msgs.length}</p> */}
             <div className="notifications-list">

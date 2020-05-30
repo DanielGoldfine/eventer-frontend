@@ -3,6 +3,14 @@
         margin-top: 250px;
     }
 
+    h1.no-events {
+        margin:0;
+        margin-top: 100px;
+        color: lightgray;
+        font-size: 3rem;
+
+    }
+
     .event-list-filter {
         margin-bottom: 30px;
         background-color: white;
@@ -39,10 +47,14 @@
             justify-self: center;
         }
         .event-list-filter {
-            display: none;
+            // display: none;
+            height: 200px;
         }
         .category-links {
             box-shadow: 0 1px 3px #00000057;
+        }
+        .inactive {
+            top: -80px;
         }
     }
     @media screen and (max-width: 380px) {

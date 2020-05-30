@@ -41,7 +41,7 @@ export default class FilterBar extends Component {
     render() {
         return (
             <div className={`${this.props.filterBarClass} event-list-filter full flex column justify-flex-end align-center`}>
-                {this.state.filterBy && <section className="filters-set flex justify-center align-center space-between">
+                {this.state.filterBy && <section className="filters-set flex justify-center align-center space-between wrap">
                     <div>
                         <FormControl>
                             <InputLabel shrink id="date-select-label">Date</InputLabel>

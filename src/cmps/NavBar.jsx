@@ -51,7 +51,6 @@ class NavBar extends Component {
             this.setState({ isHomePage: this.props.isHomePage })
         };
         this.setState({ loggedInUser: this.props.loggedInUser })
-        //console.log('logged user nav bar', this.props.loggedInUser)
         if (this.props.loggedInUser) {
             this.props.loadUser(this.props.loggedInUser._id)
             socketService.emit('userLogin', this.props.loggedInUser._id);

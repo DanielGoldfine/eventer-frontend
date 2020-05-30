@@ -82,16 +82,6 @@ class Login extends Component {
     }
     else this.setState({ msg: 'Incorrect User-Name / Password' })
 
-
-    // 5ecaec6c25278e479037e6cd
-    // this.setState({ loginCred: { userName: '', password: '' } }, () => {
-    // const { loggedInUser } = this.props;
-    // console.log('loggedInUser', loggedInUser);
-    // if (loggedInUser._id !== "5ecaec6c25278e479037e6cd" ) {
-    //   this.props.history.push(`/`)
-    // }
-    // else this.setState({ msg: 'User-Name / Password is incorrect' })
-    // })
   };
 
   doSignup = async ev => {
@@ -104,8 +94,7 @@ class Login extends Component {
     const signupCreds = { userName, password, fullName, imgUrl };
     const userCreds = { userName, password };
     this.props.signup(signupCreds);
-    //console.log('Signup befor login', userCreds);
-
+    
     const user = await this.props.login(userCreds);
     eventBusService.emit('user-login', user._id)
     this.setState({ signupCred: { userName: '', password: '', fullName: '' } }, () => {

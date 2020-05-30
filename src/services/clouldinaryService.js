@@ -5,7 +5,6 @@ export default {
     uploadImg
 }
 
-
 function uploadImg(file) {
     console.log(file)
     const CLOUD_NAME = 'dsqh7qhpg';

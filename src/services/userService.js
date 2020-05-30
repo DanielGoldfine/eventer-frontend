@@ -11,36 +11,33 @@ export default {
     addNotification,
     save,
     signup,
-    doFollow,
-    doUnfollow,
-    checkFollowing
+    addFollower,
+    removeFollower,
 }
 
-async function doFollow(user, followingUser) {
-    const minimalLoggedInUser = {
-        _id: followingUser._id,
-        fullName: followingUser.fullName,
-        imgUrl: followingUser.imgUrl,
-        rank: followingUser.rank
+async function addFollower(user, follower) {
+    const minimalFollower = {
+        _id: follower._id,
+        fullName: follower.fullName,
+        imgUrl: follower.imgUrl,
+        rank: follower.rank
     }
-    var updatedUser = {}
-    if (!user.followers.find(follower => follower._id === minimalLoggedInUser._id)) {
-        updatedUser = { ...user, followers: [...user.followers, minimalLoggedInUser] }
+    user.followers.unshift(minimalFollower);
+    return HttpService.put(`${baseUrl}/${user._id}`, user)
+        .then(savedUser => { return savedUser })
+}
+
+async function removeFollower(user, follower) {
+    const minimalFollower = {
+        _id: follower._id,
+        fullName: follower.fullName,
+        imgUrl: follower.imgUrl,
+        rank: follower.rank
     }
-    save(updatedUser)
-}
-
-async function doUnfollow(user, unfollowingUser) {
-    var updatedUser = {}
-    var updatedFollowers = user.followers.filter(follower => follower._id !== unfollowingUser._id)
-    updatedUser = { ...user, followers: updatedFollowers }
-    save(updatedUser)
-}
-
-async function checkFollowing(user, loggedInUser) {
-    const isFollowing = user.followers.filter(follower => follower._id === loggedInUser._id)
-    
-    console.log(isFollowing);
+    const updatedFollowers = user.followers.filter(follower => follower._id !== minimalFollower._id)
+    user.followers = updatedFollowers
+    return HttpService.put(`${baseUrl}/${user._id}`, user)
+        .then(savedUser => { return savedUser })
 }
 
 async function login(credentials) {

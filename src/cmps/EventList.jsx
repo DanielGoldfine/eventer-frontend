@@ -10,7 +10,7 @@ export default function EventList(props) {
 					onDelete={props.onDelete}
 					key={event._id}
 					event={event}
-					onSubscribe={props.onSubscribe} />
+					 />
 			)
 			}
 		</div>

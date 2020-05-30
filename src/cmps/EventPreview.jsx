@@ -17,7 +17,7 @@ export default function EventPreview(props) {
     if (props.event.capacity) labelClass = 'capacity'
     if (props.event.capacity === props.event.members.length) {
         labelClass = 'muted'
-        labelTxt = 'Max Capacity Reached'
+        labelTxt = 'SOLD OUT'
     }
 
     switch (timeArr[2].split('')[timeArr[2].split('').length - 1]) {
