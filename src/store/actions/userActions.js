@@ -105,12 +105,12 @@ export function addReview(review, user) {
 }
 
 export function addFollower(user, follower) {
-    console.log(follower);
+    // console.log(follower);
     
     return async dispatch => {
         try {
             const updatedUser = await userService.addFollower(user, follower)
-            console.log('updatedUser', updatedUser);
+            // console.log('updatedUser', updatedUser);
             
             dispatch(_saveUser('UPDATE_LOCAL_USER', updatedUser));
             return updatedUser

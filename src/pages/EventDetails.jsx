@@ -34,7 +34,6 @@ class EventDetails extends React.Component {
 
 
   componentDidMount() {
-    console.log('event details didmount Id')
     if (this.props.match) {  // "preview" mode doesn't use URL and params...
       const { id } = this.props.match.params;
       this.props.loadEvent(id)
@@ -202,9 +201,6 @@ class EventDetails extends React.Component {
       const dateStr = Moment(startAt * 1000).toString()
       const createdDateStr = createdAt ? Moment(createdAt * 1000).toString() : Moment(undefined).toString()
       const eventCostStr = price ? `Join for only $${price}` : 'Join for free!'
-      console.log("members", members)
-      console.log("active props", this.props)
-      console.log('event details didmount Id')
       const eventFull = (members.length === capacity) ? true : false
 
       const userInEvent = members.findIndex(member => member._id === this.props.minimalLoggedInUser._id)

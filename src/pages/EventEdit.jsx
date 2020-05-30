@@ -266,15 +266,16 @@ class EventEdit extends React.Component {
     }
 
     socketNewEvent = (event) => {
+        console.log('socketNewEvent',event)
         //Send notification for all user followers about the new event
         const minimalEvent = {
             _id: event._id,
             title: this.state.title,
             imgUrl: this.state.imgUrl
         }
-        const minimalUser = this.state.createdBy
-
-        this.state.createdBy.followers.forEach(follower => {
+        const minimalUser = this.props.minimalLoggedInUser
+       // console.log('minimalUser',minimalUser)
+        this.props.loggedInUser.followers.forEach(follower => {
             const payload = {
                 userId: follower._id,
                 minimalEvent,
@@ -292,7 +293,7 @@ class EventEdit extends React.Component {
             title: this.state.title,
             imgUrl: this.state.imgUrl
         }
-        const minimalUser = this.state.createdBy
+        const minimalUser = this.props.minimalLoggedInUser
 
         this.state.members.forEach(member => {
             const payload = {
@@ -418,7 +419,8 @@ class EventEdit extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        minimalLoggedInUser: state.userStore.minimalLoggedInUser
+        minimalLoggedInUser: state.userStore.minimalLoggedInUser,
+        loggedInUser: state.userStore.loggedInUser
     };
 };
 

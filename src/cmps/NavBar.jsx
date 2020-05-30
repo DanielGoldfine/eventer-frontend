@@ -91,6 +91,7 @@ class NavBar extends Component {
 
 
     addNotification = async (notification) => {
+        console.log('addNotification',notification)
         const user = await this.props.addNotification(notification)
         this.props.loadUser(user._id)
     }

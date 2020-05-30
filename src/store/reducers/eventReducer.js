@@ -30,7 +30,7 @@ export default function EventReducer(state = initialState, action) {
                 events: [...action.events]
             };
         case 'SET_EVENT':
-            console.log('load event in reducer',action.event)
+            // console.log('load event in reducer',action.event)
             return {
                 ...state,
                 currEvent: { ...action.event }

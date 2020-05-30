@@ -70,7 +70,6 @@ class EventIndex extends Component {
     render() {
 
         const { filterBarClass } = this.state; 
-        console.log('this.props.events', this.props.events);
 
         return (
 
