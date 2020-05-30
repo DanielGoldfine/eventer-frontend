@@ -42,7 +42,7 @@ class EventEdit extends React.Component {
         startTime: '20:00',
         startAt: '',
         address: 'Tel Aviv',
-        price: '',
+        price: 0,
         isActive: true,
         capacity: '',
         tags: [],
@@ -158,7 +158,7 @@ class EventEdit extends React.Component {
         this.setState((prevState) => {
             return {
                 enablePrice: !prevState.enablePrice,
-                price: ''
+                price: 0
             }
         })
     }

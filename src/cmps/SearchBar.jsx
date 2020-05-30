@@ -22,7 +22,7 @@ class SearchBar extends Component {
         ev.preventDefault();
         const { searchTxt } = this.state;
         let filter = { ...this.props.filterBy }
-        filter = { ...filter, txt: searchTxt ,sortBy: 'startAt', limit: '', category: '', futureOnly: true }
+        filter = { ...filter, txt: searchTxt ,sortBy: 'startAt', limit: '', category: '', futureOnly: true , userId:''}
         this.props.setFilter(filter)
             .then(() => {
                 this.props.loadEvents(this.props.filterBy)

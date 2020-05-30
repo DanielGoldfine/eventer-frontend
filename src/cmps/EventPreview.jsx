@@ -60,6 +60,7 @@ export default function EventPreview(props) {
                 <div className="event-preview-bottom flex space-between align-center">
                     <UserPreview ranking minimalUser={props.event.createdBy} />
                     <p className="price" onClick={() => { history.push(`/event/${props.event._id}`) }}>{(props.event.price) ? `$${props.event.price}` : 'Free'}</p>
+                    {props.minimalLoggedInUser && props.minimalLoggedInUser.isAdmin && <button onClick={()=>{props.onDelete(props.event._id)}}>Remove</button>}
                 </div>
             </div>
 

@@ -18,7 +18,10 @@ export function loadEvent(id) {
     return async dispatch => {
         try {
             const event = await eventService.get(id)
-            dispatch(setEvent(event));
+            console.log('event in action',event)
+            await dispatch(setEvent(event));
+            console.log('event post dispatch',event)
+            return event
         }
         catch (err) {
             console.log('eventService: err in loading event', err);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import { connect } from 'react-redux'
-import { setFilter,loadEvents } from '../store/actions/eventActions'
+import { setFilter, loadEvents } from '../store/actions/eventActions'
 import { setHomePage } from '../store/actions/appActions'
 
 import SearchBar from '../cmps/SearchBar'
@@ -18,7 +18,8 @@ class HomePage extends Component {
     componentDidMount() {
         window.addEventListener('scroll', this.listenToScrollHome)
         this.props.setHomePage(true);
-        let filter = { ...this.props.filterBy, futureOnly: true };
+
+        let filter = { ...this.props.filterBy, futureOnly: true, userId: '' };
         this.props.setFilter(filter)
             .then(() => { this.props.loadEvents(this.props.filterBy) })
     }
@@ -27,6 +28,7 @@ class HomePage extends Component {
         window.removeEventListener('scroll', this.listenToScrollHome)
         this.props.setHomePage(false);
     };
+
 
     listenToScrollHome = () => {
         const winScroll =
@@ -49,7 +51,10 @@ class HomePage extends Component {
     };
 
     render() {
+        // console.log(this.props.events)
+        // console.log(this.props.filterBy)
         const { isSearchBar } = this.state;
+        // if (this.props.filterBy.userId !== '') return <div>Loading</div>
         return (
             <div className="home-page-container">
                 <header className="main-header-container flex justify-center align-items-center">
@@ -68,8 +73,8 @@ class HomePage extends Component {
                     </div>
                 </header>
                 <CategoryLinks homePage chooseCategory={this.chooseCategory} />
-                <h2>COMING UP</h2>
-                {this.props.events.length>0 && <UpcomingEvents events={this.props.events} />}
+                <h2>Upcoming Events</h2>
+                {this.props.events.length > 0 && <UpcomingEvents events={this.props.events} />}
                 < CategoryGallery chooseCategory={this.chooseCategory} />
             </div>
         )
