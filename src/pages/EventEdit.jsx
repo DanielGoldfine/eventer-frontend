@@ -420,7 +420,7 @@ class EventEdit extends React.Component {
 const mapStateToProps = (state) => {
     return {
         minimalLoggedInUser: state.userStore.minimalLoggedInUser,
-        loggedInUser: state.userStore.loggedInUser
+        loggedInUser: state.userStore.loggedInUser //todo this is quick-fix for the missing followers in the minimalLoggedin user
     };
 };
 
