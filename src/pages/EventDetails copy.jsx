@@ -7,8 +7,6 @@ import EventTags from '../cmps/EventTags'
 import { NavLink } from "react-router-dom";
 import EventMembers from '../cmps/EventMembers';
 import MapContainer from '../cmps/MapContainer';
-import { AttendeesList } from '../cmps/AttendeesList';
-import { SocialShare } from '../cmps/SocialShare'
 import UserPreview from '../cmps/UserPreview'
 import EventPosts from '../cmps/EventPosts'
 import EventImagesGallery from '../cmps/EventImagesGallery'
@@ -193,42 +191,31 @@ class EventDetails extends React.Component {
     if (!event && !this.props.previewEvent) return 'Loading...';
 
     const activeProps = this.props.previewEvent ? this.props.previewEvent : event
-    const { _id, isActive, createdAt, updatedAt, title, category, imgUrl, description, startAt, location, createdBy, tags, images, members, price, capacity } = activeProps
+    const { _id, isActive, createdAt, updatedAt, title, category, imgUrl, description, startAt, location, tags, images } = activeProps
 
     const dateStr = Moment(startAt * 1000).toString()
     const createdDateStr = createdAt ? Moment(createdAt * 1000).toString() : Moment(undefined).toString()
     const updatedAtStr = updatedAt ? Moment(updatedAt * 1000).toString() : Moment(undefined).toString()
-    const eventCostStr = price ? `Join for only $${price}` : 'Join for free!'
-    const eventFull = (members.length === capacity) ? true : false
-
-    const userInEvent = members.findIndex(member => member._id === this.props.minimalLoggedInUser._id)
 
     return (
 
       <div className="main-container">
-
         <div className="event-details-container flex">
 
-
-
-          <div className="nav-title flex column">
+          <section className="event-info flex column">
 
             {event && <div className="navigator flex align-center">
               <NavLink to="/">Eventer</NavLink>
               <span> > </span>
               <button className="btn-link" onClick={() => { this.onSetCategory(category) }}>{category}</button>
             </div>}
-
-
             {event && !isActive && <div className="flex align-center justify-center">
               <img className="icon-inactive" src={require('../assets/imgs/exclamation-mark.png')} title="Click to edit event title" alt=""></img>
               <h3 className="inactive-notification">Event isn't published yet</h3>
               <Button variant="contained" color="primary" onClick={() => this.onPublishEvent()}>Publish</Button>
             </div>
             }
-
-
-            <div className="event-title flex justify-center align-center">
+            <div className="flex justify-center align-center">
               <h2 contentEditable={false}
                 suppressContentEditableWarning
                 ref={this.titleInput}
@@ -239,44 +226,28 @@ class EventDetails extends React.Component {
               </h2>
               {!this.props.previewEvent && this.props.minimalLoggedInUser._id === event.createdBy._id && <img onClick={() => this.toggleEdit(this.titleInput)} className="icon-edit" src={require('../assets/imgs/pencil.png')} title="Click to edit event title" alt=""></img>}
             </div>
-
-          </div>
-
-          <section className="event-info flex column">
-
             <UserPreview ranking={true} minimalUser={activeProps.createdBy} />
-
-
-            <div className="created-at flex column align-start">
+            <div className="flex column align-start">
               <small>Created at
   <span> {createdDateStr.split(' ')[1]} </span>
                 <span>{createdDateStr.split(' ')[2]} , </span>
                 <span>{createdDateStr.split(' ')[4].substring(0, 5)}</span>
               </small>
-              {/* <small>Last update at
+              <small>Last update at
   <span> {updatedAtStr.split(' ')[1]} </span>
                 <span>{updatedAtStr.split(' ')[2]} , </span>
                 <span>{updatedAtStr.split(' ')[4].substring(0, 5)}</span>
-              </small> */}
+              </small>
             </div>
-
-
-            {images && <EventImagesGallery className="img-gallery" images={images}></EventImagesGallery>}
-
+            {images && <EventImagesGallery images={images}></EventImagesGallery>}
             {images.length === 0 && category && !imgUrl.includes('http') && <img src={require(`../assets/imgs/${category.replace(/\s+/g, '')}.jpg`)} alt=""></img>}
-
-            <div className="date-time-and-edit flex space-between">
-              <p className="event-time-place">
-                <span className="event-month">{dateStr.split(' ')[1]} </span>
-                <span className="event-day">{dateStr.split(' ')[2]} </span>
-                <span className="event-time">{dateStr.split(' ')[4].substring(0, 5)}, </span>
-                <span className="event-address">{location.address}</span>
-              </p>
-
-              {event && !this.props.previewEvent && this.props.minimalLoggedInUser._id === event.createdBy._id && <NavLink className="user-preview-name-link" exact to={`/event/edit/${_id}`}>Advanced Edit </NavLink>}
-            </div>
-
-            <div className="event-desc flex justify-center align-center">
+            <p className="event-time-place">
+              <span className="event-month">{dateStr.split(' ')[1]} </span>
+              <span className="event-day">{dateStr.split(' ')[2]} </span>
+              <span className="event-time">{dateStr.split(' ')[4].substring(0, 5)}, </span>
+              <span className="event-address">{location.address}</span>
+            </p>
+            <div className="flex justify-center align-center">
               <p contentEditable={false}
                 suppressContentEditableWarning
                 ref={this.descriptionInput}
@@ -287,39 +258,15 @@ class EventDetails extends React.Component {
               </p>
               {!this.props.previewEvent && this.props.minimalLoggedInUser._id === event.createdBy._id && <img onClick={() => this.toggleEdit(this.descriptionInput)} className="icon-edit" src={require('../assets/imgs/pencil.png')} title="Click to edit event description" alt=""></img>}
             </div>
-
-
             {tags && <EventTags tags={tags} />}
-
-
-
-
-
+            {event && !this.props.previewEvent && this.props.minimalLoggedInUser._id === event.createdBy._id && <NavLink className="user-preview-name-link" exact to={`/event/edit/${_id}`}>Advanced Edit </NavLink>}
           </section>
-
-          <SocialShare eventId={_id} eventTitle={title} />
-
-          <section className="user-lists">
-            <AttendeesList membersNum={members.length} capacity={capacity} followers={this.props.event.members} />
-
-            { this.props.previewEvent && <button className="cta-btn attend">{eventCostStr}</button>}
-            { !this.props.previewEvent && !eventFull && userInEvent === -1 && this.props.minimalLoggedInUser._id !== createdBy._id && <button onClick={() => { this.onSubscribeEvent(this.props.minimalLoggedInUser._id) }} className="cta-btn attend">{eventCostStr}</button>}
-            { !this.props.previewEvent && userInEvent >= 0 && <button onClick={() => { this.onUnsubscribeEvent(this.props.minimalLoggedInUser._id) }} className="cta-btn leave">Leave</button>}
-
-            {/* <section>
+          <section>
             {event && <EventMembers event={event} onSubscribeEvent={this.onSubscribeEvent} onUnsubscribeEvent={this.onUnsubscribeEvent} loggedInUserId={this.props.minimalLoggedInUser._id} />}
             {this.props.previewEvent && <EventMembers previewMode={true} event={this.props.previewEvent} loggedInUserId={this.props.minimalLoggedInUser._id} />}
-          </section> */}
-            <div className="map">
-              <MapContainer loc={location} name={location.address} />
-            </div>
-
           </section>
-
-
-
-
           {event && !this.props.previewEvent && <EventPosts eventCreatorId={this.props.event.createdBy._id} isLoggedUserAdmin={this.props.minimalLoggedInUser.isAdmin} />}
+          <MapContainer loc={location} name={location.address} />
 
 
         </div>

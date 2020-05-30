@@ -36,10 +36,9 @@ export function UserDesc(props) {
                     {user.rank.average !== 0 && <h4>{user.rank.average.toFixed(1)}</h4>}
                     {!user.rank.average && <h4>Not yet</h4>}
                 </div>
-                {/* {props.children && props.children} */}
 
                 {!isLoggedInUser && <button onClick={() => doFollow(loggedInUser)} className="cta-btn-full follow-btn">Follow</button>}
-                {!isLoggedInUser && <button onClick={() => doUnfollow(loggedInUser)} className="cta-btn-full follow-btn">Unfollow</button>}
+                {/* {!isLoggedInUser && <button onClick={() => doUnfollow(loggedInUser)} className="cta-btn-full follow-btn">Unfollow</button>} */}
 
                 
             </section>

@@ -21,22 +21,30 @@ class UserDetails extends Component {
 
     state = {
         isLoggedInUser: false,
-        currUserId: ''
+        currUserId: '',
+        doIFollow: false
     }
 
-    componentDidMount()  {
+    componentDidMount() {
         this.unsubscribeFromEventBus = eventBusService.on('user-preview-click', (userId) => {
-            this.props.loadUserLocal(userId)
-            this.setState({ currUserId: userId })
+            this.initPage(userId)
         })
-        let filter = { ...this.props.filterBy, futureOnly: false };
+        this.initPage()
+    }
+
+    initPage = (userId) => {
+
+        let id = (userId) ? userId : this.props.match.params.id
+
+        console.log(id)
+
+        this.props.loadUserLocal(id)
+
+        let filter = { ...this.props.filterBy, futureOnly: false, userId: id };
         this.props.setFilter(filter)
             .then(() => { this.props.loadEvents(this.props.filterBy) })
 
-        const { id } = this.props.match.params;
         const { loggedInUser } = this.props;
-        this.props.loadUserLocal(id)
-        this.setState({ currUserId: id })
 
         if (id === loggedInUser._id) { // logged-in user opens his own details pages
             this.setState({ isLoggedInUser: true });
@@ -80,7 +88,7 @@ class UserDetails extends Component {
         const { isLoggedInUser } = this.state;
         const user = this.props.currUser;
         return (
-            <React.Fragment> 
+            <React.Fragment>
                 <main className="user-grid-container">
                     {user && <section className="user-details-container">
 

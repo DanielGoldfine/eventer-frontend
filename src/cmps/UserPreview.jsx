@@ -16,7 +16,7 @@ export default function UserPreview(props) {
                     <img alt="" src={minimalUser.imgUrl} />
                 </div>
             </Link>
-            <div className="flex column space-between">
+            <div className="name-rank flex column space-between">
                 <Link onClick={()=>{ eventBusService.emit('user-preview-click',minimalUser._id)}} className="user-preview-name-link" to={`/user/${minimalUser._id}`}><h4>{minimalUser.fullName} </h4></Link>
 
                 {props.ranking && <div className="ranking flex justify-end align-items-baseline">

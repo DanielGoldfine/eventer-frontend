@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Button from '@material-ui/core/Button';
-import { SocialShare } from './SocialShare'
+
 import UserPreview from './UserPreview'
 
 
@@ -13,9 +13,10 @@ export default class EventMembers extends Component {
         const eventCostStr = price ? `Subscribe for only $${price}` : 'Join for free!'
         return (
             <section className="event-members-container" >
-                <div className="members-section">
-                    {/* Adding a lot of users with the below button */}
-                    {/* <Button variant="contained" color="primary" onClick={() => this.props.onSubscribeEvent()}>{eventCostStr}</Button> */}
+                
+                {/* <div className="members-section">
+                    Adding a lot of users with the below button
+                    <Button variant="contained" color="primary" onClick={() => this.props.onSubscribeEvent()}>{eventCostStr}</Button>
                     {!eventFull && (userInEvent === -1) && this.props.loggedInUserId !== createdBy._id && <Button variant="contained" color="primary" onClick={() => this.props.onSubscribeEvent(this.props.loggedInUserId)}>{eventCostStr}</Button>}
                     {this.props.previewMode && <Button variant="contained" color="primary">{eventCostStr}</Button>}
                     {userInEvent >= 0 && <Button variant="contained" color="primary" onClick={() => this.props.onUnsubscribeEvent(this.props.loggedInUserId)}>Leave event</Button>}
@@ -30,8 +31,8 @@ export default class EventMembers extends Component {
                                 {members.map((member) => <UserPreview key={member._id} minimalUser={member} starred={false} vertical={true} />)}
                             </div>}
                     </section>
-                </div>
-                <SocialShare eventId={_id} eventTitle={title} />
+                </div> */}
+
             </section>
         )
 

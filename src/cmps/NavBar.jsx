@@ -24,9 +24,11 @@ class NavBar extends Component {
     state = {
         isNotificationsOpen: false,
         isUserMenuOpen: false,
+        isNarrowModalOpen: false,
         navState: 'bright',
         isHomePage: true,
         isSearchBar: false,
+        isNarrowNotificationsOpen: false
     }
 
 
@@ -138,8 +140,12 @@ class NavBar extends Component {
     forceCloseModals = () => {
         document.removeEventListener('mousedown', this.closeUserMenu)
         window.removeEventListener('keydown', this.closeUserMenu)
+        document.removeEventListener('mousedown', this.closeNotifications);
+        window.removeEventListener('keydown', this.closeNotifications);
         this.setState({ isUserMenuOpen: false });
         this.setState({ isNotificationsOpen: false })
+        this.setState({ isNarrowModalOpen: false })
+        this.setState({ isNarrowNotificationsOpen: false })
     }
 
     toggleUserMenu = () => {
@@ -177,7 +183,7 @@ class NavBar extends Component {
             window.addEventListener('keydown', this.closeNotifications);
             if (this.props.loggedInUser.notification.unseenCount > 0) {
                 let loggedInUser = { ...this.props.loggedInUser }
-                loggedInUser.notification.unseen = 0;
+                loggedInUser.notification.unseenCount = 0;
 
                 this.props.saveUser(loggedInUser)
             }
@@ -199,23 +205,87 @@ class NavBar extends Component {
         this.setState({ isNotificationsOpen: false });
     }
 
-    onClickNotification = (id) => {
+    notificationClicked = (clickCommand, userId, eventId, msgId) => {
 
+        let loggedInUser = this.props.loggedInUser;
+        loggedInUser.notification.msgs.map(msg => {
+            if (msg._id === msgId) {
+                msg.isRead = true;
+            };
+        });
+        this.props.saveUser(loggedInUser);
+
+        if (clickCommand === 'user preview') {
+            this.forceCloseModals();
+            return;
+        }
+        let route;
+        if (clickCommand === 'event') route = `/event/${eventId}`
+        if (clickCommand === 'user') route = `/user/${userId}`
+        this.forceCloseModals();
+        history.push(route);
+    }
+
+    openNarrowModal = () => {
+        const { isNarrowModalOpen } = this.state;
+        this.setState({ isNarrowModalOpen: !isNarrowModalOpen })
+    }
+
+    openNarrowNotifications = () => {
+        const { isNarrowNotificationsOpen } = this.state;
+        this.setState({ isNarrowNotificationsOpen: !isNarrowNotificationsOpen })
+        if (this.props.loggedInUser.notification.unseenCount > 0) {
+            let loggedInUser = { ...this.props.loggedInUser }
+            loggedInUser.notification.unseenCount = 0;
+            this.props.saveUser(loggedInUser)
+        }
     }
 
     render() {
 
-        const { isNotificationsOpen, isUserMenuOpen, navState, isSearchBar } = this.state;
+        const { isNotificationsOpen, isUserMenuOpen, isNarrowModalOpen, isNarrowNotificationsOpen, navState, isSearchBar } = this.state;
         const { loggedInUser } = this.props;
         return (
             <main className={navState}>
-                <nav className="nav-bar-container main-container flex space-between align-items-center">
+
+          <nav className="nav-bar-container main-container flex space-between align-items-center">
+
+                <section className={`narrow-modal-container ${isNarrowModalOpen ? 'narrow-active' : ''}`}>
+
+                    <button className="create-event" onClick={() => { this.goToPage('edit') }}>Create Event</button>
+
+                    <div onClick={this.openNarrowNotifications} className={`narow-notifications-container narrow-section flex align-center
+                    ${isNarrowNotificationsOpen ? 'highlight' : ""}`}>
+                         {loggedInUser && loggedInUser.notification.unseenCount > 0 && <h3 className="not-count">{loggedInUser.notification.unseenCount}</h3>}
+                        <NotificationsIcon />
+                        <p>Notifications</p>
+                    </div>
+
+                    {isNarrowNotificationsOpen && <div className="notifications" ref={notifications => this.notifications = notifications}>
+                        {loggedInUser.notification && < Notifications notification={loggedInUser.notification}
+                            notificationClicked={this.notificationClicked} />}
+                    </div>}
+
+                    <div onClick={() => { this.goToPage('user') }} className="narrow-section flex align-center">
+                        <PersonIcon />
+                        <p>My Profile</p>
+                    </div>
+
+                   {loggedInUser && <div className="narrow-section flex align-center">
+                        {loggedInUser.userName === 'Guest' && <p className="login" onClick={() => { this.goToPage('login') }}>Login</p>}
+                        {loggedInUser.userName !== 'Guest' && <p className="login" onClick={() => { this.goToPage('logout') }}>Logout</p>}
+                    </div>}
+
+                </section>
+
                     <div className="flex space-between align-items-center">
+
                         <div className="search-logo flex align-items-center">
                             <img onClick={() => { this.goToPage('home') }} className="main-logo" src={eventerLogo} alt="" />
                             <img onClick={() => { this.goToPage('home') }} className="main-icn" src={eventerIcn} alt="" />
                             {(!this.props.isHomePage || isSearchBar) && <SearchBar className="search-for-wide" setTxtFilter={this.setTxtFilter} />}
                         </div>
+
                         <section className="nav-bar-btns flex align-center">
 
 
@@ -236,12 +306,12 @@ class NavBar extends Component {
                                 ref={userMenuOpen => this.userMenuOpen = userMenuOpen} onClick={this.toggleUserMenu} />
 
 
-                            <ViewListIcon className='list-icn' />
+                            <ViewListIcon onClick={this.openNarrowModal} className={`list-icn ${isNarrowModalOpen ? 'highlight' : ""}`} />
 
 
                             {isNotificationsOpen && <div className="notifications" ref={notifications => this.notifications = notifications}>
                                 {loggedInUser.notification && < Notifications notification={loggedInUser.notification}
-                                    onClickNotification={this.onClickNotification} />}
+                                    notificationClicked={this.notificationClicked} />}
                                 <img className="connector" src={modalConnector} alt="" />
                             </div>}
 

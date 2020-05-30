@@ -25,7 +25,7 @@ export function NotificationPreview(props) {
             notificationTxt = 'had created a new event'
             notificationTopic = 'event';
             break;
-            //todo - add the user-follow socket
+        //todo - add the user-follow socket
         // case 'user_follow': 
         //     notificationTxt = 'is following you now'
         //     notificationTopic = 'user';
@@ -34,16 +34,20 @@ export function NotificationPreview(props) {
             notificationTxt = 'had ranked you'
             notificationTopic = 'user';
             break;
-
     }
+
     return (
         <section className={`notification-preview flex align-items-end ${props.msg.isRead ? 'read' : ''}`}>
-            <UserPreview minimalUser={props.msg.user}/>
+
+            <div onClick={() => { props.notificationClicked('user preview', null, null, props.msg._id) }}>
+                <UserPreview minimalUser={props.msg.user} />
+            </div>
+
             <div className="msg-body flex column align-items-end">
-                <h4>{props.msg.user.fullName + ' '}
+
+                <h4 onClick={() => { props.notificationClicked(notificationTopic, props.msg.user._id, props.msg.event._id, props.msg._id) }}>{props.msg.user.fullName + ' '}
                     {notificationTxt} {notificationTopic === 'event' ? props.msg.event.title : ' '}</h4>
-                {/* {notificationTopic === 'event' && <Link to={`/event/${props.msg.event._id}`}>{props.msg.event.title}</Link>}
-                {notificationTopic === 'user' && <Link to={`/user/${props.msg.user._id}`}>Check it out</Link>} */}
+
                 <p>{Moment(props.msg.createdAt).fromNow()} </p>
             </div>
         </section>
