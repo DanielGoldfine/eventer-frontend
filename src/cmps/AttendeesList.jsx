@@ -23,9 +23,9 @@ export function AttendeesList(props) {
                 <h5 className="attendees-state">{str}</h5>
             </div>
             <div className="list">
-                <div className="followers-grid">
+                {props.followers && <div className="followers-grid">
                     {props.followers.map(follower => <UserPreview minimalUser={follower} />)}
-                </div>
+                </div>}
             </div>
         </section>
     )
