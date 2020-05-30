@@ -11,8 +11,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 // import DialogContent from '@material-ui/core/DialogContent';
 // import DialogTitle from '@material-ui/core/DialogTitle';
 // import Input from '@material-ui/core/Input';
-
-import FilterBarGoogleMaps from './FilterBarGoogleMaps';
+// import FilterBarGoogleMaps from './FilterBarGoogleMaps';
 
 
 export default class FilterBar extends Component {
@@ -54,6 +53,7 @@ export default class FilterBar extends Component {
                                 displayEmpty
                             >
                                 <MenuItem value=""><em>Anytime</em></MenuItem>
+                                <MenuItem value={1}>Today</MenuItem>
                                 <MenuItem value={7}>This Week</MenuItem>
                                 <MenuItem value={30}>This Month</MenuItem>
                                 <MenuItem value={365}>This Year</MenuItem>
@@ -80,27 +80,6 @@ export default class FilterBar extends Component {
                         </FormControl>
                     </div>
                     {/* <div>
-                        <FormControl>
-                            <InputLabel shrink id="category-select-label">Category</InputLabel>
-                            <Select
-                                labelId="category-select-label"
-                                id="category-select"
-                                value={this.state.filterBy.category}
-                                onChange={this.handleChange}
-                                name="category"
-                                displayEmpty
-                            >
-                                <MenuItem value="">All Categories</MenuItem>
-                                <MenuItem value={'Parties'}>Parties</MenuItem>
-                                <MenuItem value={'Live Music'}>Live Music</MenuItem>
-                                <MenuItem value={'Stand-up Comedy'}>Stand-up Comedy</MenuItem>
-                                <MenuItem value={'Sports'}>Sports</MenuItem>
-                                <MenuItem value={'Lectures'}>Lectures</MenuItem>
-                                <MenuItem value={'Workshops'}>Workshops</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </div> */}
-                    <div>
                         <FormControl>
                             <InputLabel shrink id="radius-select-label">Distance</InputLabel>
                             <Select
@@ -138,6 +117,38 @@ export default class FilterBar extends Component {
                         {(this.state.filterBy.locationType === 'otherLocation') && (
                             <FilterBarGoogleMaps onSubmit={this.getOtherLocation} />
                         )}
+                    </div> */}
+                    <div>
+                        <FormControl>
+                            <InputLabel shrink id="sortby-select-label">Sort By</InputLabel>
+                            <Select
+                                labelId="sortby-select-label"
+                                id="sortby-select"
+                                value={this.state.filterBy.sortBy}
+                                onChange={this.handleChange}
+                                name="sortBy"
+                                displayEmpty
+                            >
+                                <MenuItem value="startAt">Date</MenuItem>
+                                <MenuItem value="price">Price</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
+                    <div>
+                        <FormControl>
+                            <InputLabel shrink id="orderby-select-label">Order By</InputLabel>
+                            <Select
+                                labelId="orderby-select-label"
+                                id="orderby-select"
+                                value={this.state.filterBy.orderBy}
+                            onChange={this.handleChange}
+                                name="orderBy"
+                                displayEmpty
+                            >
+                                <MenuItem value="1">Ascending</MenuItem>
+                                <MenuItem value="-1">Descending</MenuItem>
+                            </Select>
+                        </FormControl>
                     </div>
                 </section>}
             </div>

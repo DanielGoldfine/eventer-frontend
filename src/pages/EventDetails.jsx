@@ -1,6 +1,5 @@
 import React from 'react';
 import { loadEvent, subscribeEvent, unsubscribeEvent, setFilter, updateEvent, updateEventLocal } from '../store/actions/eventActions.js'
-import { login } from '../store/actions/userActions.js'
 import { connect } from "react-redux";
 import Moment from 'moment';
 import EventTags from '../cmps/EventTags'
@@ -37,11 +36,12 @@ class EventDetails extends React.Component {
     if (this.props.match) {  // "preview" mode doesn't use URL and params...
       const { id } = this.props.match.params;
       this.props.loadEvent(id)
-        .then(() => {
-          // console.log('componentDidMount')
-          socketService.emit('viewEventDetails', this.props.event._id);
-          socketService.on('memberJoin', this.socketAddMemebr);
-          socketService.on('memberLeave', this.socketLeaveMember);
+        .then((event) => {
+          if (event) {
+            socketService.emit('viewEventDetails', event._id);
+            socketService.on('memberJoin', this.socketAddMemebr);
+            socketService.on('memberLeave', this.socketLeaveMember);
+          }
         })
     }
   }
@@ -50,11 +50,13 @@ class EventDetails extends React.Component {
     if (this.props.match.params.id !== prevProps.match.params.id) {
       const { id } = this.props.match.params;
       this.props.loadEvent(id)
-        .then(() => {
-          // console.log('details componentDidUpdate')
-          socketService.emit('viewEventDetails', this.props.event._id);
-          socketService.on('memberJoin', this.socketAddMemebr);
-          socketService.on('memberLeave', this.socketLeaveMember);
+        .then((event) => {
+          if (event) {
+            // console.log('details componentDidUpdate')
+            socketService.emit('viewEventDetails', this.props.event._id);
+            socketService.on('memberJoin', this.socketAddMemebr);
+            socketService.on('memberLeave', this.socketLeaveMember);
+          }
         })
     }
   }
@@ -188,7 +190,7 @@ class EventDetails extends React.Component {
     }
 
     const { event } = this.props;
-    if (!event && !this.props.previewEvent) return 'Loading...';
+    // if (!event && !this.props.previewEvent) return <div>Loading...</div>
 
     const activeProps = this.props.previewEvent ? this.props.previewEvent : event
     const { _id, isActive, createdAt, updatedAt, title, category, imgUrl, description, startAt, location, tags, images } = activeProps
@@ -196,6 +198,7 @@ class EventDetails extends React.Component {
     const dateStr = Moment(startAt * 1000).toString()
     const createdDateStr = createdAt ? Moment(createdAt * 1000).toString() : Moment(undefined).toString()
     const updatedAtStr = updatedAt ? Moment(updatedAt * 1000).toString() : Moment(undefined).toString()
+    if (!activeProps ) return <div>Loading...</div>
     return <div className="main-container">
       <div className="event-details flex">
 
@@ -284,7 +287,7 @@ const mapStateToProps = (state) => {
 
 
 const mapDispatchToProps = {
-  loadEvent, unsubscribeEvent, subscribeEvent, setFilter, login, updateEvent, updateEventLocal
+  loadEvent, unsubscribeEvent, subscribeEvent, setFilter, updateEvent, updateEventLocal
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventDetails);

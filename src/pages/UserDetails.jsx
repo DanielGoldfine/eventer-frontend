@@ -7,7 +7,7 @@ import { ReviewList } from '../cmps/ReviewList'
 import { MinimalEventList } from '../cmps/MinimalEventList'
 import { FollowUserList } from '../cmps/FollowUserList'
 
-import { addReview, loadUser, loadUserLocal } from '../store/actions/userActions'
+import { addReview, loadUser, loadUserLocal, login } from '../store/actions/userActions'
 import { loadEvents, setFilter } from '../store/actions/eventActions'
 
 import userService from '../services/userService'
@@ -21,33 +21,43 @@ class UserDetails extends Component {
 
     state = {
         isLoggedInUser: false,
-        currUserId: ''
+        currUserId: '',
+        loggedInUser: ''
     }
 
-    componentDidMount()  {
+    componentDidMount() {
         this.unsubscribeFromEventBus = eventBusService.on('user-preview-click', (userId) => {
-            this.props.loadUserLocal(userId)
-            this.setState({ currUserId: userId })
+            this.initPage(userId)
         })
-        let filter = { ...this.props.filterBy, futureOnly: false };
+        this.initPage()
+    }
+
+    initPage = async (userId) => {
+        let id = (userId) ? userId : this.props.match.params.id
+        this.props.loadUserLocal(id)
+        let filter = { ...this.props.filterBy, futureOnly: false, userId: id ,isActive:'show all'};
         this.props.setFilter(filter)
             .then(() => { this.props.loadEvents(this.props.filterBy) })
 
-        const { id } = this.props.match.params;
         const { loggedInUser } = this.props;
-        this.props.loadUserLocal(id)
-        this.setState({ currUserId: id })
 
-        if (id === loggedInUser._id) { // logged-in user opens his own details pages
-            this.setState({ isLoggedInUser: true });
-        } else {   // logged-in user opens other user page
-            this.setState({ isLoggedInUser: false });
+        if (loggedInUser) {
+            if (id === loggedInUser._id) { // logged-in user opens his own details pages
+                this.setState({ isLoggedInUser: true });
+            } else {   // logged-in user opens other user page
+                this.setState({ isLoggedInUser: false });
+            }
         }
+        
     }
+
+    componentWillUnmount() {
+        this.unsubscribeFromEventBus()
+    }
+
 
     submitReview = async (newReview) => {
         const user = await this.props.addReview(newReview, this.props.currUser)
-        // this.setState({ user })
         //Send notification to the user that got the review
         const minimalUser = this.props.minimalLoggedInUser
         const payload = {
@@ -60,33 +70,33 @@ class UserDetails extends Component {
     }
 
     doFollow = (loggedInUser) => {
-        const { user } = this.state;
+        const user = this.props.currUser;
         userService.doFollow(user, loggedInUser);
     }
 
     doUnfollow = (loggedInUser) => {
-        const { user } = this.state;
+        const user = this.props.currUser;
         userService.doUnfollow(user, loggedInUser);
     }
 
     isFollowing = (loggedInUser) => {
-        const { user } = this.state;
+        const user = this.props.currUser;;
         userService.checkFollowing(user, loggedInUser)
     }
 
     render() {
-
         const { loggedInUser, events } = this.props;
         const { isLoggedInUser } = this.state;
         const user = this.props.currUser;
+        if (!loggedInUser) return <div>Loading...</div>
         return (
-            <React.Fragment> 
+            <React.Fragment>
                 <main className="user-grid-container">
                     {user && <section className="user-details-container">
 
                         <UserDesc eventsCreated={this.props.events} isLoggedInUser={isLoggedInUser} user={user} doFollow={this.doFollow} doUnfollow={this.doUnfollow} loggedInUser={loggedInUser} />
 
-                        {!isLoggedInUser && this.props.minimalLoggedInUser &&
+                        {!isLoggedInUser && this.props.currUser._id !== this.props.minimalLoggedInUser._id &&
                             <ReviewForm
                                 submitReview={this.submitReview}
                                 minimalUser={this.props.minimalLoggedInUser} />}
@@ -128,7 +138,8 @@ const mapDispatchToProps = {
     loadUser,
     loadUserLocal,
     loadEvents,
-    setFilter
+    setFilter,
+    login
 
 };
 

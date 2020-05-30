@@ -10,7 +10,7 @@ export default function UserPreview(props) {
     const activeClr = '#ffbf00';
 
     return (
-        <section className={`user-preview-min flex align-items-center`}>
+        <section className={`user-preview-min flex align-items-center`}> 
             <Link onClick={()=>{ eventBusService.emit('user-preview-click',minimalUser._id)}} to={`/user/${minimalUser._id}`}>
                 <div className="avatar">
                     <img alt="" src={minimalUser.imgUrl} />

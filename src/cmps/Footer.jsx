@@ -3,7 +3,7 @@ import React from "react";
 export default function Footer() {
   return (
     <div className="footer-bg">
-      <div fluid className="">
+      <div fluid="true" className="">
         <div>
           <div >
             <h5 className="footer-top">Footer Content</h5>
