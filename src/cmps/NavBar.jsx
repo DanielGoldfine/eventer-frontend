@@ -19,6 +19,9 @@ import eventBusService from "../services/eventBusService.js";
 
 import socketService from '../services/socketService';
 
+import { setFilter } from '../store/actions/eventActions'
+
+
 class NavBar extends Component {
 
     state = {
@@ -121,6 +124,15 @@ class NavBar extends Component {
             return;
         }
         if (page === 'home') route = `/`;
+        if (page === 'index') {
+            let filter = { ...this.props.filterBy }
+            filter = { ...filter, txt: '' ,sortBy: 'startAt', limit: '', category: '', futureOnly: true , userId:''}
+            this.props.setFilter(filter)
+            // .then(() => {
+                route = `/event`;
+            // })
+            
+        }
         if (page === 'edit') route = `/event/edit/`;
         if (page === 'user') route = `/user/${this.props.loggedInUser._id}`;
         if (page === 'login') {
@@ -252,6 +264,7 @@ class NavBar extends Component {
 
                 <section className={`narrow-modal-container ${isNarrowModalOpen ? 'narrow-active' : ''}`}>
 
+                    <button className="create-event" onClick={() => { this.goToPage('index') }}>Events</button> 
                     <button className="create-event" onClick={() => { this.goToPage('edit') }}>Create Event</button>
 
                     <div onClick={this.openNarrowNotifications} className={`narow-notifications-container narrow-section flex align-center
@@ -292,7 +305,8 @@ class NavBar extends Component {
                             {loggedInUser && <UserPreview className minimalUser={loggedInUser} />}
 
 
-                            <button className="create-event" onClick={() => { this.goToPage('edit') }}>Create Event</button>
+                            <button className="create-event" onClick={() => { this.goToPage('edit') }}>Add New Event</button>
+                            <button className="create-event events-index" onClick={() => { this.goToPage('index') }}>To All Events</button>
 
 
                             {loggedInUser && loggedInUser.notification.unseenCount > 0 && <h3 className="not-count">{loggedInUser.notification.unseenCount}</h3>}
@@ -342,7 +356,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-    login, addNotification, loadUser, saveUser
+    login, addNotification, loadUser, saveUser , setFilter
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NavBar));

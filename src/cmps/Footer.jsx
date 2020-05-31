@@ -6,9 +6,9 @@ import { SocialShare } from './SocialShare'
 export default function Footer() {
     return (
         <div className="footer">
-            <div className="footer-container">
-                <div className="footer-middle flex justify-center space-around">
-                    <div className="content flex justify-center space-around wrap">
+            <div className="footer-container flex column justify-center space-between align-center">
+                <div className="footer-middle  main-container flex justify-center space-around align-center">
+                    <div className="content flex justify-center  space-between wrap">
                         <div className="">
                             <h2 className="">About</h2>
                             <ul className="clean-list">
@@ -21,7 +21,7 @@ export default function Footer() {
                             </ul>
                         </div>
                         <div >
-                            <h2 className="">Categories</h2>
+                            <h2 className="">Categoriesssss</h2>
                             <ul className="clean-list">
                                 <li className="">
                                     <a href="#!">Sports</a>
@@ -67,20 +67,14 @@ export default function Footer() {
                             <h2 className="">Contact</h2>
                             <ul className="clean-list">
                                 <li className="">
-                                    <a href="#!">Or Dotan</a>
-                                </li>
-                                <li className="">
-                                    <a href="#!">Daniel Goldfine</a>
-                                </li>
-                                <li className="">
-                                    <a href="#!">Michael Michaeli</a>
+                                    <a href="mailto:service@eventer.com">service@eventer.com</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div >
-                <div className="footer-bottom flex space-around align-center">
-                    <div className="terms-privacy flex space-around">
+                <div className="footer-bottom main-container flex space-between align-center">
+                    <div className="terms-privacy flex space-between align-center">
                         <div >
                             Terms & Conditions
                         </div>
@@ -88,10 +82,10 @@ export default function Footer() {
                         <div>
                             Privacy Policy
                         </div>
-                    </div>
 
                     <div>
                         &copy; {new Date().getFullYear()} Copyright: <button onClick={() => history.push('/')}> eventer </button>
+                    </div>
                     </div>
                 </div>
             </div>

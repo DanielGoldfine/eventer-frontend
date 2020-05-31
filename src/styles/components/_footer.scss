@@ -1,5 +1,5 @@
 .footer {
-
+    justify-self: center;
     z-index: 10;
     
     .footer-container {
@@ -7,7 +7,7 @@
         max-width: 100vw;
         bottom: 0;
         background: $brandingdarkgrey;
-        color: white;
+        color: rgb(136, 136, 136);
         z-index: 11;
         // @media screen and (max-width: 550px) {
             
@@ -26,6 +26,7 @@
             >* {
                 margin-top: 10px;
                 text-decoration: none !important;
+                line-height: 30px;
             }
 
         }
@@ -36,7 +37,7 @@
             padding: 50px;
             
             a , p {
-                color: rgb(136, 136, 136);
+                color: rgb(129, 129, 129);
                 margin: 10px;
             }
             .content {
@@ -45,6 +46,9 @@
             }
             .social-share {
                 margin-top: 40px;
+                .social-share h3 {
+                    margin-bottom: 30px;
+                }
             }
         }
         .footer-bottom {
