@@ -233,7 +233,7 @@ class NavBar extends Component {
         }
         let route;
         if (clickCommand === 'event') route = `/event/${eventId}`
-        if (clickCommand === 'user') route = `/user/${userId}`
+        if (clickCommand === 'user') route = `/user/${this.props.loggedInUser._id}`
         this.forceCloseModals();
         history.push(route);
     }
@@ -342,6 +342,7 @@ class NavBar extends Component {
                     </div>
                 </nav >
                 <div className="nav-bg"></div>
+                {isNarrowModalOpen && <div onClick={this.forceCloseModals} className="dark-screen"></div>}
             </main>
         )
     }

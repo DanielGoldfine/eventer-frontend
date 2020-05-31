@@ -1,6 +1,7 @@
 .event-index {
     .event-list {
         margin-top: 250px;
+        justify-content: center;
     }
 
     h1.no-events {
@@ -45,6 +46,14 @@
     @media screen and (max-width: 550px) {
         .event-list {
             justify-self: center;
+            margin-top: 350px;
+            .event-preview {
+                width: 100%;
+                border-radius: 0px;
+                .event-img-container {
+                    border-radius: 0px;
+                }
+            }
         }
         .event-list-filter {
             // display: none;
@@ -61,5 +70,12 @@
         .event-preview {
             width: 100vw;
         }
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .event-index {
+        display: flex;
+        justify-content: center;
     }
 }

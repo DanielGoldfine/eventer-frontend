@@ -76,6 +76,9 @@ export default class FilterBar extends Component {
                                 <MenuItem value={5}>Up to $5</MenuItem>
                                 <MenuItem value={10}>Up to $10</MenuItem>
                                 <MenuItem value={50}>Up to $50</MenuItem>
+                                <MenuItem value={100}>Up to $100</MenuItem>
+                                <MenuItem value={150}>Up to $150</MenuItem>
+                                <MenuItem value={200}>Up to $200</MenuItem>
                             </Select>
                         </FormControl>
                     </div>

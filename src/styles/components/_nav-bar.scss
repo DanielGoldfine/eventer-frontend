@@ -1,7 +1,7 @@
 .nav-bar-container {
     height: 60px;
     position: fixed;
-    z-index: 12;
+    z-index: 13;
     width: 100vw;
     top: 0;
     left: 0;
@@ -492,4 +492,9 @@
             color: white;
         }
     }
+}
+
+
+.dark-screen {
+    z-index: 12;
 }
