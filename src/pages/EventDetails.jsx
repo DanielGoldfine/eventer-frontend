@@ -269,8 +269,8 @@ class EventDetails extends React.Component {
 
           <div className="img-gallery" >
             {images && <EventImagesGallery images={images}></EventImagesGallery>}
+            {images.length === 0 && category && !imgUrl.includes('http') && <img src={require(`../assets/imgs/${category.replace(/\s+/g, '')}.jpg`)} alt=""></img>}
           </div>
-          {images.length === 0 && category && !imgUrl.includes('http') && <img src={require(`../assets/imgs/${category.replace(/\s+/g, '')}.jpg`)} alt=""></img>}
 
 
           <div className="desc-container">

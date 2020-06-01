@@ -95,6 +95,7 @@
       .event-desc {
         text-align: left;
         max-width: 600px;
+        justify-content: end;
       }
     }
 
@@ -390,4 +391,11 @@ margin-top: 70px;
 
 .ReactGridGallery_tile-viewport img {
   cursor: inherit !important;
+}
+
+//hiding the X button in the marker info-windoes, as it cause inconsistent behaviour. 
+.gm-style-iw.gm-style-iw-c {
+  button {
+    display: none !important;
+  }
 }
