@@ -21,7 +21,7 @@ export default function Footer() {
                             </ul>
                         </div>
                         <div >
-                            <h2 className="">Categoriesssss</h2>
+                            <h2 className="">Categories</h2>
                             <ul className="clean-list">
                                 <li className="">
                                     <a href="#!">Sports</a>
