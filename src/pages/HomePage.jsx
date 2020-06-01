@@ -27,11 +27,8 @@ class HomePage extends Component {
     componentWillUnmount() {
         window.removeEventListener('scroll', this.listenToScrollHome)
         this.props.setHomePage(false);
-        // Michael
         let filter = { ...this.props.filterBy, futureOnly: true, userId: '' };
         this.props.setFilter(filter)
-            // .then(() => { this.props.loadEvents(this.props.filterBy) })
-        
     };
 
 

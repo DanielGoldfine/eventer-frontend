@@ -13,7 +13,7 @@ export default function UserPreview(props) {
         <section className={`user-preview-min flex align-items-center`}> 
             <Link onClick={()=>{ eventBusService.emit('user-preview-click',minimalUser._id)}} to={`/user/${minimalUser._id}`}>
                 <div className="avatar">
-                    <img alt="" src={minimalUser.imgUrl} title={minimalUser.fullName}/>
+                    <img alt="" src={minimalUser.imgUrl} />
                 </div>
             </Link>
             <div className="name-rank flex column space-between">

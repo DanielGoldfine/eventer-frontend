@@ -1,6 +1,8 @@
 import React from 'react'
 import UserPreview from './UserPreview'
+import { Link } from "react-router-dom";
 import Moment from 'moment';
+import history from '../history.js'
 
 export function NotificationPreview(props) {
     // console.log(props.msg.type)
@@ -23,19 +25,14 @@ export function NotificationPreview(props) {
             notificationTxt = 'had created a new event'
             notificationTopic = 'event';
             break;
-        case 'user_follow':
-            notificationTxt = 'is following you now'
-            notificationTopic = 'user';
-            break;
-        case 'user_unfollow':
-            notificationTxt = 'had stopped following you'
-            notificationTopic = 'user';
-            break;
+        //todo - add the user-follow socket
+        // case 'user_follow': 
+        //     notificationTxt = 'is following you now'
+        //     notificationTopic = 'user';
+        //     break;
         case 'user_review':
             notificationTxt = 'had ranked you'
             notificationTopic = 'user';
-            break;
-        default:
             break;
     }
 

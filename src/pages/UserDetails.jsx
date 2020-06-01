@@ -7,10 +7,11 @@ import { ReviewList } from '../cmps/ReviewList'
 import { MinimalEventList } from '../cmps/MinimalEventList'
 import { FollowUserList } from '../cmps/FollowUserList'
 
-import { addReview, loadUser, loadUserLocal, addFollower, removeFollower, login, clearUser } from '../store/actions/userActions'
+import { addReview, loadUser, loadUserLocal , addFollower , removeFollower,login } from '../store/actions/userActions'
 import { loadEvents, setFilter } from '../store/actions/eventActions'
 
 import socketService from '../services/socketService';
+
 import eventBusService from "../services/eventBusService.js";
 
 
@@ -31,11 +32,10 @@ class UserDetails extends Component {
         this.initPage()
     }
 
-    initPage = async (userId) => {
+    initPage = async (userId) => { 
         let id = (userId) ? userId : this.props.match.params.id
         this.props.loadUserLocal(id)
-        let filter = { ...this.props.filterBy, futureOnly: false, isActive: 'show all' };
-        // let filter = { ...this.props.filterBy, futureOnly: false, userId: id, isActive: 'show all' }; //Need all events, as we show also the subscribed events...
+        let filter = { ...this.props.filterBy, futureOnly: false, userId: id ,isActive:'show all'};
         this.props.setFilter(filter)
             .then(() => { this.props.loadEvents(this.props.filterBy) })
 
@@ -48,16 +48,14 @@ class UserDetails extends Component {
                 this.setState({ isLoggedInUser: false });
             }
         }
-
+        
     }
 
     componentWillUnmount() {
-        this.props.clearUser()
         this.unsubscribeFromEventBus()
     }
 
-
-
+    
 
     submitReview = async (newReview) => {
         const user = await this.props.addReview(newReview, this.props.currUser)
@@ -72,53 +70,34 @@ class UserDetails extends Component {
         socketService.emit('user rank', payload)
     }
     checkFollowing = () => {
-        const loggedInUser = this.props.loggedInUser
+        const loggedInUser  = this.props.loggedInUser
         const followerIdx = this.props.currUser.followers.findIndex(follower => follower._id === loggedInUser._id)
         if (followerIdx >= 0) return true;
         return false;
     }
 
-    addFollower = async (loggedInUser) => {
+    addFollower = (loggedInUser) => {
         const user = this.props.currUser;
-        await this.props.addFollower(user, loggedInUser);
-        const payload = {
-            userId: user._id,
-            minimalEvent: {},
-            minimalUser: this.props.minimalLoggedInUser,
-            type: 'user_follow'
-        }
-        socketService.emit('user follow', payload)
-
+        this.props.addFollower(user, loggedInUser);
     }
-    removeFollower = async (loggedInUser) => {
+    removeFollower = (loggedInUser) => {
         const user = this.props.currUser;
-        await this.props.removeFollower(user, loggedInUser);
-        const payload = {
-            userId: user._id,
-            minimalEvent: {},
-            minimalUser: this.props.minimalLoggedInUser,
-            type: 'user_unfollow'
-        }
-        socketService.emit('user unfollow', payload)
+        this.props.removeFollower(user, loggedInUser);
     }
 
-
+    
 
     render() {
         const { loggedInUser, events } = this.props;
         const { isLoggedInUser } = this.state;
         const user = this.props.currUser;
-
-        const createdEvents = events.filter(event => event.createdBy._id === this.props.currUser._id)
-        const subscribedEvents = events.filter(event => event.members.find(member => member._id === this.props.currUser._id))
-
         if (!loggedInUser) return <div>Loading...</div>
         return (
             <React.Fragment>
                 <main className="user-grid-container">
                     {user && <section className="user-details-container">
 
-                        {user && <UserDesc checkFollowing={this.checkFollowing} createdEvents={createdEvents} subscribedEvents={subscribedEvents}  isLoggedInUser={this.isLoggedInUser} user={user} addFollower={this.addFollower} removeFollower={this.removeFollower} loggedInUser={loggedInUser} />}
+                        {user && <UserDesc checkFollowing={this.checkFollowing} eventsCreated={this.props.events} isLoggedInUser={isLoggedInUser} user={user} addFollower={this.addFollower} removeFollower={this.removeFollower} loggedInUser={loggedInUser} />}
 
                         {!isLoggedInUser && this.props.currUser._id !== this.props.minimalLoggedInUser._id &&
                             <ReviewForm
@@ -128,7 +107,7 @@ class UserDetails extends Component {
                         <ReviewList reviews={user.reviews} />
 
                         <div className="user-lists">
-                            <MinimalEventList createdEvents={createdEvents} subscribedEvents={subscribedEvents} loggedInUser={loggedInUser} />
+                            <MinimalEventList events={events} />
                             {user.followers && <FollowUserList followers={user.followers} />}
                         </div>
 
@@ -165,8 +144,8 @@ const mapDispatchToProps = {
     setFilter,
     addFollower,
     removeFollower,
-    login,
-    clearUser
+    login
+
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserDetails);

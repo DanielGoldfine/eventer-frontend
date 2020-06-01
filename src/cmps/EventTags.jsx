@@ -9,7 +9,7 @@ export default function EventTags(props) {
     else tagsArr = tags
 
     return (<div className="event-tags">
-        <ul className="clean-list flex justify-self-center wrap">
+        <ul className="clean-list flex justify-">
             {tagsArr.map(tag => { return <li className="event-tag" key={tag}>{tag}</li> })}
         </ul>
     </div>

@@ -30,6 +30,7 @@ export default function EventReducer(state = initialState, action) {
                 events: [...action.events]
             };
         case 'SET_EVENT':
+            // console.log('load event in reducer',action.event)
             return {
                 ...state,
                 currEvent: { ...action.event }
@@ -59,6 +60,7 @@ export default function EventReducer(state = initialState, action) {
                 filterBy: { ...action.filter }
             }
         case 'CLEAR_EVENT':
+            // console.log(action)
             return {
                 ...state,
                 currEvent: ''

@@ -242,7 +242,7 @@ class EventDetails extends React.Component {
 
           <div className="date-time-and-edit flex space-between">
             <p className="event-time-place">
-              <span className="event-weekday">{dateStr.split(' ')[0]}, </span>
+              <span className="event-weekday">{dateStr.split(' ')[0]} </span>
               <span className="event-month">{dateStr.split(' ')[1]} </span>
               <span className="event-day">{dateStr.split(' ')[2]} </span>
               <span className="event-year"> {dateStr.split(' ')[3]}, </span>
@@ -262,19 +262,19 @@ class EventDetails extends React.Component {
                 <span>{createdDateStr.split(' ')[3]} , </span>
                 <span>{createdDateStr.split(' ')[4].substring(0, 5)}</span>
               </small>
-              {event && !this.props.previewEvent && this.props.minimalLoggedInUser._id === event.createdBy._id && <NavLink className="user-preview-name-link" exact to={`/event/edit/${_id}`}>Advanced Edit </NavLink>}
+              {event && !this.props.previewEvent && this.props.minimalLoggedInUser._id === event.createdBy._id && <NavLink className="user-preview-name-link advanced" exact to={`/event/edit/${_id}`}>Advanced Edit </NavLink>}
             </div>
           </div>
 
 
           <div className="img-gallery" >
             {images && <EventImagesGallery images={images}></EventImagesGallery>}
-          </div>
           {images.length === 0 && category && !imgUrl.includes('http') && <img src={require(`../assets/imgs/${category.replace(/\s+/g, '')}.jpg`)} alt=""></img>}
+          </div>
 
 
-          <div className="desc-container">
-            <div className="event-desc flex justify-center align-center">
+          <div className="desc-container flex">
+            <div className="event-desc">
               <p contentEditable={false}
                 suppressContentEditableWarning
                 ref={this.descriptionInput}
@@ -283,8 +283,8 @@ class EventDetails extends React.Component {
                 onBlur={() => this.onUpdateContent('description', this.descriptionInput)}
               >{description}
               </p>
-              {!this.props.previewEvent && this.props.minimalLoggedInUser._id === event.createdBy._id && <img onClick={() => this.toggleEdit(this.descriptionInput)} className="icon-edit" src={require('../assets/imgs/pencil.png')} title="Click to edit event description" alt=""></img>}
             </div>
+              {!this.props.previewEvent && this.props.minimalLoggedInUser._id === event.createdBy._id && <img onClick={() => this.toggleEdit(this.descriptionInput)} className="icon-edit" src={require('../assets/imgs/pencil.png')} title="Click to edit event description" alt=""></img>}
           </div>
 
 

@@ -17,6 +17,14 @@
             }
             
             .clean-list {
+                li {
+                    p {
+                        span {
+                            font-weight: bold;
+                            color: white;
+                        }
+                    }
+                }
             max-width: 500px;
             list-style-type: none;
             margin: 0;

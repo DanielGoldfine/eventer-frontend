@@ -194,15 +194,10 @@ class EventEdit extends React.Component {
     translateAddressToLatLng = async (address) => {
         const latlng = await googleService.getLatLng(address)
         try {
-            const location = { address: this.state.address }
-            if (latlng) {
-                location.lat = latlng.lat ? latlng.lat : ''
-                location.lng = latlng.lng ? latlng.lng : ''
-            }
-            else {
-                location.lat = 0
-                location.lng = 0
-            }
+            const location = {}
+            location.lat = latlng.lat ? latlng.lat : ''
+            location.lng = latlng.lng ? latlng.lng : ''
+            location.address = this.state.address
             return location
         }
         catch (err) {
@@ -271,7 +266,7 @@ class EventEdit extends React.Component {
     }
 
     socketNewEvent = (event) => {
-        console.log('socketNewEvent', event)
+        console.log('socketNewEvent',event)
         //Send notification for all user followers about the new event
         const minimalEvent = {
             _id: event._id,
@@ -279,7 +274,7 @@ class EventEdit extends React.Component {
             imgUrl: this.state.imgUrl
         }
         const minimalUser = this.props.minimalLoggedInUser
-        // console.log('minimalUser',minimalUser)
+       // console.log('minimalUser',minimalUser)
         this.props.loggedInUser.followers.forEach(follower => {
             const payload = {
                 userId: follower._id,
@@ -287,7 +282,6 @@ class EventEdit extends React.Component {
                 minimalUser,
                 type: 'new_event'
             }
-            console.log('follower._id,', follower._id)
             socketService.emit('new event created', payload)
         })
     }
@@ -329,7 +323,7 @@ class EventEdit extends React.Component {
         return (
             <div className="main-container">
                 {this.state.selectedTab === "form" && <div className="bg-img-container">
-                    <img className="bg-img" src={require("../assets/imgs/form-background.jpg")} alt="" />
+                    <img className="bg-img" src={require("../assets/imgs/form-background.jpg")} alt=""/>
                 </div>}
                 <section className="form-container">
                     <Tabs>
