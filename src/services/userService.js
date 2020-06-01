@@ -100,7 +100,6 @@ function addReview(review, user) {
 
 async function addNotification(notification) {
     const user = await get(notification.userId)
-    // console.log('user in service', user)
     const msg = {
         _id: utilService.makeId(),
         createdAt: Date.now(),

@@ -47,11 +47,11 @@ class EventDetails extends React.Component {
   }
 
   componentDidUpdate(prevProps) { // To properly allow moving between event details thru the notifications
+    if (!this.props.match) return
     if (this.props.match.params.id !== prevProps.match.params.id) {
       const { id } = this.props.match.params;
       this.props.loadEvent(id)
         .then(() => {
-          // console.log('details componentDidUpdate')
           socketService.emit('viewEventDetails', this.props.event._id);
           socketService.on('memberJoin', this.socketAddMemebr);
           socketService.on('memberLeave', this.socketLeaveMember);
@@ -184,7 +184,7 @@ class EventDetails extends React.Component {
     const { event } = this.props;
 
     const activeProps = this.props.previewEvent ? this.props.previewEvent : this.props.event
-    if (!activeProps) return <div>LOADING...</div>
+    if (!activeProps || !this.props.minimalLoggedInUser) return <div>LOADING...</div>
 
     if (this.props.previewEvent) { // handle timestamp for preview mode
       const startAtString = `${this.props.previewEvent.startDate} ${this.props.previewEvent.startTime}`
@@ -192,11 +192,11 @@ class EventDetails extends React.Component {
       this.props.previewEvent.startAt = startAt
     }
 
-    const { _id, isActive, createdAt, updatedAt, title, category, imgUrl, description, startAt, location, createdBy, tags, images, members, price, capacity } = activeProps
+    const { _id, isActive, createdAt, title, category, imgUrl, description, startAt, location, createdBy, tags, images, members, price, capacity } = activeProps
 
     const dateStr = Moment(startAt * 1000).toString()
     const createdDateStr = createdAt ? Moment(createdAt * 1000).toString() : Moment(undefined).toString()
-    const updatedAtStr = updatedAt ? Moment(updatedAt * 1000).toString() : Moment(undefined).toString()
+    // const updatedAtStr = updatedAt ? Moment(updatedAt * 1000).toString() : Moment(undefined).toString()
     const eventCostStr = price ? `Join for only $${price}` : 'Join for free!'
     const eventFull = (members.length === capacity) ? true : false
 
@@ -242,10 +242,12 @@ class EventDetails extends React.Component {
 
           <div className="date-time-and-edit flex space-between">
             <p className="event-time-place">
+              <span className="event-weekday">{dateStr.split(' ')[0]}, </span>
               <span className="event-month">{dateStr.split(' ')[1]} </span>
               <span className="event-day">{dateStr.split(' ')[2]} </span>
-              <span className="event-time">{dateStr.split(' ')[4].substring(0, 5)}, </span>
-              <span className="event-address">{location.address}</span>
+              <span className="event-year"> {dateStr.split(' ')[3]}, </span>
+              <span className="event-time">  at   {dateStr.split(' ')[4].substring(0, 5)} </span>
+              <span className="event-address"> in {location.address}</span>
             </p>
           </div>
 
@@ -257,6 +259,7 @@ class EventDetails extends React.Component {
               <small>Created at
   <span> {createdDateStr.split(' ')[1]} </span>
                 <span>{createdDateStr.split(' ')[2]} , </span>
+                <span>{createdDateStr.split(' ')[3]} , </span>
                 <span>{createdDateStr.split(' ')[4].substring(0, 5)}</span>
               </small>
               {event && !this.props.previewEvent && this.props.minimalLoggedInUser._id === event.createdBy._id && <NavLink className="user-preview-name-link" exact to={`/event/edit/${_id}`}>Advanced Edit </NavLink>}
@@ -268,8 +271,6 @@ class EventDetails extends React.Component {
             {images && <EventImagesGallery images={images}></EventImagesGallery>}
           </div>
           {images.length === 0 && category && !imgUrl.includes('http') && <img src={require(`../assets/imgs/${category.replace(/\s+/g, '')}.jpg`)} alt=""></img>}
-
-
 
 
           <div className="desc-container">
@@ -303,9 +304,9 @@ class EventDetails extends React.Component {
 
             </div>
 
-              <div className="social-share-container flex align-center justify-center">
-                <SocialShare eventId={_id} eventTitle={title} />
-              </div>
+            <div className="social-share-container flex align-center justify-center">
+              <SocialShare eventId={_id} eventTitle={title} />
+            </div>
 
           </section>
 

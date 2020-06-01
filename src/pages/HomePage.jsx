@@ -27,6 +27,11 @@ class HomePage extends Component {
     componentWillUnmount() {
         window.removeEventListener('scroll', this.listenToScrollHome)
         this.props.setHomePage(false);
+        // Michael
+        let filter = { ...this.props.filterBy, futureOnly: true, userId: '' };
+        this.props.setFilter(filter)
+            // .then(() => { this.props.loadEvents(this.props.filterBy) })
+        
     };
 
 
@@ -51,10 +56,7 @@ class HomePage extends Component {
     };
 
     render() {
-        // console.log(this.props.events)
-        // console.log(this.props.filterBy)
         const { isSearchBar } = this.state;
-        // if (this.props.filterBy.userId !== '') return <div>Loading</div>
         return (
             <div className="home-page-container">
                 <header className="main-header-container flex justify-center align-items-center">

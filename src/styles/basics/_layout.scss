@@ -1,6 +1,7 @@
 .main-container {
     display: grid;
     justify-self: center;
+    align-items: center;
     @include for-mobile-layout {
         grid-template-columns:
         minmax(8px, 8px)

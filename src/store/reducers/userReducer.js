@@ -16,7 +16,7 @@ const initialState = {
     loggedInUser: localLoggedinUser,
     minimalLoggedInUser: localMinimalLoggedInUser,
     isNotificationsOpen: false,
-    currUser:''
+    currUser: ''
 }
 
 export default function UserReducer(state = initialState, action) {
@@ -69,6 +69,11 @@ export default function UserReducer(state = initialState, action) {
             return {
                 ...state,
                 filterBy: { ...action.isNotificationOpen }
+            }
+        case 'CLEAR_USER':
+            return {
+                ...state,
+                currUser: ''
             }
         case 'TOGGLE_LOAD':
             return {

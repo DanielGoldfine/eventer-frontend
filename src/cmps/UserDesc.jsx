@@ -3,7 +3,7 @@ import React from 'react'
 
 export function UserDesc(props) {
 
-    const { user, isLoggedInUser, loggedInUser, addFollower, doUnfollow, checkFollowing, removeFollower } = props;
+    const { user , isLoggedInUser , loggedInUser , addFollower , checkFollowing , removeFollower , createdEvents, subscribedEvents } = props;
     const isFollow = checkFollowing();
 
     return (
@@ -18,7 +18,11 @@ export function UserDesc(props) {
             <section className="user-stats flex column justify-center align-items-center">
                 <div className="flex align-items-center">
                     <h4>Events Created</h4>
-                    <h4>{props.eventsCreated.length}</h4>
+                    <h4>{createdEvents.length}</h4>
+                </div>
+                <div className="flex align-items-center">
+                    <h4>Events Subscribed</h4>
+                    <h4>{subscribedEvents.length}</h4>
                 </div>
                 <div className="flex align-items-center">
                     <h4>Followers</h4>

@@ -188,6 +188,8 @@
         }
     }
     .user-preview-min {
+        padding-inline-start: 20px;
+        border-left: 1px solid $brandingGrey;
         .avatar {
             width: 32px;
             height: 32px;
@@ -198,8 +200,6 @@
         .user-preview-name-link:hover {
             color: $brandingBlue;
         }
-        padding-inline-end: 20px;
-        border-right: 1px solid $brandingGrey;
     }
 
     @media screen and (max-width: 1250px) {
@@ -223,6 +223,11 @@
         }
     }
     @media screen and (max-width: 1070px) {
+
+        .user-preview-min {
+            border: none;
+        }
+
         .narrow-modal-container {
             display: block;
         }
@@ -282,11 +287,11 @@
             margin-inline-end: 10px;
         }
         .user-preview-min {
-            padding-inline-end: 10px;
+            padding-inline-end: 3px;
         }
         .nav-bar-btns {
             > * {
-                margin-inline-start: 10px;
+                margin-inline-start: 3px;
             }
         }
     }

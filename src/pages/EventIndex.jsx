@@ -24,6 +24,8 @@ class EventIndex extends Component {
 
     componentWillUnmount() {
         window.removeEventListener('scroll', this.listenToScrollFilter);
+        let filter = { ...this.props.filterBy, futureOnly: true, userId:'' };
+        this.props.setFilter(filter)
     };
 
     listenToScrollFilter = () => {
