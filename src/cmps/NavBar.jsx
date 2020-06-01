@@ -5,10 +5,6 @@ import { connect } from 'react-redux'
 import PersonIcon from '@material-ui/icons/Person';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import ViewListIcon from '@material-ui/icons/ViewList';
-import CollectionsIcon from '@material-ui/icons/Collections';
-import FilterNoneIcon from '@material-ui/icons/FilterNone';
-import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
-import AppsIcon from '@material-ui/icons/Apps';
 
 import SearchBar from './SearchBar'
 import UserPreview from './UserPreview'
@@ -284,7 +280,7 @@ class NavBar extends Component {
                     </div>
 
                     {isNarrowNotificationsOpen && <div className="notifications" ref={notifications => this.notifications = notifications}>
-                        {loggedInUser.notification && < Notifications notification={loggedInUser.notification}
+                        {loggedInUser.notification && <Notifications notification={loggedInUser.notification}
                             notificationClicked={this.notificationClicked} />}
                     </div>}
 
@@ -334,7 +330,7 @@ class NavBar extends Component {
 
 
                         {isNotificationsOpen && <div className="notifications" ref={notifications => this.notifications = notifications}>
-                            {loggedInUser.notification && < Notifications notification={loggedInUser.notification}
+                            {loggedInUser.notification && <Notifications notification={loggedInUser.notification}
                                 notificationClicked={this.notificationClicked} />}
                             <img className="connector" src={modalConnector} alt="" />
                         </div>}

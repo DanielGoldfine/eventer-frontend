@@ -411,6 +411,7 @@
   cursor: inherit !important;
 }
 
+//hiding the X button in the marker info-windoes, as it cause inconsistent behaviour. 
 .gm-style-iw.gm-style-iw-c {
   button {
     display: none !important;
