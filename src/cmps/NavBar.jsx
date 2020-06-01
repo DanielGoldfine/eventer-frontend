@@ -13,13 +13,14 @@ import history from '../history.js'
 import eventerLogo from '../assets/design/eventer-logo-new.png'
 import eventerIcn from '../assets/design/eventer-icn.png'
 import modalConnector from '../assets/helpers/modal-connector.png'
-import { login, addNotification, loadUser, saveUser } from '../store/actions/userActions'
+
+import { login, addNotification, loadUser, saveUser, setUser } from '../store/actions/userActions'
+import { setFilter, loadEvents } from '../store/actions/eventActions'
 
 import eventBusService from "../services/eventBusService.js";
 
 import socketService from '../services/socketService';
 
-import { setFilter } from '../store/actions/eventActions'
 
 
 class NavBar extends Component {
@@ -57,7 +58,7 @@ class NavBar extends Component {
         };
         this.setState({ loggedInUser: this.props.loggedInUser })
         if (this.props.loggedInUser) {
-           this.props.loadUser(this.props.loggedInUser._id)
+            this.props.loadUser(this.props.loggedInUser._id)
             socketService.emit('userLogin', this.props.loggedInUser._id);
             socketService.on('event got updated', this.addNotification);
             socketService.on('new event created', this.addNotification);
@@ -94,9 +95,9 @@ class NavBar extends Component {
 
 
     addNotification = async (notification) => {
-        console.log('addNotification',notification)
+        console.log('addNotification', notification)
         const user = await this.props.addNotification(notification)
-        this.props.loadUser(user._id)
+        this.props.setUser(user)
     }
 
     listenToScrollNav = () => {
@@ -117,7 +118,7 @@ class NavBar extends Component {
     };
 
 
-    goToPage = (page) => {
+    goToPage = async (page) => {
         let route;
         if (page === 'back') {
             history.goBack();
@@ -125,13 +126,10 @@ class NavBar extends Component {
         }
         if (page === 'home') route = `/`;
         if (page === 'index') {
-            let filter = { ...this.props.filterBy }
-            filter = { ...filter, txt: '' ,sortBy: 'startAt', limit: '', category: '', futureOnly: true , userId:''}
-            this.props.setFilter(filter)
-            // .then(() => {
-                route = `/event`;
-            // })
-            
+            let filter = { ...this.props.filterBy, userLocation: '', userId: '', futureOnly: true, txt: '', category: '', date: '', radius: '', sortBy: 'startAt' }; //{futureOnly: true, txt: "", category: "", date: "", radius: "", …} 
+            await this.props.setFilter(filter)
+            await this.props.loadEvents(filter)
+            route = `/event`;
         }
         if (page === 'edit') route = `/event/edit/`;
         if (page === 'user') route = `/user/${this.props.loggedInUser._id}`;
@@ -260,36 +258,36 @@ class NavBar extends Component {
         return (
             <main className={navState}>
 
-          <nav className="nav-bar-container main-container flex space-between align-items-center">
+                <nav className="nav-bar-container main-container flex space-between align-items-center">
 
-                <section className={`narrow-modal-container ${isNarrowModalOpen ? 'narrow-active' : ''}`}>
+                    <section className={`narrow-modal-container ${isNarrowModalOpen ? 'narrow-active' : ''}`}>
 
-                    <button className="create-event" onClick={() => { this.goToPage('index') }}>Events</button> 
-                    <button className="create-event" onClick={() => { this.goToPage('edit') }}>Create Event</button>
+                        <button className="create-event" onClick={() => { this.goToPage('edit') }}>Create Event</button>
+                        <button className="create-event" onClick={() => { this.goToPage('index') }}>All Events</button>
 
-                    <div onClick={this.openNarrowNotifications} className={`narow-notifications-container narrow-section flex align-center
+                        <div onClick={this.openNarrowNotifications} className={`narow-notifications-container narrow-section flex align-center
                     ${isNarrowNotificationsOpen ? 'highlight' : ""}`}>
-                         {loggedInUser && loggedInUser.notification.unseenCount > 0 && <h3 className="not-count">{loggedInUser.notification.unseenCount}</h3>}
-                        <NotificationsIcon />
-                        <p>Notifications</p>
-                    </div>
+                            {loggedInUser && loggedInUser.notification.unseenCount > 0 && <h3 className="not-count">{loggedInUser.notification.unseenCount}</h3>}
+                            <NotificationsIcon />
+                            <p>Notifications</p>
+                        </div>
 
-                    {isNarrowNotificationsOpen && <div className="notifications" ref={notifications => this.notifications = notifications}>
-                        {loggedInUser.notification && < Notifications notification={loggedInUser.notification}
-                            notificationClicked={this.notificationClicked} />}
-                    </div>}
+                        {isNarrowNotificationsOpen && <div className="notifications" ref={notifications => this.notifications = notifications}>
+                            {loggedInUser.notification && < Notifications notification={loggedInUser.notification}
+                                notificationClicked={this.notificationClicked} />}
+                        </div>}
 
-                    <div onClick={() => { this.goToPage('user') }} className="narrow-section flex align-center">
-                        <PersonIcon />
-                        <p>My Profile</p>
-                    </div>
+                        <div onClick={() => { this.goToPage('user') }} className="narrow-section flex align-center">
+                            <PersonIcon />
+                            <p>My Profile</p>
+                        </div>
 
-                   {loggedInUser && <div className="narrow-section flex align-center">
-                        {loggedInUser.userName === 'Guest' && <p className="login" onClick={() => { this.goToPage('login') }}>Login</p>}
-                        {loggedInUser.userName !== 'Guest' && <p className="login" onClick={() => { this.goToPage('logout') }}>Logout</p>}
-                    </div>}
+                        {loggedInUser && <div className="narrow-section flex align-center">
+                            {loggedInUser.userName === 'Guest' && <p className="login" onClick={() => { this.goToPage('login') }}>Login</p>}
+                            {loggedInUser.userName !== 'Guest' && <p className="login" onClick={() => { this.goToPage('logout') }}>Logout</p>}
+                        </div>}
 
-                </section>
+                    </section>
 
                     <div className="flex space-between align-items-center">
 
@@ -306,7 +304,7 @@ class NavBar extends Component {
 
 
                             <button className="create-event" onClick={() => { this.goToPage('edit') }}>Add New Event</button>
-                            <button className="create-event events-index" onClick={() => { this.goToPage('index') }}>To All Events</button>
+                            <button className="create-event events-index" onClick={() => { this.goToPage('index') }}>All Events</button>
 
 
                             {loggedInUser && loggedInUser.notification.unseenCount > 0 && <h3 className="not-count">{loggedInUser.notification.unseenCount}</h3>}
@@ -350,6 +348,7 @@ class NavBar extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        filterBy: state.eventsStore.filterBy,
         events: state.eventsStore.events,
         loggedInUser: state.userStore.loggedInUser,
         isHomePage: state.appStore.isHomePage
@@ -357,7 +356,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-    login, addNotification, loadUser, saveUser , setFilter
+    login, addNotification, loadUser, saveUser, setFilter, setUser, loadEvents
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NavBar));

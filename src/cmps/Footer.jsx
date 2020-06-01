@@ -13,7 +13,7 @@ export default function Footer() {
                             <h2 className="">About</h2>
                             <ul className="clean-list">
                                 <li className="">
-                                    <p><button onClick={() => history.push('/')}> eventer </button> is a responsive web app Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sequi laboriosam pariatur est tenetur animi, molestiae laborum excepturi maxime eveniet, facere laudantium velit.</p>
+                                    <p><button onClick={() => history.push('/')}> eventer </button> is a one-stop-shop for all your social meetups and events, whether you're an event organiser, who wants to publish and promote events, or you're just looking to socialise with others on your free time.</p>
                                 </li>
                                 <li className="social-share">
                                     <SocialShare  />

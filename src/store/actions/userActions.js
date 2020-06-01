@@ -174,7 +174,7 @@ function setLoggedInUser(user) {
     };
 }
 
-function setUser(user) {
+export function setUser(user) {
     return {
         type: 'SET_USER',
         user
