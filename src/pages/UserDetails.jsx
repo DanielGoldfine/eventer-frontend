@@ -112,9 +112,9 @@ class UserDetails extends Component {
                         </div>
 
                     </section>}
+                <img className="user-details-bg" src={require('../assets/imgs/user-details-bg-2.jpg')} alt="" />
                 </main>
 
-                <img className="bg-img" src={require('../assets/imgs/page-header.png')} alt="" />
 
             </React.Fragment>
         )

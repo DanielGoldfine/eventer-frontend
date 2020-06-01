@@ -12,12 +12,12 @@ class MapContainer extends Component {
 
     containerStyle = {
         // position: 'fixed',
-        // width:'447px',
-        height: '30%',
+        // width:'100px',
+        // height: '100px',
         // top:'510px',
         // right:'80px',
         // border:'1px solid lightgrey',
-        // borderRadius:'15px',
+        borderRadius:'5px',
         // boxShadow: "0 1px 3px #00000038"
     }
       
@@ -66,7 +66,7 @@ class MapContainer extends Component {
                 containerStyle={this.containerStyle}
                 initialCenter={this.props.loc}
                 center={this.props.loc}
-                zoom={14}
+                zoom={18}
                 zoomControl={this.mapControlProps.zoomControl}
                 mapTypeControl={this.mapControlProps.mapTypeControl}
                 scaleControl={this.mapControlProps.scaleControl}

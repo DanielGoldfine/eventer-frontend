@@ -9,6 +9,7 @@ export default class UpcomingEvents extends Component {
     }
 
     componentDidMount() {
+        
         this.setState({ galleryItems: this.props.events })
     }
 

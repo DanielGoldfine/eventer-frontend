@@ -1,7 +1,7 @@
 .nav-bar-container {
     height: 60px;
     position: fixed;
-    z-index: 13;
+    z-index: 15;
     width: 100vw;
     top: 0;
     left: 0;
@@ -114,9 +114,9 @@
                         margin-left: 10px;
                         font-size: rem(15px);
                     }
-                        .unread {
-                            font-weight: lighter;
-                            padding-right: 10px;
+                    .unread {
+                        font-weight: lighter;
+                        padding-right: 10px;
                     }
                 }
                 .notifications-list {
@@ -202,6 +202,19 @@
         border-right: 1px solid $brandingGrey;
     }
 
+    @media screen and (max-width: 1250px) {
+        .user-preview-min {
+            .user-preview-name-link {
+                display: none;
+            }
+        }
+        .search-logo {
+            width: 100%;
+            .seach-bar-container {
+                width: 100%;
+            }
+        }
+    }
     @media screen and (max-width: 1200px) {
         .user-preview-min {
             .user-preview-name-link {
@@ -213,9 +226,11 @@
         .narrow-modal-container {
             display: block;
         }
-
-        .main-logo {
-            display: none;
+        .search-logo {
+            width: 65%;
+            .main-logo {
+                display: none;
+            }
         }
         .main-icn {
             display: block;
@@ -286,19 +301,23 @@
     width: 250px;
     height: 100vh;
     border-top: 1px solid rgb(61, 61, 61);
-    .create-event {
-        width: 120px;
-        height: 30px;
-        border-radius: 99px;
-        border: 2px solid $brandingBlue;
-        background-color: $brandingBlue;
-        color: rgb(17, 17, 17);
-        font-family: secondfontbold;
-        font-size: rem(15px);
-        margin-top: 30px;
-        margin-bottom: 20px;
-        transition: 0.2s;
-        outline: none;
+    .btns-container {
+        margin: 30px 0;
+        height: 75px;
+        .btns {
+            width: 120px;
+            height: 30px;
+            border-radius: 99px;
+            border: 2px solid $brandingBlue;
+            background-color: $brandingBlue;
+            color: rgb(17, 17, 17);
+            font-family: secondfontbold;
+            font-size: rem(15px);
+            transition: 0.2s;
+            outline: none;
+            text-align: left;
+            padding-left: 16px;
+        }
     }
     .narow-notifications-container {
         position: relative;
@@ -451,7 +470,7 @@
     width: 100vw;
     height: 60px;
     background: rgb(17, 17, 17);
-    z-index: 11;
+    z-index: 12;
     position: fixed;
     opacity: 0;
 
@@ -493,7 +512,6 @@
     }
 }
 
-
 .dark-screen {
-    z-index: 12;
+    z-index: 11;
 }

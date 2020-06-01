@@ -1,5 +1,5 @@
 import React from 'react';
-import { loadEvent, subscribeEvent, unsubscribeEvent, setFilter, updateEvent, updateEventLocal, clearEvent } from '../store/actions/eventActions.js'
+import { loadEvent, subscribeEvent, unsubscribeEvent, setFilter, updateEvent, updateEventLocal,clearEvent } from '../store/actions/eventActions.js'
 import { connect } from "react-redux";
 import Moment from 'moment';
 import EventTags from '../cmps/EventTags'
@@ -181,7 +181,7 @@ class EventDetails extends React.Component {
 
   render() {
 
-    const { event } = this.props;
+    const {event} = this.props;
 
     const activeProps = this.props.previewEvent ? this.props.previewEvent : this.props.event
     if (!activeProps) return <div>LOADING...</div>
@@ -204,7 +204,7 @@ class EventDetails extends React.Component {
 
     return (
 
-      <div className="event-details main-container">
+      <div className="main-container">
 
         <div className="event-details-container flex">
 
@@ -225,7 +225,7 @@ class EventDetails extends React.Component {
             }
 
 
-            <div className="event-title flex justify-center align-items-end">
+            <div className="event-title flex justify-center align-center">
               <h2 contentEditable={false}
                 suppressContentEditableWarning
                 ref={this.titleInput}
@@ -239,40 +239,40 @@ class EventDetails extends React.Component {
 
           </div>
 
+          <section className="event-info flex column">
 
-          <div className="date-time-and-edit flex space-between">
-            <p className="event-time-place">
-              <span className="event-month">{dateStr.split(' ')[1]} </span>
-              <span className="event-day">{dateStr.split(' ')[2]} </span>
-              <span className="event-time">{dateStr.split(' ')[4].substring(0, 5)}, </span>
-              <span className="event-address">{location.address}</span>
-            </p>
-          </div>
-
-
-
-          <div className="user-and-created">
             <UserPreview ranking={true} minimalUser={activeProps.createdBy} />
-            <div className="flex space-between">
+
+
+            <div className="created-at flex column align-start">
               <small>Created at
   <span> {createdDateStr.split(' ')[1]} </span>
                 <span>{createdDateStr.split(' ')[2]} , </span>
                 <span>{createdDateStr.split(' ')[4].substring(0, 5)}</span>
               </small>
+              {/* <small>Last update at
+  <span> {updatedAtStr.split(' ')[1]} </span>
+                <span>{updatedAtStr.split(' ')[2]} , </span>
+                <span>{updatedAtStr.split(' ')[4].substring(0, 5)}</span>
+              </small> */}
+            </div>
+
+
+            {images && <EventImagesGallery className="img-gallery" images={images}></EventImagesGallery>}
+
+            {images.length === 0 && category && !imgUrl.includes('http') && <img src={require(`../assets/imgs/${category.replace(/\s+/g, '')}.jpg`)} alt=""></img>}
+
+            <div className="date-time-and-edit flex space-between">
+              <p className="event-time-place">
+                <span className="event-month">{dateStr.split(' ')[1]} </span>
+                <span className="event-day">{dateStr.split(' ')[2]} </span>
+                <span className="event-time">{dateStr.split(' ')[4].substring(0, 5)}, </span>
+                <span className="event-address">{location.address}</span>
+              </p>
+
               {event && !this.props.previewEvent && this.props.minimalLoggedInUser._id === event.createdBy._id && <NavLink className="user-preview-name-link" exact to={`/event/edit/${_id}`}>Advanced Edit </NavLink>}
             </div>
-          </div>
 
-
-          <div className="img-gallery" >
-            {images && <EventImagesGallery images={images}></EventImagesGallery>}
-          </div>
-          {images.length === 0 && category && !imgUrl.includes('http') && <img src={require(`../assets/imgs/${category.replace(/\s+/g, '')}.jpg`)} alt=""></img>}
-
-
-
-
-          <div className="desc-container">
             <div className="event-desc flex justify-center align-center">
               <p contentEditable={false}
                 suppressContentEditableWarning
@@ -284,39 +284,41 @@ class EventDetails extends React.Component {
               </p>
               {!this.props.previewEvent && this.props.minimalLoggedInUser._id === event.createdBy._id && <img onClick={() => this.toggleEdit(this.descriptionInput)} className="icon-edit" src={require('../assets/imgs/pencil.png')} title="Click to edit event description" alt=""></img>}
             </div>
-          </div>
 
 
-
-
-          <div className="tags-container">
             {tags && <EventTags tags={tags} />}
-          </div>
 
+          </section>
 
+          <div className="right-side">
 
-          <section className="user-lists">
-            <AttendeesList membersNum={members.length} capacity={capacity} followers={this.props.event.members} />
-            <div className="cta-btns">
+            <div className="social-share-container flex align-center justify-center">
+              <SocialShare eventId={_id} eventTitle={title} />
+            </div>
+
+            <section className="user-lists">
+              <AttendeesList membersNum={members.length} capacity={capacity} followers={this.props.event.members} />
+
+              {this.props.previewEvent && <button className="cta-btn attend">{eventCostStr}</button>}
               {!this.props.previewEvent && !eventFull && userInEvent === -1 && this.props.minimalLoggedInUser._id !== createdBy._id && <button onClick={() => { this.onSubscribeEvent(this.props.minimalLoggedInUser._id) }} className="cta-btn attend">{eventCostStr}</button>}
               {!this.props.previewEvent && userInEvent >= 0 && <button onClick={() => { this.onUnsubscribeEvent(this.props.minimalLoggedInUser._id) }} className="cta-btn leave">Leave</button>}
 
-            </div>
-
-              <div className="social-share-container flex align-center justify-center">
-                <SocialShare eventId={_id} eventTitle={title} />
+              {/* <section>
+            {event && <EventMembers event={event} onSubscribeEvent={this.onSubscribeEvent} onUnsubscribeEvent={this.onUnsubscribeEvent} loggedInUserId={this.props.minimalLoggedInUser._id} />}
+            {this.props.previewEvent && <EventMembers previewMode={true} event={this.props.previewEvent} loggedInUserId={this.props.minimalLoggedInUser._id} />}
+          </section> */}
+              <div className="map">
+                <MapContainer loc={location} name={location.address} />
               </div>
 
           </section>
 
+          </div>
+
+
 
           {event && !this.props.previewEvent && <EventPosts eventCreatorId={this.props.event.createdBy._id} isLoggedUserAdmin={this.props.minimalLoggedInUser.isAdmin} />}
 
-          <div className="map-container">
-            <div className="map">
-              <MapContainer loc={location} name={location.address} />
-            </div>
-          </div>
 
         </div>
 
@@ -336,7 +338,7 @@ const mapStateToProps = (state) => {
 
 
 const mapDispatchToProps = {
-  loadEvent, unsubscribeEvent, subscribeEvent, setFilter, updateEvent, updateEventLocal, clearEvent
+  loadEvent, unsubscribeEvent, subscribeEvent, setFilter, updateEvent, updateEventLocal,clearEvent
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventDetails);

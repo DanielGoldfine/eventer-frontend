@@ -1,5 +1,12 @@
 .event-index {
     .event-list {
+
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 285px);
+            gap: 26px;
+            margin-bottom: 25px;
+
+
         margin-top: 250px;
         justify-content: center;
     }
@@ -75,6 +82,9 @@
 
 @media screen and (max-width: 550px) {
     .event-index {
+        .event-list {
+            grid-template-columns: repeat(auto-fill, 100vw);
+        }
         display: flex;
         justify-content: center;
     }

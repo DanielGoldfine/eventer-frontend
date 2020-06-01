@@ -5,7 +5,7 @@ export default function EventList(props) {
 	// console.log(props)
 
 	return (
-		<div className="event-list preview-grid-container">
+		<div className="event-list">
 			{props.events.map(event =>
 				<EventPreview
 					onDelete={props.onDelete}

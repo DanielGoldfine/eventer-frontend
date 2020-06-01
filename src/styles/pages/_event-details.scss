@@ -1,61 +1,125 @@
-.event-details-container {
-  position: relative;
-  margin-top: 120px;
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  // grid-template-rows: 80px 500px 100px 100%;
-  grid-row-gap: 10px;
-  grid-column-gap: 20px;
-
-  .nav-title {
-    grid-column: 1/3;
-    grid-row: 1;
-    align-items: end;
-    .navigator {
-      margin-bottom: 20px;
-      font-size: 15px;
-      text-decoration: none;
-      a {
-        text-decoration: none;
-        color: lighten(blue, 20);
-      }
-
-      span {
-        margin: 0 5px 0 5px;
-        color: lighten(blue, 20);
-      }
-      .btn-link {
-        display: inline;
-        cursor: pointer;
-        background-color: white;
-        color: lighten(blue, 20);
-        border: none;
-        padding: 0;
-        font-size: 15px;
-      }
-    }
-    .event-title {
-      h2 {
-        font-size: rem(45px);
-        text-align: left;
-        margin-bottom: 20px;
-      }
-      .icon-edit {
-        width: 30px;
-        margin-inline-start: 10px;
-      }
-    }
-  }
-  .event-info {
-    width: 100%;
-    max-height: 950px;
+.event-details {
+  margin-bottom: 20px;
+  .event-details-container {
     position: relative;
-    grid-column: 1/2;
-    grid-row: 2;
-    .img-gallery {
-      width: 1px;
+    margin-top: 120px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+
+    grid-row-gap: 10px;
+    grid-column-gap: 10px;
+
+    .nav-title {
+      grid-column: 1;
+      grid-row: 1;
+      align-items: end;
+      margin-bottom: 5px;
+      .navigator {
+        // margin-bottom: 20px;
+        font-size: 15px;
+        text-decoration: none;
+        margin-bottom: 10px;
+        a {
+          text-decoration: none;
+          color: lighten(blue, 20);
+        }
+
+        span {
+          margin: 0 5px 0 5px;
+          color: lighten(blue, 20);
+        }
+        .btn-link {
+          display: inline;
+          cursor: pointer;
+          background-color: white;
+          color: lighten(blue, 20);
+          border: none;
+          padding: 0;
+          font-size: 15px;
+        }
+      }
+      .event-title {
+        h2 {
+          font-size: rem(35px);
+          text-align: left;
+        }
+        .icon-edit {
+          width: 30px;
+          margin-inline-start: 5px;
+        }
+      }
     }
-    align-items: flex-start;
+
+    .user-and-created {
+      grid-column: 1/2;
+      grid-row: 3;
+      text-align: left;
+    }
+
+    .img-gallery {
+      grid-column: 1/2;
+      grid-row: 4;
+    }
+
+    .date-time-and-edit {
+      grid-column: 1/2;
+      grid-row: 2;
+      width: 100%;
+      align-items: baseline;
+      margin-bottom: 10px;
+
+      .event-time-place {
+        font-size: rem(20px);
+        font-weight: 600;
+        text-align: left;
+        align-self: center;
+        color: rgb(144, 144, 144);
+      }
+      span.event-month {
+        text-transform: uppercase;
+      }
+      span.event-day {
+        color: rgb(255, 62, 62);
+      }
+    }
+
+    .event-posts {
+      grid-column: 1/2;
+      grid-row: 7;
+    }
+
+    .desc-container {
+      grid-column: 1/2;
+      grid-row: 5;
+      margin-bottom: 20px;
+      .event-desc {
+        text-align: left;
+        max-width: 600px;
+      }
+    }
+
+    .tags-container {
+      grid-column: 1;
+      grid-row: 6;
+      .event-tags {
+        width: auto;
+        .clean-list {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+        }
+        .event-tag {
+          border: 1px solid rgb(156, 156, 156);
+          background-color: rgb(228, 228, 228);
+          margin-inline-end: 10px;
+          padding: 0px 7px;
+          border-radius: 3px;
+          color: rgb(156, 156, 156);
+        }
+      }
+    }
+
+
     .inactive-notification {
       color: red;
       margin-right: 10px;
@@ -74,37 +138,6 @@
         }
       }
     }
-
-    p,
-    pre {
-      text-align: ce;
-      margin-top: 10px;
-    }
-
-    .date-time-and-edit {
-      width: 100%;
-      align-items: baseline;
-    }
-
-    .event-time-place {
-      font-size: rem(30px);
-      font-weight: 600;
-      margin-bottom: 15px;
-      text-align: left;
-      line-height: 30px;
-    }
-    span.event-month {
-      text-transform: uppercase;
-    }
-    span.event-day {
-      color: red;
-    }
-
-    .event-desc {
-      margin-bottom: 20px;
-      text-align: left;
-    }
-
     .icon-edit {
       width: 30px;
       cursor: pointer;
@@ -114,199 +147,246 @@
       width: 35px;
     }
 
-    .event-tags {
-      align-self: end;
-      .clean-list {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-      }
-      .event-tag {
-        background-color: grey;
-        margin-inline-end: 5px;
-        padding: 0px 3px;
-        border-radius: 3px;
-        color: white;
-      }
-    }
-    img {
-      border-radius: 15px;
-    }
-  }
-
-  .right-side {
-    position: sticky;
-    top: 120px;
-    grid-column: 2/3;
-    grid-row: 1/3;
-    .social-share-container {
-      margin-bottom: 20px;
-      // position: sticky;
-      // top: 120px;
-      // grid-column: 2/3;
-      // grid-row: 1/2;
-      // width: 300px;
-      justify-self: center;
-      .social-share {
-        width: 100%;
-        h3 {
-          margin-bottom: 15px;
+    .map-container {
+      grid-column: 2;
+      grid-row: 1/4;
+      position: sticky;
+      top: 120px;
+      .map {
+        .google-map {
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.35);
+          grid-column: 2;
+          grid-row: 7;
+          width: 100%;
+          height: 100% !important;
         }
       }
     }
 
     .user-lists {
+      position: sticky;
+      top: 323px;
+      grid-column: 2;
+      grid-row: 4/5;
+      height: 190px;
       .minimal-event-list-container {
         margin-bottom: 40px;
       }
-    }
-    .cta-btn {
-      height: 35px;
-      width: 300px;
-      border: none;
-      cursor: pointer;
-      margin: 3% 0;
-      border-radius: 999px;
-      font-size: rem(25px);
-    }
-    .leave {
-      background-color: $brandinggreybold;
-      color: rgb(195, 195, 195);
-    }
-    .attend {
-      background-color: $brandingGreen;
-      color: white;
-    }
-    .attend:hover {
-      background-color: darken($color: $brandingGreen, $amount: 7%);
-    }
-    .leave:hover {
-      background-color: darken($color: rgb(173, 173, 173), $amount: 30%);
-    }
-    .user-details-list {
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.35);
-      border-radius: 10px;
-      background-color: #ffffff;
-      height: 300px;
-      .list-header {
-        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.431);
-        height: 60px;
-        h4 {
-          margin-inline-start: 20px;
+      .user-details-list {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.35);
+        border-radius: 7px;
+        background-color: #ffffff;
+        height: 100%;
+        margin-bottom: 15px;
+        .list-header {
+          box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.21);
+          border-radius: 7px 7px 0 0;
+          height: 60px;
+          h4 {
+            margin-inline-start: 20px;
+            font-size: rem(25px);
+          }
+          .attendees-state {
+            margin-inline-end: 10px;
+            font-size: rem(17px);
+            color: $brandingBlue;
+          }
+        }
+        .list {
+          height: 100%;
+          width: 100%;
+          padding-bottom: 60px;
+        }
+        .followers-grid {
+          overflow: auto;
+          width: 100%;
+          height: 100%;
+          padding: 10px 20px 0 20px;
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+          grid-template-rows: repeat(auto-fill, minmax(45px, 1fr));
+          grid-gap: 15px;
+          align-items: flex-start;
+          .user-preview-min {
+            justify-content: center;
+          }
+          .avatar {
+            width: 45px;
+            height: 45px;
+            margin: 0;
+          }
+          .user-preview-name-link {
+            display: none;
+          }
+        }
+        .followers-grid::-webkit-scrollbar {
+          width: 10px;
+          border-radius: 999px;
+        }
+
+        .followers-grid::-webkit-scrollbar-track {
+          background-color: rgba(0, 0, 0, 0);
+        }
+
+        .followers-grid::-webkit-scrollbar-thumb {
+          background-color: $brandingBlue;
+          border-radius: 100px;
+        }
+      }
+      .cta-btns {
+        align-self: start;
+        margin-bottom: 20px;
+        .cta-btn {
+          height: 55px;
+          width: 100%;
+          border: none;
+          cursor: pointer;
+          border-radius: 7px;
+          font-size: rem(30px);
+          transition: 0.2s;
+        }
+
+        .leave {
+          background-color: $brandinggreybold;
+          color: rgb(195, 195, 195);
           font-size: rem(25px);
         }
-        .attendees-state {
-          margin-inline-end: 10px;
-          font-size: rem(17px);
-          color: $brandingBlue;
+        .attend {
+          background-color: $brandingBlue;
+          color: white;
+        }
+        .attend:hover {
+          background-color: darken($color: $brandingBlue, $amount: 15%);
+        }
+        .leave:hover {
+          background-color: darken($color: rgb(173, 173, 173), $amount: 30%);
         }
       }
-      .list {
-        height: 100%;
-        width: 100%;
-        padding-bottom: 60px;
-      }
-      .followers-grid {
-        overflow: auto;
-        width: 100%;
-        height: 100%;
-        padding: 10px 20px 0 20px;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
-        grid-template-rows: repeat(auto-fill, minmax(45px, 1fr));
-        grid-gap: 15px;
-        align-items: flex-start;
-        .user-preview-min {
-          justify-content: center;
-        }
-        .avatar {
-          width: 45px;
-          height: 45px;
-          margin: 0;
-        }
-        .user-preview-name-link {
-          display: none;
-        }
-      }
-      .followers-grid::-webkit-scrollbar {
-        width: 10px;
-        border-radius: 999px;
-      }
-
-      .followers-grid::-webkit-scrollbar-track {
-        background-color: rgba(0, 0, 0, 0);
-      }
-
-      .followers-grid::-webkit-scrollbar-thumb {
-        background-color: $brandingBlue;
-        border-radius: 100px;
-      }
-    }
-  }
-  @media screen and (max-width: 550px) {
-    position: relative;
-    margin-top: 80px;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-row-gap: 10px;
-    grid-column-gap: 20px;
-
-    .nav-title{
-      .event-title {
-        h2 {
-          font-size: rem(30px);
-          text-align: left;
-          margin-bottom: 20px;
-          line-height: 40px;
-        }
-      }
-    }
-
-    .map {
-      display: none;
-      .google-map {
-        display: none;
-      }
-    }
-    .right-side {
-      position: static;
-      grid-column: 1/2;
-      grid-row: 3/4;
       .social-share-container {
-        display: none;
-      }
-      .user-lists {
         display: flex;
-        flex-direction: column-reverse;
-      }
-    }
-    .event-posts {
-      grid-column: 1/2;
-      grid-row: 4/5;
-      width: 100vw;
-      margin: 0 auto;
-      .post {
-        .post-text {
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        .social-share {
           width: 100%;
         }
-    }
+        .share-icon {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          button {
+            align-self: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+          button:hover {
+            width: 115%;
+            height: 115%;
+          }
+          svg {
+            transition: 0.3s;
+          }
+          svg:hover {
+            width: 115%;
+            height: 115%;
+            align-self: center;
+            justify-self: center;
+          }
+        }
+      }
     }
   }
-}
-.event-posts {
-  grid-row: 3/4;
+  @media screen and (max-width: 1100px) {
+    .event-details-container {
+      // position: relative;
+      margin-top: 100px;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-row-gap: 10px;
+      .event-posts {
+        grid-row: 22;
+        grid-column: 1;
+      }
+      .user-lists {
+        position: static;
+        grid-row: 8;
+        grid-column: 1;
+        .cta-btns {
+          align-self: auto;
+          .cta-btn {
+            width: 100%;
+          }
+        }
+
+        // .social-share-container {
+        //   width: 100%;
+        //   position: static;
+        //   margin-bottom: 10px;
+        // }
+      }
+
+      .map-container {
+        display: none;
+      }
+      .desc-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .event-desc {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          .icon-edit {
+            align-self: center;
+          }
+        }
+      }
+      .tags-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 15px;
+        .event-tags {
+          align-self: center;
+          width: 100%;
+          .clean-list {
+            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(auto, 120px));
+            grid-row-gap: 5px;
+            grid-column-gap: 5px;
+            .event-tag {
+              // padding: 0px 7px;
+              border-radius: 3px;
+              color: rgb(156, 156, 156);
+              justify-self: center;
+            }
+          }
+        }
+      }
+    }
+  }
+  @media screen and (max-width: 450px) {
+    grid-template-columns: 5px 1fr 5px;
+    .event-details-container {
+margin-top: 70px;
+    }
+  }
 }
 
-.posts-container {
-  position: relative;
-  grid-row: 4/5;
-  .MuiSvgIcon-root {
-    font-size: 35px !important;
-    position: absolute;
-    right: 9px;
-    bottom: 9px;
-  }
-}
+// .posts-container {
+//   position: relative;
+//   .MuiSvgIcon-root {
+//     font-size: 35px !important;
+//     position: absolute;
+//     right: 9px;
+//     bottom: 9px;
+//   }
+// }
 
 .ReactGridGallery_tile-viewport img {
   cursor: inherit !important;

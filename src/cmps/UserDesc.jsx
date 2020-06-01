@@ -3,7 +3,7 @@ import React from 'react'
 
 export function UserDesc(props) {
 
-    const { user , isLoggedInUser , loggedInUser , addFollower , doUnfollow , checkFollowing , removeFollower } = props;
+    const { user, isLoggedInUser, loggedInUser, addFollower, doUnfollow, checkFollowing, removeFollower } = props;
     const isFollow = checkFollowing();
 
     return (
@@ -36,12 +36,12 @@ export function UserDesc(props) {
 
                 {!isLoggedInUser && !isFollow &&
                     <button onClick={() => addFollower(loggedInUser)}
-                        className="cta-btn-full follow-btn">Follow</button>}
+                        className="follow-btn">Follow</button>}
                 {!isLoggedInUser && isFollow &&
                     <button onClick={() => removeFollower(loggedInUser)}
-                        className="cta-btn-full follow-btn">Unfollow</button>}
+                        className="follow-btn unfollow">Unfollow</button>}
 
-                
+
             </section>
 
         </main>

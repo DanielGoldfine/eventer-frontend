@@ -18,7 +18,7 @@ export class SocialShare extends Component {
     const title = 'Check this amazing event ' + this.props.eventTitle
     return (
       <div className="social-share flex column space-around align-items">
-        <h3 className="align-self-center">Invite your friends</h3>
+        {/* <h3 className="align-self-center">Invite your friends</h3> */}
         <div className="flex space-around align-items">
         <div className="share-icon">
           <TwitterShareButton
