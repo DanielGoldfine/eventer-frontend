@@ -13,11 +13,15 @@ import history from '../history.js'
 import eventerLogo from '../assets/design/eventer-logo-new.png'
 import eventerIcn from '../assets/design/eventer-icn.png'
 import modalConnector from '../assets/helpers/modal-connector.png'
+
 import { login, addNotification, loadUser, saveUser, setUser } from '../store/actions/userActions'
+import { setFilter, loadEvents } from '../store/actions/eventActions'
 
 import eventBusService from "../services/eventBusService.js";
 
 import socketService from '../services/socketService';
+
+
 
 class NavBar extends Component {
 
@@ -119,13 +123,19 @@ class NavBar extends Component {
     };
 
 
-    goToPage = (page) => {
+    goToPage = async (page) => {
         let route;
         if (page === 'back') {
             history.goBack();
             return;
         }
         if (page === 'home') route = `/`;
+        if (page === 'index') {
+            let filter = { ...this.props.filterBy, userLocation: '', userId: '', futureOnly: true, txt: '', category: '', date: '', radius: '', sortBy: 'startAt' }; //{futureOnly: true, txt: "", category: "", date: "", radius: "", …} 
+            await this.props.setFilter(filter)
+            await this.props.loadEvents(filter)
+            route = `/event`;
+        }
         if (page === 'edit') route = `/event/edit/`;
         if (page === 'user') route = `/user/${this.props.loggedInUser._id}`;
         if (page === 'login') {
@@ -258,6 +268,7 @@ class NavBar extends Component {
                     <section className={`narrow-modal-container ${isNarrowModalOpen ? 'narrow-active' : ''}`}>
 
                         <button className="create-event" onClick={() => { this.goToPage('edit') }}>Create Event</button>
+                        <button className="create-event" onClick={() => { this.goToPage('index') }}>All Events</button>
 
                         <div onClick={this.openNarrowNotifications} className={`narow-notifications-container narrow-section flex align-center
                     ${isNarrowNotificationsOpen ? 'highlight' : ""}`}>
@@ -297,7 +308,8 @@ class NavBar extends Component {
                             {loggedInUser && <UserPreview className minimalUser={loggedInUser} />}
 
 
-                            <button className="create-event" onClick={() => { this.goToPage('edit') }}>Create Event</button>
+                            <button className="create-event" onClick={() => { this.goToPage('edit') }}>Add New Event</button>
+                            <button className="create-event events-index" onClick={() => { this.goToPage('index') }}>All Events</button>
 
 
                             {loggedInUser && loggedInUser.notification.unseenCount > 0 && <h3 className="not-count">{loggedInUser.notification.unseenCount}</h3>}
@@ -341,6 +353,7 @@ class NavBar extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        filterBy: state.eventsStore.filterBy,
         events: state.eventsStore.events,
         loggedInUser: state.userStore.loggedInUser,
         isHomePage: state.appStore.isHomePage
@@ -348,7 +361,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-    login, addNotification, loadUser, saveUser, setUser
+    login, addNotification, loadUser, saveUser, setFilter, setUser, loadEvents
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NavBar));

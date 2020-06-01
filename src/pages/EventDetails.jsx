@@ -248,6 +248,7 @@ class EventDetails extends React.Component {
               <small>Created at
   <span> {createdDateStr.split(' ')[1]} </span>
                 <span>{createdDateStr.split(' ')[2]} , </span>
+                <span>{createdDateStr.split(' ')[3]} , </span>
                 <span>{createdDateStr.split(' ')[4].substring(0, 5)}</span>
               </small>
               {/* <small>Last update at
@@ -264,10 +265,12 @@ class EventDetails extends React.Component {
 
             <div className="date-time-and-edit flex space-between">
               <p className="event-time-place">
+                <span className="event-weekday">{dateStr.split(' ')[0]}, </span>
                 <span className="event-month">{dateStr.split(' ')[1]} </span>
                 <span className="event-day">{dateStr.split(' ')[2]} </span>
-                <span className="event-time">{dateStr.split(' ')[4].substring(0, 5)}, </span>
-                <span className="event-address">{location.address}</span>
+                <span className="event-year"> {dateStr.split(' ')[3]}, </span>
+                <span className="event-time">  at   {dateStr.split(' ')[4].substring(0, 5)} </span>
+                <span className="event-address"> in {location.address}</span>
               </p>
 
               {event && !this.props.previewEvent && this.props.minimalLoggedInUser._id === event.createdBy._id && <NavLink className="user-preview-name-link" exact to={`/event/edit/${_id}`}>Advanced Edit </NavLink>}

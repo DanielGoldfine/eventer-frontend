@@ -37,6 +37,8 @@ export default function EventPreview(props) {
     if (timeArr[2] === '11' || timeArr[2] === '12' || timeArr[2] === '13') nth = 'th'
 
     const dateDisp = `${timeArr[1]} ${timeArr[2]}`
+    console.log('timeArr:',timeArr);
+    
     const timeDisp = timeArr[4].slice(0, 5)
     // console.log(props.minimalLoggedInUser)
     return (
@@ -49,7 +51,7 @@ export default function EventPreview(props) {
                 <div className={`label ${labelClass} flex align-center justify-center`}>
                     <p>{labelTxt}</p>
                 </div>
-                <p className="event-time">{dateDisp}<span>{nth}</span> - {timeDisp}</p>
+                <p className="event-time">{dateDisp}<span>{nth}</span> { timeArr[3]} -  {timeDisp}</p>
                 <p className="event-title" >{props.event.title}</p>
 
                 {/* <p className="event-desc">{eventDesc}</p> */}
