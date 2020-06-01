@@ -37,7 +37,6 @@ export default function EventPreview(props) {
     if (timeArr[2] === '11' || timeArr[2] === '12' || timeArr[2] === '13') nth = 'th'
 
     const dateDisp = `${timeArr[1]} ${timeArr[2]}`
-    console.log('timeArr:',timeArr);
     
     const timeDisp = timeArr[4].slice(0, 5)
     // console.log(props.minimalLoggedInUser)

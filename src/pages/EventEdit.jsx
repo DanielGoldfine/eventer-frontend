@@ -401,7 +401,7 @@ class EventEdit extends React.Component {
                                 </div>
                             </form >
                             <div className="images-container flex justify-center align-center">
-                                {images.length === 0 && category === 'Choose Category' && < h3 > Waiting for your images...</h3>}
+                                {images.length === 0 && category === 'Choose Category' && <h3> Waiting for your images...</h3>}
                                 {images.length === 0 && category !== 'Choose Category' && <div className="img-container">
                                     {category && !imgUrl.includes('http') && <img className="img-preview" src={require(`../assets/imgs/${category.replace(/\s+/g, '')}.jpg`)} alt=""></img>}
                                 </div>}

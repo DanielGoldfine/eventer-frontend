@@ -30,8 +30,8 @@ class HomePage extends Component {
         // Michael
         let filter = { ...this.props.filterBy, futureOnly: true, userId: '' };
         this.props.setFilter(filter)
-            // .then(() => { this.props.loadEvents(this.props.filterBy) })
-        
+        // .then(() => { this.props.loadEvents(this.props.filterBy) })
+
     };
 
 
@@ -77,7 +77,7 @@ class HomePage extends Component {
                 <CategoryLinks homePage chooseCategory={this.chooseCategory} />
                 <h2>Upcoming Events</h2>
                 {this.props.events.length > 0 && <UpcomingEvents events={this.props.events} />}
-                < CategoryGallery chooseCategory={this.chooseCategory} />
+                <CategoryGallery chooseCategory={this.chooseCategory} />
             </div>
         )
     }
