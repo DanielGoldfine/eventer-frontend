@@ -13,7 +13,7 @@ import history from '../history.js'
 import eventerLogo from '../assets/design/eventer-logo-new.png'
 import eventerIcn from '../assets/design/eventer-icn.png'
 import modalConnector from '../assets/helpers/modal-connector.png'
-import { login, addNotification, loadUser, saveUser } from '../store/actions/userActions'
+import { login, addNotification, loadUser, saveUser, setUser } from '../store/actions/userActions'
 
 import eventBusService from "../services/eventBusService.js";
 
@@ -41,6 +41,8 @@ class NavBar extends Component {
             socketService.on('user joined event', this.addNotification);
             socketService.on('user left event', this.addNotification);
             socketService.on('user rank', this.addNotification);
+            socketService.on('user follow', this.addNotification);
+            socketService.on('user unfollow', this.addNotification);
             this.props.loadUser(userId)
         })
 
@@ -54,17 +56,19 @@ class NavBar extends Component {
         };
         this.setState({ loggedInUser: this.props.loggedInUser })
         if (this.props.loggedInUser) {
-           this.props.loadUser(this.props.loggedInUser._id)
+            this.props.loadUser(this.props.loggedInUser._id)
             socketService.emit('userLogin', this.props.loggedInUser._id);
             socketService.on('event got updated', this.addNotification);
             socketService.on('new event created', this.addNotification);
             socketService.on('user joined event', this.addNotification);
             socketService.on('user left event', this.addNotification);
             socketService.on('user rank', this.addNotification);
+            socketService.on('user follow', this.addNotification);
+            socketService.on('user unfollow', this.addNotification);
         }
     }
 
-    componentWillUpdate = (nextProps, nextState) => {
+    UNSAFE_componentWillUpdate = (nextProps, nextState) => {
         if (nextState.isHomePage !== nextProps.isHomePage) {
             if (this.props.isHomePage) {
                 window.addEventListener('scroll', this.listenToScrollNav)
@@ -87,13 +91,14 @@ class NavBar extends Component {
         socketService.off('user joined event', this.addNotification);
         socketService.off('user left event', this.addNotification);
         socketService.off('user rank', this.addNotification);
+        socketService.off('user follow', this.addNotification);
+        socketService.off('user unfollow', this.addNotification);
     }
 
 
     addNotification = async (notification) => {
-        console.log('addNotification',notification)
         const user = await this.props.addNotification(notification)
-        this.props.loadUser(user._id)
+        this.props.setUser(user)
     }
 
     listenToScrollNav = () => {
@@ -248,35 +253,35 @@ class NavBar extends Component {
         return (
             <main className={navState}>
 
-          <nav className="nav-bar-container main-container flex space-between align-items-center">
+                <nav className="nav-bar-container main-container flex space-between align-items-center">
 
-                <section className={`narrow-modal-container ${isNarrowModalOpen ? 'narrow-active' : ''}`}>
+                    <section className={`narrow-modal-container ${isNarrowModalOpen ? 'narrow-active' : ''}`}>
 
-                    <button className="create-event" onClick={() => { this.goToPage('edit') }}>Create Event</button>
+                        <button className="create-event" onClick={() => { this.goToPage('edit') }}>Create Event</button>
 
-                    <div onClick={this.openNarrowNotifications} className={`narow-notifications-container narrow-section flex align-center
+                        <div onClick={this.openNarrowNotifications} className={`narow-notifications-container narrow-section flex align-center
                     ${isNarrowNotificationsOpen ? 'highlight' : ""}`}>
-                         {loggedInUser && loggedInUser.notification.unseenCount > 0 && <h3 className="not-count">{loggedInUser.notification.unseenCount}</h3>}
-                        <NotificationsIcon />
-                        <p>Notifications</p>
-                    </div>
+                            {loggedInUser && loggedInUser.notification.unseenCount > 0 && <h3 className="not-count">{loggedInUser.notification.unseenCount}</h3>}
+                            <NotificationsIcon />
+                            <p>Notifications</p>
+                        </div>
 
-                    {isNarrowNotificationsOpen && <div className="notifications" ref={notifications => this.notifications = notifications}>
-                        {loggedInUser.notification && < Notifications notification={loggedInUser.notification}
-                            notificationClicked={this.notificationClicked} />}
-                    </div>}
+                        {isNarrowNotificationsOpen && <div className="notifications" ref={notifications => this.notifications = notifications}>
+                            {loggedInUser.notification && < Notifications notification={loggedInUser.notification}
+                                notificationClicked={this.notificationClicked} />}
+                        </div>}
 
-                    <div onClick={() => { this.goToPage('user') }} className="narrow-section flex align-center">
-                        <PersonIcon />
-                        <p>My Profile</p>
-                    </div>
+                        <div onClick={() => { this.goToPage('user') }} className="narrow-section flex align-center">
+                            <PersonIcon />
+                            <p>My Profile</p>
+                        </div>
 
-                   {loggedInUser && <div className="narrow-section flex align-center">
-                        {loggedInUser.userName === 'Guest' && <p className="login" onClick={() => { this.goToPage('login') }}>Login</p>}
-                        {loggedInUser.userName !== 'Guest' && <p className="login" onClick={() => { this.goToPage('logout') }}>Logout</p>}
-                    </div>}
+                        {loggedInUser && <div className="narrow-section flex align-center">
+                            {loggedInUser.userName === 'Guest' && <p className="login" onClick={() => { this.goToPage('login') }}>Login</p>}
+                            {loggedInUser.userName !== 'Guest' && <p className="login" onClick={() => { this.goToPage('logout') }}>Logout</p>}
+                        </div>}
 
-                </section>
+                    </section>
 
                     <div className="flex space-between align-items-center">
 
@@ -343,7 +348,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-    login, addNotification, loadUser, saveUser
+    login, addNotification, loadUser, saveUser, setUser
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(NavBar));

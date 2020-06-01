@@ -1,45 +1,36 @@
 import React, { Component } from 'react'
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from 'google-maps-react';
-import { Grid } from '@material-ui/core';
 
 class MapContainer extends Component {
-    
+
     state = {
-        showingInfoWindow: false,
+        mapLoaded: false,
+        showingInfoWindow: true,
         activeMarker: {},
         selectedPlace: {},
     };
 
     containerStyle = {
-        // position: 'fixed',
-        // width:'447px',
         height: '30%',
-        // top:'510px',
-        // right:'80px',
-        // border:'1px solid lightgrey',
-        // borderRadius:'15px',
-        // boxShadow: "0 1px 3px #00000038"
     }
-      
+
     style = {
-        // width: '100%',
-        // height: '100%',
-        borderRadius:'15px'
+        borderRadius: '15px'
     }
 
     mapControlProps = {
 
         //Controls on map
-        zoomControl:true,
-        mapTypeControl:false,
-        scaleControl:false,
-        streetViewControl:false,
-        panControl:false,
-        rotateControl:false,
-        fullscreenControl:false,
+        zoomControl: true,
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        panControl: false,
+        rotateControl: false,
+        fullscreenControl: false,
         //Map behaviour 
-        draggable:true
-    
+        draggable: true
+
     }
 
     onMarkerClick = (props, marker, e) =>
@@ -58,6 +49,12 @@ class MapContainer extends Component {
         }
     };
 
+    handleMapIdle = () => {
+        this.setState({
+            mapLoaded: true
+        });
+    }
+
 
     render() {
         return (
@@ -75,22 +72,24 @@ class MapContainer extends Component {
                 fullscreenControl={this.mapControlProps.fullscreenControl}
                 panControl={this.mapControlProps.panControl}
                 draggable={this.mapControlProps.draggable}
+                onIdle={this.handleMapIdle}
 
                 google={this.props.google}
                 onClick={this.onMapClicked}>
-                <Marker
-                    onClick={this.onMarkerClick}
-                    name={this.props.name}
-                    position={this.props.loc}
-                    title={this.props.name}
-                />
-                <InfoWindow
-                    marker={this.state.activeMarker}
-                    visible={this.state.showingInfoWindow}>
-                    <div>
-                        <h1>{this.state.selectedPlace.name}</h1>
-                    </div>
-                </InfoWindow>
+                {this.state.mapLoaded &&
+                    <Marker
+                        onClick={this.onMarkerClick}
+                        name={this.props.name}
+                        position={this.props.loc}
+                        title={this.props.name}
+                    />}
+                    <InfoWindow
+                        marker={this.state.activeMarker}
+                        visible={this.state.showingInfoWindow}>
+                        <div>
+                            <h1>{this.state.selectedPlace.name}</h1>
+                        </div>
+                    </InfoWindow>
             </Map>
         )
     }

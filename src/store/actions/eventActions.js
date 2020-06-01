@@ -30,7 +30,6 @@ export function loadEvent(id) {
 }
 
 export function clearEvent() {
-    // console.log('clear action')
     return async dispatch => {
         try {
             await dispatch(_clear());
@@ -154,6 +153,13 @@ export function setFilter(filter) {
     };
 }
 
+// export function resetFilter() {
+//     return (dispatch) => {
+//         dispatch({ type: 'RESET_FILTER' });
+//     };
+// }
+
+
 export function toggleLoad(loadingStatus) {
     return (dispatch) => {
         dispatch({ type: 'TOGGLE_LOAD', loadingStatus });
@@ -186,9 +192,6 @@ function _clear() {
         type: 'CLEAR_EVENT'
     };
 }
-
-
-
 
 function _saveEvent(type, event) {
     return {

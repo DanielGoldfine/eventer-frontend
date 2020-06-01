@@ -243,6 +243,15 @@
       }
     }
   }
+  //hiding the X button in the marker info-windoes, as it cause inconsistent behaviour. 
+  .gm-style-iw.gm-style-iw-c {
+    // z-index: 0 !important;
+    // opacity: 1 !important;
+    // display: block !important;
+    button {
+      display: none !important;
+    }
+  }
   @media screen and (max-width: 550px) {
     position: relative;
     margin-top: 80px;
@@ -251,7 +260,7 @@
     grid-row-gap: 10px;
     grid-column-gap: 20px;
 
-    .nav-title{
+    .nav-title {
       .event-title {
         h2 {
           font-size: rem(30px);
@@ -289,7 +298,7 @@
         .post-text {
           width: 100%;
         }
-    }
+      }
     }
   }
 }

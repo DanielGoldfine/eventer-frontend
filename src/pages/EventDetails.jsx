@@ -47,11 +47,11 @@ class EventDetails extends React.Component {
   }
 
   componentDidUpdate(prevProps) { // To properly allow moving between event details thru the notifications
+    if (!this.props.match) return 
     if (this.props.match.params.id !== prevProps.match.params.id) {
       const { id } = this.props.match.params;
       this.props.loadEvent(id)
         .then(() => {
-          // console.log('details componentDidUpdate')
           socketService.emit('viewEventDetails', this.props.event._id);
           socketService.on('memberJoin', this.socketAddMemebr);
           socketService.on('memberLeave', this.socketLeaveMember);
@@ -184,7 +184,7 @@ class EventDetails extends React.Component {
     const {event} = this.props;
 
     const activeProps = this.props.previewEvent ? this.props.previewEvent : this.props.event
-    if (!activeProps) return <div>LOADING...</div>
+    if (!activeProps || !this.props.minimalLoggedInUser) return <div>LOADING...</div>
 
     if (this.props.previewEvent) { // handle timestamp for preview mode
       const startAtString = `${this.props.previewEvent.startDate} ${this.props.previewEvent.startTime}`
@@ -192,11 +192,11 @@ class EventDetails extends React.Component {
       this.props.previewEvent.startAt = startAt
     }
 
-    const { _id, isActive, createdAt, updatedAt, title, category, imgUrl, description, startAt, location, createdBy, tags, images, members, price, capacity } = activeProps
+    const { _id, isActive, createdAt, title, category, imgUrl, description, startAt, location, createdBy, tags, images, members, price, capacity } = activeProps
 
     const dateStr = Moment(startAt * 1000).toString()
     const createdDateStr = createdAt ? Moment(createdAt * 1000).toString() : Moment(undefined).toString()
-    const updatedAtStr = updatedAt ? Moment(updatedAt * 1000).toString() : Moment(undefined).toString()
+    // const updatedAtStr = updatedAt ? Moment(updatedAt * 1000).toString() : Moment(undefined).toString()
     const eventCostStr = price ? `Join for only $${price}` : 'Join for free!'
     const eventFull = (members.length === capacity) ? true : false
 

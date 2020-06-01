@@ -121,12 +121,12 @@ export function addFollower(user, follower) {
     }
 }
 export function removeFollower(user, follower) {
-    console.log(follower);
+    // console.log(follower);
     
     return async dispatch => {
         try {
             const updatedUser = await userService.removeFollower(user, follower)
-            console.log('updatedUser', updatedUser);
+            // console.log('updatedUser', updatedUser);
             
             dispatch(_saveUser('UPDATE_LOCAL_USER', updatedUser));
             return updatedUser
@@ -166,6 +166,25 @@ export function toggleLoad(loadingStatus) {
     };
 }
 
+export function clearUser() {
+    return async dispatch => {
+        try {
+            await dispatch(_clear());
+        }
+        catch (err) {
+            console.log('eventService: err in clearing event', err);
+        }
+    }
+}
+
+
+function _clear() {
+    return {
+        type: 'CLEAR_USER'
+    };
+}
+
+
 
 function setLoggedInUser(user) {
     return {
@@ -174,7 +193,7 @@ function setLoggedInUser(user) {
     };
 }
 
-function setUser(user) {
+export function setUser(user) {
     return {
         type: 'SET_USER',
         user

@@ -38,9 +38,8 @@ export default function EventPreview(props) {
 
     const dateDisp = `${timeArr[1]} ${timeArr[2]}`
     const timeDisp = timeArr[4].slice(0, 5)
-
+    // console.log(props.minimalLoggedInUser)
     return (
-
 
         <section className="event-preview flex column space-between">
             <div className="event-link" onClick={() => { history.push(`/event/${props.event._id}`) }}>
